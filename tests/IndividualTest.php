@@ -1,106 +1,99 @@
 <?php
 class IndividualTest extends PHPUnit_Framework_TestCase
 {
-  public function testGetGenomeSize_jsonStringOneElementAndOneClass_GenomeSize2()
+  public function testConstructor_jsonStringOneElementAndOneClass_genomeEmpty()
   {
     $jsonString = '{"h1":["class1"]}';
-    $this->assertEquals(2, Individual::getGenomeSize($jsonString));
+    $individual = new Individual($jsonString);
+    $this->assertEquals(2, $individual->genomeSize);
+    $this->assertEquals(2, strlen($individual->genome));
   }
 
-  public function testGetGenomeSize_jsonStringOneElementAndTwoClasses_GenomeSize2()
+  public function testConstructor_jsonStringOneElementAndTwoClasses_genomeEmpty()
   {
     $jsonString = '{"h1":["class1","class2"]}';
-    $this->assertEquals(2, Individual::getGenomeSize($jsonString));
+    $individual = new Individual($jsonString);
+    $this->assertEquals(2, $individual->genomeSize);
+    $this->assertEquals(2, strlen($individual->genome));
   }
 
-  public function testGetGenomeSize_jsonStringOneElementAndFiveClasses_GenomeSize3()
+  public function testConstructor_jsonStringOneElementAndFiveClasses_genomeEmpty()
   {
     $jsonString = '{"h1":["class1","class2","class3","class4","class5"]}';
-    $this->assertEquals(3, Individual::getGenomeSize($jsonString));
+    $individual = new Individual($jsonString);
+    $this->assertEquals(3, $individual->genomeSize);
+    $this->assertEquals(3, strlen($individual->genome));
   }
 
-  public function testGetGenomeSize_jsonStringTwoElementsAndOneClassForEach_GenomeSize4()
+  public function testConstructor_jsonStringTwoElementsAndOneClassForEach_genomeEmpty()
   {
     $jsonString = '{"h1":["class1"],"h2":["class2"]}';
-    $this->assertEquals(4, Individual::getGenomeSize($jsonString));
+    $individual = new Individual($jsonString);
+    $this->assertEquals(4, $individual->genomeSize);
+    $this->assertEquals(4, strlen($individual->genome));
   }
-
-  public function testGetGenomeSize_jsonStringTwoElementsAndOneClassForFirstAndThreeClassesForSecond_GenomeSize5()
+  
+  public function testConstructor_jsonStringTwoElementsAndOneClassForFirstAndThreeClassesForSecond_genomeEmpty()
   {
     $jsonString = '{"h1":["class1"],"h2":["class2","class3","class4"]}';
-    $this->assertEquals(5, Individual::getGenomeSize($jsonString));
+    $individual = new Individual($jsonString);
+    $this->assertEquals(5, $individual->genomeSize);
+    $this->assertEquals(5, strlen($individual->genome));
   }
 
-  public function testGetGenomeSize_emptyJsonString_GenomeSize0()
+  public function testConstructor_jsonStringEmpty_genomeEmpty()
   {
     $jsonString = '';
-    $this->assertEquals(0, Individual::getGenomeSize($jsonString));
+    $individual = new Individual($jsonString);
+    $this->assertEquals(0, $individual->genomeSize);
+    $this->assertEquals(0, strlen($individual->genome));
   }
 
-  public function testCreateGenome_emptyJsonString_GenomeEmpty()
+  public function testConvertToJSON_jsonStringEmpty_genomeEmpty()
   {
     $jsonString = '';
-    $this->assertEquals('', Individual::createGenome($jsonString));
+    $individual = new Individual($jsonString);
+    $this->assertEquals('[]', $individual->convertToJSON());
   }
 
-  public function testCreateGenome_jsonStringOneElementAndOneClass_Genome11()
+  public function testConvertToJSON_jsonStringOneElementAndOneClass()
   {
     $jsonString = '{"h1":["class1"]}';
-    $genome = Individual::createGenome($jsonString);
-    $this->assertEquals(2, strlen($genome));
+    $this->assertEquals('{"h1":"class1"}', (new Individual($jsonString, '00'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '01'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '10'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '11'))->convertToJSON());
   }
 
-  public function testCreateGenome_jsonStringTwoElementsAndOneClassForFirstAndThreeClassesForSecond_Genome11111()
-  {
-    $jsonString = '{"h1":["class1"],"h2":["class2","class3","class4"]}';
-    $genome = Individual::createGenome($jsonString);
-    $this->assertEquals(5, strlen($genome));
-  }
-
-  public function testCreateJSON_emptyJsonString()
-  {
-    $jsonString = '';
-    $this->assertEquals('[]', Individual::createJSON($jsonString, ''));
-  }
-
-  public function testCreateJSON_jsonStringOneElementAndOneClass()
-  {
-    $jsonString = '{"h1":["class1"]}';
-    $this->assertEquals('{"h1":"class1"}', Individual::createJSON($jsonString, '00'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '01'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '10'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '11'));
-  }
-
-  public function testCreateJSON_jsonStringOneElementAndTwoClasses()
+  public function testConvertToJSON_jsonStringOneElementAndTwoClasses()
   {
     $jsonString = '{"h1":["class1","class2"]}';
-    $this->assertEquals('{"h1":"class1"}', Individual::createJSON($jsonString, '00'));
-    $this->assertEquals('{"h1":"class2"}', Individual::createJSON($jsonString, '01'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '10'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '11'));
+    $this->assertEquals('{"h1":"class1"}', (new Individual($jsonString, '00'))->convertToJSON());
+    $this->assertEquals('{"h1":"class2"}', (new Individual($jsonString, '01'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '10'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '11'))->convertToJSON());
   }
 
-  public function testCreateJSON_jsonStringOneElementAndThreeClasses()
+  public function testConvertToJSON_jsonStringOneElementAndThreeClasses()
   {
     $jsonString = '{"h1":["class1","class2","class3"]}';
-    $this->assertEquals('{"h1":"class1"}', Individual::createJSON($jsonString, '00'));
-    $this->assertEquals('{"h1":"class2"}', Individual::createJSON($jsonString, '01'));
-    $this->assertEquals('{"h1":"class3"}', Individual::createJSON($jsonString, '10'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '11'));
+    $this->assertEquals('{"h1":"class1"}', (new Individual($jsonString, '00'))->convertToJSON());
+    $this->assertEquals('{"h1":"class2"}', (new Individual($jsonString, '01'))->convertToJSON());
+    $this->assertEquals('{"h1":"class3"}', (new Individual($jsonString, '10'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '11'))->convertToJSON());
   }
 
-  public function testCreateJSON_jsonStringOneElementAndFiveClasses()
+  public function testConvertToJSON_jsonStringOneElementAndFiveClasses()
   {
     $jsonString = '{"h1":["class1","class2","class3","class4","class5"]}';
-    $this->assertEquals('{"h1":"class1"}', Individual::createJSON($jsonString, '000'));
-    $this->assertEquals('{"h1":"class2"}', Individual::createJSON($jsonString, '001'));
-    $this->assertEquals('{"h1":"class3"}', Individual::createJSON($jsonString, '010'));
-    $this->assertEquals('{"h1":"class4"}', Individual::createJSON($jsonString, '011'));
-    $this->assertEquals('{"h1":"class5"}', Individual::createJSON($jsonString, '100'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '101'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '110'));
-    $this->assertEquals('{"h1":""}', Individual::createJSON($jsonString, '111'));
+    $this->assertEquals('{"h1":"class1"}', (new Individual($jsonString, '000'))->convertToJSON());
+    $this->assertEquals('{"h1":"class2"}', (new Individual($jsonString, '001'))->convertToJSON());
+    $this->assertEquals('{"h1":"class3"}', (new Individual($jsonString, '010'))->convertToJSON());
+    $this->assertEquals('{"h1":"class4"}', (new Individual($jsonString, '011'))->convertToJSON());
+    $this->assertEquals('{"h1":"class5"}', (new Individual($jsonString, '100'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '101'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '110'))->convertToJSON());
+    $this->assertEquals('{"h1":""}', (new Individual($jsonString, '111'))->convertToJSON());
   }
 }
 ?>
