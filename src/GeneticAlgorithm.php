@@ -6,6 +6,7 @@ class GeneticAlgorithm
     $this->maxIndividuals = $maxIndividuals;
     $this->json = array();
     $this->genomeSize = 0;
+    $this->individuals = null;
 
     if (isset($jsonFile))
     {
@@ -37,6 +38,22 @@ class GeneticAlgorithm
       $individual = new Individual($this);
       $json = '__AppConfig=' . $individual->convertToJSON();
       file_put_contents($dir . $i . '-' .$individual->genome . '.json', $json, LOCK_EX);
+    }
+  }
+
+  public function loadIndividuals($dir='')
+  {
+    $this->individuals  = array();
+    if ($handle = opendir($dir))
+    {
+      while (($file = readdir($handle)) !== false)
+      {
+        if (!in_array($file, array('.', '..')) && !is_dir($dir . $file))
+        {
+          $genome = substr($file, strpos($file, '-')+1, strpos($file, '.')-2);
+          $this->individuals[] = new Individual($this, $genome);
+        }
+      }
     }
   }
 }

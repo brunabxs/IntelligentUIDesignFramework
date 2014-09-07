@@ -110,6 +110,15 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(2, self::helperCountFiles(self::$dir));
   }
 
+  public function testLoadIndividuals()
+  {
+    $jsonString = '{"h1":["class1","class2"]}';
+    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga->loadIndividuals('./tests/testLoadIndividuals-GeneticAlgorithm/');
+    $this->assertEquals(1, count($ga->individuals));
+    $this->assertEquals('01', $ga->individuals[0]->genome);
+  }
+
   private static function helperCountFiles($dir)
   {
     $numFiles = 0;
@@ -117,7 +126,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
     {
       while (($file = readdir($handle)) !== false)
       {
-        if (!in_array($file, array('.', '..')) && !is_dir($dir.$file))
+        if (!in_array($file, array('.', '..')) && !is_dir($dir . $file))
         {
           $numFiles++;
         }
