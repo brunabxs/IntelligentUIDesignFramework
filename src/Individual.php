@@ -1,45 +1,26 @@
 <?php
 class Individual
 {
-  public function __construct($jsonString, $genome='')
+  public function __construct($ga, $genome='')
   {
-    $jsonString = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $jsonString);
-    $jsonString = trim($jsonString);
-    
-    $this->json = array();
-    $this->genomeSize = 0;
-    $this->genome = $genome;
-
-    if ($jsonString != '')
+    if (!isset($genome) || $genome == '')
     {
-      $json = json_decode($jsonString);
-      $this->json = array();
-      $this->genomeSize = 0;
-      foreach ($json as $element=>$classes)
-      {
-        $this->json[$element] = array();
-        $this->json[$element]['classes'] = $classes;
-        $this->json[$element]['bits'] = strlen(decbin(count($classes) + 1));
-
-        $this->genomeSize += $this->json[$element]['bits'];
-      }
-    }
-
-    if ($this->genome == '')
-    {
-      for ($i = 0; $i < $this->genomeSize; $i++)
+      for ($i = 0; $i < $ga->genomeSize; $i++)
       {
         $rand = rand(0, 1);
-        $this->genome .= "$rand";
+        $genome .= "$rand";
       }
     }
+
+    $this->ga = $ga;
+    $this->genome = $genome;
   }
 
   public function convertToJSON()
   {
     $json = array();
     $start = 0;
-    foreach ($this->json as $element=>$elementData)
+    foreach ($this->ga->json as $element=>$elementData)
     {
       $numBits = $elementData['bits'];
       $numClasses = count($elementData['classes']);
