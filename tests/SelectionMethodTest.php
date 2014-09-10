@@ -1,5 +1,6 @@
 <?php
-class SelectionMethodTest extends PHPUnit_Framework_TestCase
+include_once 'MyUnit_Framework_TestCase.php';
+class SelectionMethodTest extends MyUnit_Framework_TestCase
 {
   public function testRoulette_oneIndividual()
   {

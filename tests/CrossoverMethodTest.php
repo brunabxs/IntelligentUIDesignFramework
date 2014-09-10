@@ -1,5 +1,6 @@
 <?php
-class CrossoverMethodTest extends PHPUnit_Framework_TestCase
+include_once 'MyUnit_Framework_TestCase.php';
+class CrossoverMethodTest extends MyUnit_Framework_TestCase
 {
   public function testSimple_twoIndividuals_genomeSize3_point1()
   {

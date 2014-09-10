@@ -1,20 +1,7 @@
 <?php
-class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
+include_once 'MyUnit_Framework_TestCase.php';
+class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
 {
-  private static $dir = './tests/temp/';
-
-  protected function tearDown()
-  {
-    $files = glob(self::$dir . '*');
-    foreach ($files as $file)
-    {
-      if (is_file($file))
-      {
-        unlink($file);
-      }
-    }
-  }
-
   public function testConstructor_jsonStringOneElementAndOneClass()
   {
     $jsonString = '{"h1":["class1"]}';
@@ -99,7 +86,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
     $jsonString = '{"h1":["class1"]}';
     $ga = new GeneticAlgorithm(1, null, null, $jsonString);
     $ga->createIndividuals(self::$dir);
-    $this->assertEquals(1, self::helperCountFiles(self::$dir));
+    $this->assertEquals(1, self::countFiles());
   }
 
   public function testCreateIndividuals_jsonStringOneElementAndTwoClasses()
@@ -107,7 +94,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
     $jsonString = '{"h1":["class1","class2"]}';
     $ga = new GeneticAlgorithm(2, null, null, $jsonString);
     $ga->createIndividuals(self::$dir);
-    $this->assertEquals(2, self::helperCountFiles(self::$dir));
+    $this->assertEquals(2, self::countFiles());
   }
 
   public function testLoadIndividuals()
@@ -139,22 +126,6 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
     $ga->individuals[1]->score = 0.4;
     $offsprings = $ga->generateOffspringIndividuals();
     $this->assertEquals(2, count($offsprings));
-  }
-
-  private static function helperCountFiles($dir)
-  {
-    $numFiles = 0;
-    if ($handle = opendir($dir))
-    {
-      while (($file = readdir($handle)) !== false)
-      {
-        if (!in_array($file, array('.', '..')) && !is_dir($dir . $file))
-        {
-          $numFiles++;
-        }
-      }
-    }
-    return $numFiles;
   }
 }
 ?>

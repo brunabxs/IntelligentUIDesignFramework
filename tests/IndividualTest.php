@@ -1,5 +1,6 @@
 <?php
-class IndividualTest extends PHPUnit_Framework_TestCase
+include_once 'MyUnit_Framework_TestCase.php';
+class IndividualTest extends MyUnit_Framework_TestCase
 {
   public function testConstructor_genomeEmpty()
   {
