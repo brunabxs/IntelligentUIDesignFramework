@@ -1,5 +1,5 @@
 <?php
-class SelectionFunctionTest extends PHPUnit_Framework_TestCase
+class SelectionMethodTest extends PHPUnit_Framework_TestCase
 {
   public function testRoulette_oneIndividual()
   {
@@ -8,7 +8,7 @@ class SelectionFunctionTest extends PHPUnit_Framework_TestCase
 
     $individuals = array($individual);
 
-    $selectedIndividuals = SelectionFunction::roulette($individuals, array(0.6));
+    $selectedIndividuals = SelectionMethod::roulette($individuals, array(0.6));
     $this->assertEquals(1, count($selectedIndividuals));
     $this->assertEquals($individual, $selectedIndividuals[0]);
   }
@@ -22,7 +22,7 @@ class SelectionFunctionTest extends PHPUnit_Framework_TestCase
 
     $individuals = array($individual1, $individual2);
 
-    $selectedIndividuals = SelectionFunction::roulette($individuals, array(0.6, 0.66));
+    $selectedIndividuals = SelectionMethod::roulette($individuals, array(0.6, 0.66));
     $this->assertEquals(2, count($selectedIndividuals));
     $this->assertEquals($individual1, $selectedIndividuals[0]);
     $this->assertEquals($individual1, $selectedIndividuals[1]);
@@ -37,7 +37,7 @@ class SelectionFunctionTest extends PHPUnit_Framework_TestCase
 
     $individuals = array($individual1, $individual2);
 
-    $selectedIndividuals = SelectionFunction::roulette($individuals, array(0.6, 1));
+    $selectedIndividuals = SelectionMethod::roulette($individuals, array(0.6, 1));
     $this->assertEquals(2, count($selectedIndividuals));
     $this->assertEquals($individual1, $selectedIndividuals[0]);
     $this->assertEquals($individual2, $selectedIndividuals[1]);

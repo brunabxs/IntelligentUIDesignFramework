@@ -1,5 +1,5 @@
 <?php
-class SelectionFunction
+class SelectionMethod
 {
   public static function rand()
   {

@@ -1,5 +1,5 @@
 <?php
-class CrossoverFunction
+class CrossoverMethod
 {
   public static $prob = 0.8;
 

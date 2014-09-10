@@ -1,14 +1,14 @@
 <?php
 class GeneticAlgorithm
 {
-  public function __construct($maxIndividuals, $json=null, $jsonFile=null, $jsonString=null, $selectionFunction=null, $crossoverFunction=null)
+  public function __construct($maxIndividuals, $json=null, $jsonFile=null, $jsonString=null, $selectionMethod=null, $crossoverMethod=null)
   {
     $this->maxIndividuals = $maxIndividuals;
     $this->json = null;
     $this->genomeSize = 0;
     $this->individuals = null;
-    $this->selectionFunction = isset($selectionFunction) ? $selectionFunction : 'SelectionFunction::roulette';
-    $this->crossoverFunction = isset($crossoverFunction) ? $crossoverFunction : 'CrossoverFunction::simple';
+    $this->selectionMethod = isset($selectionMethod) ? $selectionMethod : 'SelectionMethod::roulette';
+    $this->crossoverMethod = isset($crossoverMethod) ? $crossoverMethod : 'CrossoverMethod::simple';
 
     if (isset($json))
     {
@@ -78,17 +78,17 @@ class GeneticAlgorithm
 
   public function selectIndividuals()
   {
-    return call_user_func($this->selectionFunction, $this->individuals);
+    return call_user_func($this->selectionMethod, $this->individuals);
   }
 
   public function generateOffspringIndividuals()
   {
     $offsprings = array();
-    $ga = new GeneticAlgorithm($this->maxIndividuals, $this->json, null, null, $this->selectionFunction, $this->crossoverFunction);
+    $ga = new GeneticAlgorithm($this->maxIndividuals, $this->json, null, null, $this->selectionMethod, $this->crossoverMethod);
     $selectedIndividuals = $this->selectIndividuals();
     for ($i = 0; $i < count($selectedIndividuals); $i+=2)
     {
-      $offsprings = array_merge($offsprings, call_user_func($this->crossoverFunction, $ga, $selectedIndividuals[$i], $selectedIndividuals[$i+1]));
+      $offsprings = array_merge($offsprings, call_user_func($this->crossoverMethod, $ga, $selectedIndividuals[$i], $selectedIndividuals[$i+1]));
     }
     return $offsprings;
   }
