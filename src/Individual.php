@@ -1,7 +1,7 @@
 <?php
 class Individual
 {
-  public function __construct($ga, $genome='')
+  public function __construct($ga, $genome='', $score=null)
   {
     if (!isset($genome) || $genome == '')
     {
@@ -14,7 +14,7 @@ class Individual
 
     $this->ga = $ga;
     $this->genome = $genome;
-    $this->score = null;
+    $this->score = $score;
   }
 
   public function convertToJSON()
