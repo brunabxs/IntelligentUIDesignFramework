@@ -32,5 +32,11 @@ class Individual
     }
     return json_encode($json);
   }
+
+  public function save($dir='')
+  {
+    $json = '__AppConfig=' . $this->convertToJSON();
+    file_put_contents($dir . $this->genome . '.json', $json, LOCK_EX);
+  }
 }
 ?>

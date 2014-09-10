@@ -50,19 +50,27 @@ class GeneticAlgorithm
     return $myJson;
   }
 
-  public function createIndividuals($dir='')
+  public function createIndividuals()
   {
+    $this->individuals = array();
     for ($i = 0; $i < $this->maxIndividuals; $i++)
     {
-      $individual = new Individual($this);
-      $json = '__AppConfig=' . $individual->convertToJSON();
-      file_put_contents($dir . $i . '-' .$individual->genome . '.json', $json, LOCK_EX);
+      $this->individuals[] = new Individual($this);
+    }
+  }
+
+  public function saveIndividuals($dir='./')
+  {
+    foreach ($this->individuals as $index=>$individual)
+    {
+      $individual->save($dir . $index . '-');
     }
   }
 
   public function loadIndividuals($dir='')
   {
-    $this->individuals  = array();
+    $this->individuals = array();
+
     if ($handle = opendir($dir))
     {
       while (($file = readdir($handle)) !== false)

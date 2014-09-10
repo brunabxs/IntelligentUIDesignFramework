@@ -7,19 +7,19 @@ class CrossoverMethod
   {
     return rand(0, 10000) / 10000.0;
   }
-  
+
   public static function randPoint($start, $end)
   {
     return rand($start, $end - 1);
   }
-  
+
   public static function simple($ga, $individual1, $individual2, $point=null)
   {
     if (self::rand() > self::$prob)
     {
       return array(new Individual($ga, $individual1->genome), new Individual($ga, $individual2->genome));
     }
-    
+
     if (!isset($point))
     {
       $point = self::randPoint(0, $ga->genomeSize);

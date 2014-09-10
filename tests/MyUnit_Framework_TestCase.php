@@ -1,16 +1,40 @@
 ﻿<?php
 abstract class MyUnit_Framework_TestCase extends PHPUnit_Framework_TestCase
 {
-  protected static $dir = './tests/temp/';
-  
+  protected static $tempDir = null;
+  protected static $datasetDir = null;
+
+  protected function setUp()
+  {
+    self::$tempDir = './tests/' . $this->getName() . '/';
+    self::$datasetDir = './tests/' . $this->getName() . '/dataset/';
+  }
+
   protected function tearDown()
   {
-    self::deleteAllFiles(self::$dir);
+    self::deleteAllFiles(self::$tempDir);
   }
-  
-  protected static function countFiles()
+
+  protected static function containsFile($dir, $fileName)
   {
-    $dir = self::$dir;
+    if ($handle = opendir($dir))
+    {
+      while (($file = readdir($handle)) !== false)
+      {
+        if (!in_array($file, array('.', '..')) && !is_dir($dir . $file))
+        {
+          if ($file == $fileName)
+          {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  protected static function countFiles($dir)
+  {
     $numFiles = 0;
     if ($handle = opendir($dir))
     {
@@ -24,7 +48,7 @@ abstract class MyUnit_Framework_TestCase extends PHPUnit_Framework_TestCase
     }
     return $numFiles;
   }
-  
+
   private function deleteAllFiles($dir)
   {
     $files = glob($dir . '*');
