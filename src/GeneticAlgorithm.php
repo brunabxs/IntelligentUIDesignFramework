@@ -1,35 +1,53 @@
-﻿<?php
+<?php
 class GeneticAlgorithm
 {
-  public function __construct($maxIndividuals, $jsonFile=null, $jsonString=null, $selectionFunction=null)
+  public function __construct($maxIndividuals, $json=null, $jsonFile=null, $jsonString=null, $selectionFunction=null, $crossoverFunction=null)
   {
     $this->maxIndividuals = $maxIndividuals;
-    $this->json = array();
+    $this->json = null;
     $this->genomeSize = 0;
     $this->individuals = null;
     $this->selectionFunction = isset($selectionFunction) ? $selectionFunction : 'SelectionFunction::roulette';
+    $this->crossoverFunction = isset($crossoverFunction) ? $crossoverFunction : 'CrossoverFunction::simple';
 
-    if (isset($jsonFile))
+    if (isset($json))
+    {
+      $this->json = $json;
+    }
+    else if (isset($jsonFile) && $jsonString != '')
     {
       $jsonString = file_get_contents($jsonFile);
+      $jsonString = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $jsonString);
+      $jsonString = trim($jsonString);
+      $this->json = self::createJSON($jsonString);
     }
-    else if (!isset($jsonString) || $jsonString == '')
+    else if (isset($jsonString) && $jsonString != '')
+    {
+      $jsonString = trim($jsonString);
+      $this->json = self::createJSON($jsonString);
+    }
+    else
     {
       throw new Exception('Declare jsonFile or jsonString');
     }
 
-    $jsonString = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $jsonString);
-    $jsonString = trim($jsonString);
+    foreach ($this->json as $elementData)
+    {
+      $this->genomeSize += $elementData['bits'];
+    }
+  }
 
+  private static function createJSON($jsonString)
+  {
+    $myJson = array();
     $json = json_decode($jsonString);
     foreach ($json as $element=>$classes)
     {
-      $this->json[$element] = array();
-      $this->json[$element]['classes'] = $classes;
-      $this->json[$element]['bits'] = strlen(decbin(count($classes) + 1));
-
-      $this->genomeSize += $this->json[$element]['bits'];
+      $myJson[$element] = array();
+      $myJson[$element]['classes'] = $classes;
+      $myJson[$element]['bits'] = strlen(decbin(count($classes) + 1));
     }
+    return $myJson;
   }
 
   public function createIndividuals($dir='')
@@ -61,6 +79,18 @@ class GeneticAlgorithm
   public function selectIndividuals()
   {
     return call_user_func($this->selectionFunction, $this->individuals);
+  }
+
+  public function generateOffspringIndividuals()
+  {
+    $offsprings = array();
+    $ga = new GeneticAlgorithm($this->maxIndividuals, $this->json, null, null, $this->selectionFunction, $this->crossoverFunction);
+    $selectedIndividuals = $this->selectIndividuals();
+    for ($i = 0; $i < count($selectedIndividuals); $i+=2)
+    {
+      $offsprings = array_merge($offsprings, call_user_func($this->crossoverFunction, $ga, $selectedIndividuals[$i], $selectedIndividuals[$i+1]));
+    }
+    return $offsprings;
   }
 }
 ?>

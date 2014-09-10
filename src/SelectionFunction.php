@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class SelectionFunction
 {
   public static function rand()

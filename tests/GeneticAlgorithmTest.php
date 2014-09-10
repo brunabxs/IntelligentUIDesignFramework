@@ -18,7 +18,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testConstructor_jsonStringOneElementAndOneClass()
   {
     $jsonString = '{"h1":["class1"]}';
-    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
 
     $this->assertEquals(1, $ga->maxIndividuals);
     $this->assertEquals(2, $ga->genomeSize);
@@ -30,7 +30,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testConstructor_jsonStringOneElementAndTwoClasses()
   {
     $jsonString = '{"h1":["class1","class2"]}';
-    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
 
     $this->assertEquals(1, $ga->maxIndividuals);
     $this->assertEquals(2, $ga->genomeSize);
@@ -42,7 +42,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testConstructor_jsonStringOneElementAndFiveClasses()
   {
     $jsonString = '{"h1":["class1","class2","class3","class4","class5"]}';
-    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
 
     $this->assertEquals(1, $ga->maxIndividuals);
     $this->assertEquals(3, $ga->genomeSize);
@@ -54,7 +54,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testConstructor_jsonStringTwoElementsAndOneClassForEach()
   {
     $jsonString = '{"h1":["class1"],"h2":["class2"]}';
-    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
 
     $this->assertEquals(1, $ga->maxIndividuals);
     $this->assertEquals(4, $ga->genomeSize);
@@ -68,7 +68,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testConstructor_jsonStringTwoElementsAndOneClassForFirstAndThreeClassesForSecond()
   {
     $jsonString = '{"h1":["class1"],"h2":["class2","class3","class4"]}';
-    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
     $this->assertEquals(1, $ga->maxIndividuals);
     $this->assertEquals(5, $ga->genomeSize);
 
@@ -83,7 +83,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
     $jsonString = '';
     try
     {
-      $ga = new GeneticAlgorithm(1, null, $jsonString);
+      $ga = new GeneticAlgorithm(1, null, null, $jsonString);
       $this->assertFail('Exception expected');
     }
     catch (Exception $e)
@@ -97,7 +97,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testCreateIndividuals_jsonStringOneElementAndOneClass()
   {
     $jsonString = '{"h1":["class1"]}';
-    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
     $ga->createIndividuals(self::$dir);
     $this->assertEquals(1, self::helperCountFiles(self::$dir));
   }
@@ -105,7 +105,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testCreateIndividuals_jsonStringOneElementAndTwoClasses()
   {
     $jsonString = '{"h1":["class1","class2"]}';
-    $ga = new GeneticAlgorithm(2, null, $jsonString);
+    $ga = new GeneticAlgorithm(2, null, null, $jsonString);
     $ga->createIndividuals(self::$dir);
     $this->assertEquals(2, self::helperCountFiles(self::$dir));
   }
@@ -113,7 +113,7 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testLoadIndividuals()
   {
     $jsonString = '{"h1":["class1","class2"]}';
-    $ga = new GeneticAlgorithm(1, null, $jsonString);
+    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
     $ga->loadIndividuals('./tests/testLoadIndividuals-GeneticAlgorithm/');
     $this->assertEquals(1, count($ga->individuals));
     $this->assertEquals('01', $ga->individuals[0]->genome);
@@ -122,12 +122,23 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
   public function testSelectIndividuals_rouletteAsSelectionMethod()
   {
     $jsonString = '{"h1":["class1","class2","class3"]}';
-    $ga = new GeneticAlgorithm(2, null, $jsonString);
+    $ga = new GeneticAlgorithm(2, null, null, $jsonString);
     $ga->loadIndividuals('./tests/testSelectIndividuals_rouletteAsSelectionMethod-GeneticAlgorithm/');
     $ga->individuals[0]->score = 0.6;
     $ga->individuals[1]->score = 0.4;
     $selectIndividuals = $ga->selectIndividuals();
     $this->assertEquals(2, count($selectIndividuals));
+  }
+  
+  public function testGenerateOffspringIndividuals_rouletteAsSelectionMethod_simpleCrossoverAsCrossoverMethod()
+  {
+    $jsonString = '{"h1":["class1","class2","class3"]}';
+    $ga = new GeneticAlgorithm(2, null, null, $jsonString);
+    $ga->loadIndividuals('./tests/testGenerateOffspringIndividuals_rouletteAsSelectionMethod_simpleCrossoverAsCrossoverMethod-GeneticAlgorithm/');
+    $ga->individuals[0]->score = 0.6;
+    $ga->individuals[1]->score = 0.4;
+    $offsprings = $ga->generateOffspringIndividuals();
+    $this->assertEquals(2, count($offsprings));
   }
 
   private static function helperCountFiles($dir)
