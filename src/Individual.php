@@ -14,6 +14,7 @@ class Individual
 
     $this->ga = $ga;
     $this->genome = $genome;
+    $this->score = null;
   }
 
   public function convertToJSON()

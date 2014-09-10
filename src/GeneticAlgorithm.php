@@ -1,12 +1,13 @@
 ﻿<?php
 class GeneticAlgorithm
 {
-  public function __construct($maxIndividuals, $jsonFile=null, $jsonString=null)
+  public function __construct($maxIndividuals, $jsonFile=null, $jsonString=null, $selectionFunction=null)
   {
     $this->maxIndividuals = $maxIndividuals;
     $this->json = array();
     $this->genomeSize = 0;
     $this->individuals = null;
+    $this->selectionFunction = isset($selectionFunction) ? $selectionFunction : 'SelectionFunction::roulette';
 
     if (isset($jsonFile))
     {
@@ -55,6 +56,11 @@ class GeneticAlgorithm
         }
       }
     }
+  }
+
+  public function selectIndividuals()
+  {
+    return call_user_func($this->selectionFunction, $this->individuals);
   }
 }
 ?>

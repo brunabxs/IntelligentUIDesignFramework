@@ -119,6 +119,17 @@ class GeneticAlgorithmTest extends PHPUnit_Framework_TestCase
     $this->assertEquals('01', $ga->individuals[0]->genome);
   }
 
+  public function testSelectIndividuals_rouletteAsSelectionMethod()
+  {
+    $jsonString = '{"h1":["class1","class2","class3"]}';
+    $ga = new GeneticAlgorithm(2, null, $jsonString);
+    $ga->loadIndividuals('./tests/testSelectIndividuals_rouletteAsSelectionMethod-GeneticAlgorithm/');
+    $ga->individuals[0]->score = 0.6;
+    $ga->individuals[1]->score = 0.4;
+    $selectIndividuals = $ga->selectIndividuals();
+    $this->assertEquals(2, count($selectIndividuals));
+  }
+
   private static function helperCountFiles($dir)
   {
     $numFiles = 0;
