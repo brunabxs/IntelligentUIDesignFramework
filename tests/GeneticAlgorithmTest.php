@@ -2,6 +2,15 @@
 include_once 'MyUnit_Framework_TestCase.php';
 class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
 {
+  private function mockGeneticAlgorithm()
+  {
+    $ga = $this->getMockBuilder('GeneticAlgorithm')
+               ->disableOriginalConstructor()
+               ->setMethods(NULL)
+               ->getMock();
+    return $ga;
+  }
+
   public function testConstructor_newGA_buildFirstGeneration()
   {
     // Arrange
@@ -51,6 +60,22 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertEquals('roulette', $ga->selectionMethod);
     $this->assertEquals('simple', $ga->crossoverMethod);
     $this->assertEquals(2, count($ga->population));
+  }
+
+  public function testSaveIndividuals_twoIndividuals_fileNameMustContainsGenerationAndIndividualIndexNumber()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->generation = 2;
+    $ga->individualsProperties = json_decode('{"h1":["class1"]}');
+    $ga->individuals = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+
+    // Act
+    $ga->saveIndividuals(self::$tempDir);
+
+    // Assert
+    $this->assertTrue(self::containsFile(self::$tempDir, '2-0-01.json'));
+    $this->assertTrue(self::containsFile(self::$tempDir, '2-1-10.json'));
   }
 }
 ?>

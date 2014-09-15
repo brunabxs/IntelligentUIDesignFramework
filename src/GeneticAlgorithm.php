@@ -58,5 +58,13 @@ class GeneticAlgorithm
     }
     return $population;
   }
+
+  public function saveIndividuals($dir)
+  {
+    foreach ($this->individuals as $index => $individual)
+    {
+      $individual->save($dir . $this->generation . '-' . $index . '-');
+    }
+  }
 }
 ?>
