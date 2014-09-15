@@ -92,5 +92,49 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Assert
     $this->assertEquals(2, count($selectedIndividuals));
   }
+
+  public function testGenerateIndividuals_populationSize2_mustGenerateTwoIndividuals()
+  {
+    // Arrange
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 1,
+                  'populationSize' => 2,
+                  'genomeSize' => 2,
+                  'selectionMethod' => 'roulette',
+                  'crossoverMethod' => 'simple'
+                 );
+    $json = json_decode(json_encode($json));
+    $ga = new GeneticAlgorithm($json);
+    $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+
+    // Act
+    $generatedIndividuals = $ga->generateIndividuals();
+
+    // Assert
+    $this->assertEquals(2, count($generatedIndividuals));
+  }
+
+  public function testGenerateIndividuals_generation2_generatedIndividualsMustBeFromGeneration3()
+  {
+    // Arrange
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 2,
+                  'populationSize' => 2,
+                  'genomeSize' => 2,
+                  'selectionMethod' => 'roulette',
+                  'crossoverMethod' => 'simple'
+                 );
+    $json = json_decode(json_encode($json));
+    $ga = new GeneticAlgorithm($json);
+    $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+
+    // Act
+    $generatedIndividuals = $ga->generateIndividuals();
+
+    // Assert
+    $this->assertEquals(2, $ga->generation);
+    $this->assertEquals(3, $generatedIndividuals[0]->ga->generation);
+    $this->assertEquals(3, $generatedIndividuals[1]->ga->generation);
+  }
 }
 ?>

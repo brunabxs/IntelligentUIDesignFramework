@@ -65,5 +65,19 @@ class GeneticAlgorithm
   {
     return call_user_func('SelectionMethod::' . $this->selectionMethod, $this->population);
   }
+
+  public function generateIndividuals()
+  {
+    $offsprings = array();
+    $json = clone $this->json;
+    $json->generation++;
+    $ga = new GeneticAlgorithm($json);
+    $selectedIndividuals = $this->selectIndividuals();
+    for ($i = 0; $i < count($selectedIndividuals); $i += 2)
+    {
+      $offsprings = array_merge($offsprings, call_user_func('CrossoverMethod::' . $this->crossoverMethod, $ga, $selectedIndividuals[$i], $selectedIndividuals[$i+1]));
+    }
+    return $offsprings;
+  }
 }
 ?>
