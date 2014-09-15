@@ -2,15 +2,6 @@
 include_once 'MyUnit_Framework_TestCase.php';
 class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
 {
-  private function mockGeneticAlgorithm()
-  {
-    $ga = $this->getMockBuilder('GeneticAlgorithm')
-               ->disableOriginalConstructor()
-               ->setMethods(NULL)
-               ->getMock();
-    return $ga;
-  }
-
   public function testConstructor_newGA_buildFirstGeneration()
   {
     // Arrange

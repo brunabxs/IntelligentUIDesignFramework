@@ -2,15 +2,6 @@
 include_once 'MyUnit_Framework_TestCase.php';
 class IndividualTest extends MyUnit_Framework_TestCase
 {
-  public function mockGeneticAlgorithm()
-  {
-    $ga = $this->getMockBuilder('GeneticAlgorithm')
-               ->disableOriginalConstructor()
-               ->setMethods(NULL)
-               ->getMock();
-    return $ga;
-  }
-
   public function testConstructor_genomeEmpty_genomeMustBeCreated()
   {
     // Arrange

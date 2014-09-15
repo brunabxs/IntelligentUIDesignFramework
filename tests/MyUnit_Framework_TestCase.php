@@ -15,6 +15,15 @@ abstract class MyUnit_Framework_TestCase extends PHPUnit_Framework_TestCase
     self::deleteAllFiles(self::$tempDir);
   }
 
+  protected function mockGeneticAlgorithm()
+  {
+    $ga = $this->getMockBuilder('GeneticAlgorithm')
+               ->disableOriginalConstructor()
+               ->setMethods(NULL)
+               ->getMock();
+    return $ga;
+  }
+
   protected static function containsFile($dir, $fileName)
   {
     if ($handle = opendir($dir))
