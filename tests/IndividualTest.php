@@ -2,65 +2,127 @@
 include_once 'MyUnit_Framework_TestCase.php';
 class IndividualTest extends MyUnit_Framework_TestCase
 {
-  public function testConstructor_genomeEmpty()
+  public function mockGeneticAlgorithm()
   {
-    $jsonString = '{"h1":["class1"]}';
+    $ga = $this->getMockBuilder('GeneticAlgorithm')
+               ->disableOriginalConstructor()
+               ->setMethods(NULL)
+               ->getMock();
+    return $ga;
+  }
+
+  public function testConstructor_genomeEmpty_genomeMustBeCreated()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->genomeSize = 2;
     $genome = '';
-    $individual = new Individual(new GeneticAlgorithm(1, null, null, $jsonString), $genome);
+
+    // Act
+    $individual = new Individual($ga, $genome);
+
+    // Assert
     $this->assertEquals(2, strlen($individual->genome));
   }
 
-  public function testConstructor_genomeNotEmpty()
+  public function testConstructor_genomeNotEmpty_genomeMustNotBeCreated()
   {
-    $jsonString = '{"h1":["class1"]}';
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->genomeSize = 2;
     $genome = '11';
-    $individual = new Individual(new GeneticAlgorithm(1, null, null, $jsonString), $genome);
-    $this->assertEquals('11', $individual->genome);
+
+    // Act
+    $individual = new Individual($ga, $genome);
+
+    // Assert
     $this->assertEquals(2, strlen($individual->genome));
   }
 
-  public function testConvertToJSON_jsonStringOneElementAndOneClass()
+  public function testConvertToJSON_oneElementWithOneClass()
   {
-    $jsonString = '{"h1":["class1"]}';
-    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
-    $this->assertEquals('{"h1":"class1"}', (new Individual($ga, '00'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '01'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '10'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '11'))->convertToJSON());
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->individualsProperties = json_decode('{"h1":["class1"]}');
+
+    // Act
+    $json00 = (new Individual($ga, '00'))->convertToJSON();
+    $json01 = (new Individual($ga, '01'))->convertToJSON();
+    $json10 = (new Individual($ga, '10'))->convertToJSON();
+    $json11 = (new Individual($ga, '11'))->convertToJSON();
+
+    // Assert
+    $this->assertEquals('{"h1":"class1"}', $json00);
+    $this->assertEquals('{"h1":""}', $json01);
+    $this->assertEquals('{"h1":""}', $json10);
+    $this->assertEquals('{"h1":""}', $json11);
   }
 
-  public function testConvertToJSON_jsonStringOneElementAndTwoClasses()
+  public function testConvertToJSON_oneElementWithTwoClasses()
   {
-    $jsonString = '{"h1":["class1","class2"]}';
-    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
-    $this->assertEquals('{"h1":"class1"}', (new Individual($ga, '00'))->convertToJSON());
-    $this->assertEquals('{"h1":"class2"}', (new Individual($ga, '01'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '10'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '11'))->convertToJSON());
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->individualsProperties = json_decode('{"h1":["class1","class2"]}');
+
+    // Act
+    $json00 = (new Individual($ga, '00'))->convertToJSON();
+    $json01 = (new Individual($ga, '01'))->convertToJSON();
+    $json10 = (new Individual($ga, '10'))->convertToJSON();
+    $json11 = (new Individual($ga, '11'))->convertToJSON();
+
+    // Assert
+    $this->assertEquals('{"h1":"class1"}', $json00);
+    $this->assertEquals('{"h1":"class2"}', $json01);
+    $this->assertEquals('{"h1":""}', $json10);
+    $this->assertEquals('{"h1":""}', $json11);
   }
 
-  public function testConvertToJSON_jsonStringOneElementAndThreeClasses()
+  public function testConvertToJSON_oneElementWithThreeClasses()
   {
-    $jsonString = '{"h1":["class1","class2","class3"]}';
-    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
-    $this->assertEquals('{"h1":"class1"}', (new Individual($ga, '00'))->convertToJSON());
-    $this->assertEquals('{"h1":"class2"}', (new Individual($ga, '01'))->convertToJSON());
-    $this->assertEquals('{"h1":"class3"}', (new Individual($ga, '10'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '11'))->convertToJSON());
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->individualsProperties = json_decode('{"h1":["class1","class2","class3"]}');
+
+    // Act
+    $json00 = (new Individual($ga, '00'))->convertToJSON();
+    $json01 = (new Individual($ga, '01'))->convertToJSON();
+    $json10 = (new Individual($ga, '10'))->convertToJSON();
+    $json11 = (new Individual($ga, '11'))->convertToJSON();
+
+    // Assert
+    $this->assertEquals('{"h1":"class1"}', $json00);
+    $this->assertEquals('{"h1":"class2"}', $json01);
+    $this->assertEquals('{"h1":"class3"}', $json10);
+    $this->assertEquals('{"h1":""}', $json11);
   }
 
-  public function testConvertToJSON_jsonStringOneElementAndFiveClasses()
+  public function testSave_fileNameMustContainsGenome()
   {
-    $jsonString = '{"h1":["class1","class2","class3","class4","class5"]}';
-    $ga = new GeneticAlgorithm(1, null, null, $jsonString);
-    $this->assertEquals('{"h1":"class1"}', (new Individual($ga, '000'))->convertToJSON());
-    $this->assertEquals('{"h1":"class2"}', (new Individual($ga, '001'))->convertToJSON());
-    $this->assertEquals('{"h1":"class3"}', (new Individual($ga, '010'))->convertToJSON());
-    $this->assertEquals('{"h1":"class4"}', (new Individual($ga, '011'))->convertToJSON());
-    $this->assertEquals('{"h1":"class5"}', (new Individual($ga, '100'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '101'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '110'))->convertToJSON());
-    $this->assertEquals('{"h1":""}', (new Individual($ga, '111'))->convertToJSON());
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->individualsProperties = json_decode('{"h1":["class1"]}');
+    $dir = self::$tempDir;
+
+    // Act
+    (new Individual($ga, '00'))->save($dir);
+
+    // Assert
+    $this->assertEquals(1, self::countFiles($dir));
+    $this->assertTrue(self::containsFile($dir, '00.json'));
+  }
+
+  public function testSave_fileMustContainsIndividualInformation()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->individualsProperties = json_decode('{"h1":["class1"]}');
+    $dir = self::$tempDir;
+
+    // Act
+    (new Individual($ga, '00'))->save($dir);
+
+    // Assert
+    $this->assertEquals('__AppConfig={"h1":"class1"}', file_get_contents($dir . '00.json'));
   }
 }
 ?>

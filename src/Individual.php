@@ -21,19 +21,19 @@ class Individual
   {
     $json = array();
     $start = 0;
-    foreach ($this->ga->json as $element=>$elementData)
+    foreach ($this->ga->individualsProperties as $element=>$classes)
     {
-      $numBits = $elementData['bits'];
-      $numClasses = count($elementData['classes']);
+      $numClasses = count($classes);
+      $numBits = strlen(decbin($numClasses + 1));
       $genomePart = substr($this->genome, $start, $numBits);
       $index = bindec($genomePart);
       $start += $numBits;
-      $json[$element] = $index < $numClasses ? $elementData['classes'][$index] : '';
+      $json[$element] = $index < $numClasses ? $classes[$index] : '';
     }
     return json_encode($json);
   }
 
-  public function save($dir='')
+  public function save($dir)
   {
     $json = '__AppConfig=' . $this->convertToJSON();
     file_put_contents($dir . $this->genome . '.json', $json, LOCK_EX);
