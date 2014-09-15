@@ -68,5 +68,19 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertTrue(self::containsFile(self::$tempDir, '2-0-01.json'));
     $this->assertTrue(self::containsFile(self::$tempDir, '2-1-10.json'));
   }
+
+  public function testSelectIndividuals_populationSize2_rouletteAsSelectionMethodMustSelectTwoIndividuals()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->selectionMethod = 'roulette';
+    $ga->individuals = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+
+    // Act
+    $selectedIndividuals = $ga->selectIndividuals();
+
+    // Assert
+    $this->assertEquals(2, count($selectedIndividuals));
+  }
 }
 ?>

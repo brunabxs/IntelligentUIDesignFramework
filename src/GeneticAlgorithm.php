@@ -66,5 +66,10 @@ class GeneticAlgorithm
       $individual->save($dir . $this->generation . '-' . $index . '-');
     }
   }
+
+  public function selectIndividuals()
+  {
+    return call_user_func('SelectionMethod::' . $this->selectionMethod, $this->individuals);
+  }
 }
 ?>
