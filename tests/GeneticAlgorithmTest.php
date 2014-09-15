@@ -13,7 +13,6 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'crossoverMethod' => 'simple'
                  );
     $json = json_decode(json_encode($json));
-    GeneticAlgorithm::$dir = self::$datasetDir;
 
     // Act
     $ga = new GeneticAlgorithm($json);
