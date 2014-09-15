@@ -2,11 +2,11 @@
 include_once 'MyUnit_Framework_TestCase.php';
 class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
 {
-  public function testConstructor_newGA_buildFirstGeneration()
+  public function testConstructor_loadInformationsFromJSON()
   {
     // Arrange
     $json = array('individualsProperties' => '{"h1":["class1"]}',
-                  'generation' => 0,
+                  'generation' => 2,
                   'populationSize' => 4,
                   'genomeSize' => 3,
                   'selectionMethod' => 'roulette',
@@ -19,37 +19,47 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
 
     // Assert
     $this->assertEquals(json_decode('{"h1":["class1"]}'), $ga->individualsProperties);
-    $this->assertEquals(0, $ga->generation);
+    $this->assertEquals(2, $ga->generation);
     $this->assertEquals(4, $ga->populationSize);
     $this->assertEquals(3, $ga->genomeSize);
     $this->assertEquals('roulette', $ga->selectionMethod);
     $this->assertEquals('simple', $ga->crossoverMethod);
-    $this->assertEquals(4, count($ga->population));
+    $this->assertEquals(null, $ga->population);
   }
 
-  public function testConstructor_loadGA_reloadSecondGeneration()
+  public function testConstructor_generation0TriggersIndividualsCreation()
   {
     // Arrange
-    $json = array('individualsProperties' => '{"h1":["class1","class2"]}',
-                  'generation' => 1,
-                  'populationSize' => 2,
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 0,
+                  'populationSize' => 4,
                   'genomeSize' => 3,
                   'selectionMethod' => 'roulette',
                   'crossoverMethod' => 'simple'
                  );
     $json = json_decode(json_encode($json));
-    GeneticAlgorithm::$dir = self::$datasetDir;
+    GeneticAlgorithm::$dir = self::$tempDir;
 
     // Act
     $ga = new GeneticAlgorithm($json);
 
     // Assert
-    $this->assertEquals(json_decode('{"h1":["class1","class2"]}'), $ga->individualsProperties);
-    $this->assertEquals(1, $ga->generation);
-    $this->assertEquals(2, $ga->populationSize);
-    $this->assertEquals(3, $ga->genomeSize);
-    $this->assertEquals('roulette', $ga->selectionMethod);
-    $this->assertEquals('simple', $ga->crossoverMethod);
+    $this->assertEquals(4, count($ga->population));
+    $this->assertEquals(4, self::countFiles(self::$tempDir));
+  }
+
+  public function testLoadIndividuals_generation1WithTwoIndividuals()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->generation = 1;
+    $ga->genomeSize = 2;
+    GeneticAlgorithm::$dir = self::$datasetDir;
+
+    // Act
+    $ga->loadIndividuals();
+
+    // Assert
     $this->assertEquals(2, count($ga->population));
   }
 
@@ -59,7 +69,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $ga = $this->mockGeneticAlgorithm();
     $ga->generation = 2;
     $ga->individualsProperties = json_decode('{"h1":["class1"]}');
-    $ga->individuals = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+    $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
 
     // Act
     $ga->saveIndividuals(self::$tempDir);
@@ -74,7 +84,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
     $ga->selectionMethod = 'roulette';
-    $ga->individuals = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+    $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
 
     // Act
     $selectedIndividuals = $ga->selectIndividuals();
