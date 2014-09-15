@@ -1,104 +1,62 @@
 <?php
 class GeneticAlgorithm
 {
-  public function __construct($maxIndividuals, $json=null, $jsonFile=null, $jsonString=null, $selectionMethod=null, $crossoverMethod=null)
-  {
-    $this->maxIndividuals = $maxIndividuals;
-    $this->json = null;
-    $this->genomeSize = 0;
-    $this->individuals = null;
-    $this->selectionMethod = isset($selectionMethod) ? $selectionMethod : 'SelectionMethod::roulette';
-    $this->crossoverMethod = isset($crossoverMethod) ? $crossoverMethod : 'CrossoverMethod::simple';
+  public static $dir = '.';
 
-    if (isset($json))
+  public function __construct($json=null)
+  {
+    $this->json = $json;
+    $this->individualsProperties = json_decode($this->json->individualsProperties);
+    $this->generation = $this->json->generation;
+    $this->populationSize = $this->json->populationSize;
+    $this->genomeSize = $this->json->genomeSize;
+    $this->selectionMethod = $this->json->selectionMethod;
+    $this->crossoverMethod = $this->json->crossoverMethod;
+    $this->population = self::population($this, self::$dir);
+  }
+
+  private static function population($ga, $dir)
+  {
+    if ($ga->generation == 0)
     {
-      $this->json = $json;
-    }
-    else if (isset($jsonFile) && $jsonString != '')
-    {
-      $jsonString = file_get_contents($jsonFile);
-      $jsonString = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $jsonString);
-      $jsonString = trim($jsonString);
-      $this->json = self::createJSON($jsonString);
-    }
-    else if (isset($jsonString) && $jsonString != '')
-    {
-      $jsonString = trim($jsonString);
-      $this->json = self::createJSON($jsonString);
+      return self::createIndividuals($ga, $dir);
     }
     else
     {
-      throw new Exception('Declare jsonFile or jsonString');
-    }
-
-    foreach ($this->json as $elementData)
-    {
-      $this->genomeSize += $elementData['bits'];
+      return self::loadIndividuals($ga, $dir);
     }
   }
 
-  private static function createJSON($jsonString)
+  private static function createIndividuals($ga, $dir)
   {
-    $myJson = array();
-    $json = json_decode($jsonString);
-    foreach ($json as $element=>$classes)
+    $population = array();
+    for ($i = 0; $i < $ga->populationSize; $i++)
     {
-      $myJson[$element] = array();
-      $myJson[$element]['classes'] = $classes;
-      $myJson[$element]['bits'] = strlen(decbin(count($classes) + 1));
+      $population[] = new Individual($ga);
     }
-    return $myJson;
+    return $population;
   }
 
-  public function createIndividuals()
+  private static function loadIndividuals($ga, $dir)
   {
-    $this->individuals = array();
-    for ($i = 0; $i < $this->maxIndividuals; $i++)
-    {
-      $this->individuals[] = new Individual($this);
-    }
-  }
-
-  public function saveIndividuals($dir='./')
-  {
-    foreach ($this->individuals as $index=>$individual)
-    {
-      $individual->save($dir . $index . '-');
-    }
-  }
-
-  public function loadIndividuals($dir='')
-  {
-    $this->individuals = array();
-
+    $population = array();
     if ($handle = opendir($dir))
     {
       while (($file = readdir($handle)) !== false)
       {
         if (!in_array($file, array('.', '..')) && !is_dir($dir . $file))
         {
-          $genome = substr($file, strpos($file, '-')+1, strpos($file, '.')-2);
-          $this->individuals[] = new Individual($this, $genome);
+          $individual = split('-', $file);
+          $generation = $individual[0];
+          $genome = split('.', $individual[2])[0];
+          if ($generation == $ga->generation-1)
+          {
+            $population[] = new Individual($ga, $genome);
+          }
         }
       }
     }
-  }
-
-  public function selectIndividuals()
-  {
-    return call_user_func($this->selectionMethod, $this->individuals);
-  }
-
-  public function generateOffspringIndividuals()
-  {
-    $offsprings = array();
-    $ga = new GeneticAlgorithm($this->maxIndividuals, $this->json, null, null, $this->selectionMethod, $this->crossoverMethod);
-    $selectedIndividuals = $this->selectIndividuals();
-    for ($i = 0; $i < count($selectedIndividuals); $i+=2)
-    {
-      $offsprings = array_merge($offsprings, call_user_func($this->crossoverMethod, $ga, $selectedIndividuals[$i], $selectedIndividuals[$i+1]));
-    }
-    return $offsprings;
+    return $population;
   }
 }
 ?>
