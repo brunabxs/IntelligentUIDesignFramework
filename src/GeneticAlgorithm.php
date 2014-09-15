@@ -61,6 +61,16 @@ class GeneticAlgorithm
     }
   }
 
+  public function save($dir)
+  {
+    $this->json->individuals = array();
+    foreach ($this->population as $individual)
+    {
+      $this->json->individuals[] = $individual->genome;
+    }
+    file_put_contents($dir . $this->generation . '-GA.json', $this->json, LOCK_EX);
+  }
+
   public function selectIndividuals()
   {
     return call_user_func('SelectionMethod::' . $this->selectionMethod, $this->population);

@@ -79,6 +79,28 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertTrue(self::containsFile(self::$tempDir, '2-1-10.json'));
   }
 
+  public function testSave_generation2_fileNameMustContainsGeneration()
+  {
+    // Arrange
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 2,
+                  'populationSize' => 2,
+                  'genomeSize' => 2,
+                  'selectionMethod' => 'roulette',
+                  'crossoverMethod' => 'simple'
+                 );
+    $json = json_decode(json_encode($json));
+    $ga = new GeneticAlgorithm($json);
+    $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+
+    // Act
+    $ga->save(self::$tempDir);
+
+    // Assert
+    $this->assertEquals(1, self::countFiles(self::$tempDir));
+    $this->assertTrue(self::containsFile(self::$tempDir, '2-GA.json'));
+  }
+
   public function testSelectIndividuals_populationSize2_rouletteAsSelectionMethodMustSelectTwoIndividuals()
   {
     // Arrange
