@@ -10,9 +10,9 @@ class GeneticAlgorithm
     $this->generation = $this->json->generation;
     $this->populationSize = $this->json->populationSize;
     $this->genomeSize = isset($this->json->genomeSize) ? $this->json->genomeSize : self::calculateGenomeSize($this->individualsProperties);
-    $this->selectionMethod = 'SelectionMethod::' . (isset($this->json->selectionMethod) ? $this->json->selectionMethod : 'roulette');
-    $this->crossoverMethod = 'CrossoverMethod::' . (isset($this->json->crossoverMethod) ? $this->json->crossoverMethod : 'simple');
-    $this->mutationMethod = 'MutationMethod::' . (isset($this->json->mutationMethod) ? $this->json->mutationMethod : 'simple');
+    $this->selectionMethod = (isset($this->json->selectionMethod) ? $this->json->selectionMethod : 'SelectionMethod::roulette');
+    $this->crossoverMethod = (isset($this->json->crossoverMethod) ? $this->json->crossoverMethod : 'CrossoverMethod::simple');
+    $this->mutationMethod = (isset($this->json->mutationMethod) ? $this->json->mutationMethod : 'MutationMethod::simple');
     $this->population = null;
 
     if ($this->generation == 0)
@@ -81,7 +81,11 @@ class GeneticAlgorithm
     {
       $this->json->individuals[] = $individual->genome;
     }
-    file_put_contents(self::$dir . $this->generation . '-GA.json', $this->json, LOCK_EX);
+    $fileContent = get_object_vars($this);
+    unset($fileContent['json']);
+    unset($fileContent['population']);
+    $fileContent['individualsProperties'] = json_encode($fileContent['individualsProperties']);
+    file_put_contents(self::$dir . $this->generation . '-GA.json', json_encode($fileContent, JSON_PRETTY_PRINT), LOCK_EX);
   }
 
   public function selectIndividuals()

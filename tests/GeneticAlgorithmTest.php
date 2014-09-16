@@ -9,9 +9,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'generation' => 2,
                   'populationSize' => 4,
                   'genomeSize' => 3,
-                  'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple',
-                  'mutationMethod' => 'simple'
+                  'selectionMethod' => 'SelectionMethod::roulette',
+                  'crossoverMethod' => 'CrossoverMethod::simple',
+                  'mutationMethod' => 'MutationMethod::simple'
                  );
     $json = json_decode(json_encode($json));
 
@@ -34,11 +34,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Arrange
     $json = array('individualsProperties' => '{"h1":["class1"]}',
                   'generation' => 0,
-                  'populationSize' => 4,
-                  'genomeSize' => 3,
-                  'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple',
-                  'mutationMethod' => 'simple'
+                  'populationSize' => 4
                  );
     $json = json_decode(json_encode($json));
     GeneticAlgorithm::$dir = self::$tempDir;
@@ -56,10 +52,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Arrange
     $json = array('individualsProperties' => '{"h1":["class1"]}',
                   'generation' => 2,
-                  'populationSize' => 4,
-                  'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple',
-                  'mutationMethod' => 'simple'
+                  'populationSize' => 4
                  );
     $json = json_decode(json_encode($json));
 
@@ -131,11 +124,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Arrange
     $json = array('individualsProperties' => '{"h1":["class1"]}',
                   'generation' => 2,
-                  'populationSize' => 2,
-                  'genomeSize' => 2,
-                  'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple',
-                  'mutationMethod' => 'simple'
+                  'populationSize' => 2
                  );
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
@@ -169,11 +158,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Arrange
     $json = array('individualsProperties' => '{"h1":["class1"]}',
                   'generation' => 1,
-                  'populationSize' => 2,
-                  'genomeSize' => 2,
-                  'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple',
-                  'mutationMethod' => 'simple'
+                  'populationSize' => 2
                  );
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
@@ -192,11 +177,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Arrange
     $json = array('individualsProperties' => '{"h1":["class1"]}',
                   'generation' => 2,
-                  'populationSize' => 2,
-                  'genomeSize' => 2,
-                  'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple',
-                  'mutationMethod' => 'simple'
+                  'populationSize' => 2
                  );
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
@@ -215,11 +196,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     // Arrange
     $json = array('individualsProperties' => '{"h1":["class1"]}',
                   'generation' => 2,
-                  'populationSize' => 2,
-                  'genomeSize' => 2,
-                  'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple',
-                  'mutationMethod' => 'simple'
+                  'populationSize' => 2
                  );
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
