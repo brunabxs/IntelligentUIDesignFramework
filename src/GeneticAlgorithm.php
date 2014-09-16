@@ -1,7 +1,7 @@
 <?php
 class GeneticAlgorithm
 {
-  public static $dir = '.';
+  public static $dir = './';
 
   public function __construct($json=null)
   {
@@ -16,18 +16,18 @@ class GeneticAlgorithm
 
     if ($this->generation == 0)
     {
-      $this->createIndividuals(self::$dir);
+      $this->createIndividuals();
     }
   }
 
-  private function createIndividuals($dir)
+  private function createIndividuals()
   {
     $this->population = array();
     for ($i = 0; $i < $this->populationSize; $i++)
     {
       $this->population[] = new Individual($this);
     }
-    $this->saveIndividuals($dir);
+    $this->saveIndividuals(self::$dir);
   }
 
   public function loadIndividuals()
@@ -53,22 +53,22 @@ class GeneticAlgorithm
     return $this->population;
   }
 
-  public function saveIndividuals($dir)
+  public function saveIndividuals()
   {
     foreach ($this->population as $index => $individual)
     {
-      $individual->save($dir . $this->generation . '-' . $index . '-');
+      $individual->save(self::$dir . $this->generation . '-' . $index . '-');
     }
   }
 
-  public function save($dir)
+  public function save()
   {
     $this->json->individuals = array();
     foreach ($this->population as $individual)
     {
       $this->json->individuals[] = $individual->genome;
     }
-    file_put_contents($dir . $this->generation . '-GA.json', $this->json, LOCK_EX);
+    file_put_contents(self::$dir . $this->generation . '-GA.json', $this->json, LOCK_EX);
   }
 
   public function selectIndividuals()
@@ -78,16 +78,17 @@ class GeneticAlgorithm
 
   public function generateIndividuals()
   {
-    $offsprings = array();
-    $json = clone $this->json;
-    $json->generation++;
-    $ga = new GeneticAlgorithm($json);
+    $this->generation++;
+
     $selectedIndividuals = $this->selectIndividuals();
+
+    $this->population = array();
     for ($i = 0; $i < count($selectedIndividuals); $i += 2)
     {
-      $offsprings = array_merge($offsprings, call_user_func('CrossoverMethod::' . $this->crossoverMethod, $ga, $selectedIndividuals[$i], $selectedIndividuals[$i+1]));
+      $offsprings = call_user_func('CrossoverMethod::' . $this->crossoverMethod, $this, $selectedIndividuals[$i], $selectedIndividuals[$i+1]);
+      $this->population = array_merge($this->population, $offsprings);
     }
-    return $offsprings;
+    $this->saveIndividuals();
   }
 }
 ?>
