@@ -1,0 +1,14 @@
+﻿{
+    "individualsProperties": "{
+        \"h1\": [
+            \"class1\",
+            \"class2\"
+        ],
+        \"h2\": [
+            \"class1\",
+            \"class2\"
+        ]
+    }",
+    "generation": 0,
+    "populationSize": 4
+}
