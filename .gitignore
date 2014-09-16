@@ -40,3 +40,4 @@ Icon
 # =========================
 tests-output
 *.bat
+/.project
