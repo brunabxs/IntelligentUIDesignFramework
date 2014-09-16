@@ -10,8 +10,9 @@ class GeneticAlgorithm
     $this->generation = $this->json->generation;
     $this->populationSize = $this->json->populationSize;
     $this->genomeSize = $this->json->genomeSize;
-    $this->selectionMethod = $this->json->selectionMethod;
-    $this->crossoverMethod = $this->json->crossoverMethod;
+    $this->selectionMethod = 'SelectionMethod::' . $this->json->selectionMethod;
+    $this->crossoverMethod = 'CrossoverMethod::' . $this->json->crossoverMethod;
+    $this->mutationMethod = 'MutationMethod::' . $this->json->mutationMethod;
     $this->population = null;
 
     if ($this->generation == 0)
@@ -73,21 +74,30 @@ class GeneticAlgorithm
 
   public function selectIndividuals()
   {
-    return call_user_func('SelectionMethod::' . $this->selectionMethod, $this->population);
+    return call_user_func($this->selectionMethod, $this->population);
   }
 
   public function generateIndividuals()
   {
     $this->generation++;
 
+    // select
     $selectedIndividuals = $this->selectIndividuals();
 
+    // crossover
     $this->population = array();
     for ($i = 0; $i < count($selectedIndividuals); $i += 2)
     {
-      $offsprings = call_user_func('CrossoverMethod::' . $this->crossoverMethod, $this, $selectedIndividuals[$i], $selectedIndividuals[$i+1]);
+      $offsprings = call_user_func($this->crossoverMethod, $this, $selectedIndividuals[$i], $selectedIndividuals[$i+1]);
       $this->population = array_merge($this->population, $offsprings);
     }
+
+    // mutation
+    foreach ($this->population as &$individual)
+    {
+      $individual = call_user_func($this->mutationMethod, $this, $individual);
+    }
+
     $this->saveIndividuals();
   }
 }

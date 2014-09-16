@@ -10,7 +10,8 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 4,
                   'genomeSize' => 3,
                   'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple'
+                  'crossoverMethod' => 'simple',
+                  'mutationMethod' => 'simple'
                  );
     $json = json_decode(json_encode($json));
 
@@ -22,8 +23,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertEquals(2, $ga->generation);
     $this->assertEquals(4, $ga->populationSize);
     $this->assertEquals(3, $ga->genomeSize);
-    $this->assertEquals('roulette', $ga->selectionMethod);
-    $this->assertEquals('simple', $ga->crossoverMethod);
+    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
+    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
+    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
     $this->assertEquals(null, $ga->population);
   }
 
@@ -35,7 +37,8 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 4,
                   'genomeSize' => 3,
                   'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple'
+                  'crossoverMethod' => 'simple',
+                  'mutationMethod' => 'simple'
                  );
     $json = json_decode(json_encode($json));
     GeneticAlgorithm::$dir = self::$tempDir;
@@ -88,7 +91,8 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 2,
                   'genomeSize' => 2,
                   'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple'
+                  'crossoverMethod' => 'simple',
+                  'mutationMethod' => 'simple'
                  );
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
@@ -107,7 +111,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
   {
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
-    $ga->selectionMethod = 'roulette';
+    $ga->selectionMethod = 'SelectionMethod::roulette';
     $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
 
     // Act
@@ -125,7 +129,8 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 2,
                   'genomeSize' => 2,
                   'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple'
+                  'crossoverMethod' => 'simple',
+                  'mutationMethod' => 'simple'
                  );
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
@@ -147,7 +152,8 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 2,
                   'genomeSize' => 2,
                   'selectionMethod' => 'roulette',
-                  'crossoverMethod' => 'simple'
+                  'crossoverMethod' => 'simple',
+                  'mutationMethod' => 'simple'
                  );
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
@@ -159,6 +165,29 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
 
     // Assert
     $this->assertEquals(3, $ga->generation);
+  }
+
+  public function testGenerateIndividuals_generation2_generatedIndividualsMustSaveIndividuals()
+  {
+    // Arrange
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 2,
+                  'populationSize' => 2,
+                  'genomeSize' => 2,
+                  'selectionMethod' => 'roulette',
+                  'crossoverMethod' => 'simple',
+                  'mutationMethod' => 'simple'
+                 );
+    $json = json_decode(json_encode($json));
+    $ga = new GeneticAlgorithm($json);
+    $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
+    GeneticAlgorithm::$dir = self::$tempDir;
+
+    // Act
+    $ga->generateIndividuals();
+
+    // Assert
+    $this->assertEquals(2, self::countFiles(self::$tempDir));
   }
 }
 ?>
