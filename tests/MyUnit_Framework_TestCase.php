@@ -6,13 +6,22 @@ abstract class MyUnit_Framework_TestCase extends PHPUnit_Framework_TestCase
 
   protected function setUp()
   {
-    self::$tempDir = './tests/' . $this->getName() . '/';
-    self::$datasetDir = './tests/' . $this->getName() . '/dataset/';
+    self::$tempDir = './tests/' . get_class($this) . '.' . $this->getName() . '/';
+    self::$datasetDir = './tests/' . get_class($this) . '.' . $this->getName() . '/dataset/';
+
+    if (!is_dir(self::$tempDir))
+    {
+      mkdir(self::$tempDir);
+    }
   }
 
   protected function tearDown()
   {
     self::deleteAllFiles(self::$tempDir);
+    if (!is_dir(self::$datasetDir))
+    {
+      rmdir(self::$tempDir);
+    }
   }
 
   protected function mockGeneticAlgorithm()
