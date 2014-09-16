@@ -9,16 +9,28 @@ class GeneticAlgorithm
     $this->individualsProperties = json_decode($this->json->individualsProperties);
     $this->generation = $this->json->generation;
     $this->populationSize = $this->json->populationSize;
-    $this->genomeSize = $this->json->genomeSize;
-    $this->selectionMethod = 'SelectionMethod::' . $this->json->selectionMethod;
-    $this->crossoverMethod = 'CrossoverMethod::' . $this->json->crossoverMethod;
-    $this->mutationMethod = 'MutationMethod::' . $this->json->mutationMethod;
+    $this->genomeSize = isset($this->json->genomeSize) ? $this->json->genomeSize : self::calculateGenomeSize($this->individualsProperties);
+    $this->selectionMethod = 'SelectionMethod::' . (isset($this->json->selectionMethod) ? $this->json->selectionMethod : 'roulette');
+    $this->crossoverMethod = 'CrossoverMethod::' . (isset($this->json->crossoverMethod) ? $this->json->crossoverMethod : 'simple');
+    $this->mutationMethod = 'MutationMethod::' . (isset($this->json->mutationMethod) ? $this->json->mutationMethod : 'simple');
     $this->population = null;
 
     if ($this->generation == 0)
     {
       $this->createIndividuals();
     }
+  }
+
+  public static function calculateGenomeSize($properties)
+  {
+    $genomeSize = 0;
+    foreach ($properties as $element => $classes)
+    {
+      $numClasses = count($classes);
+      $numBits = strlen(decbin($numClasses + 1));
+      $genomeSize += $numBits;
+    }
+    return $genomeSize;
   }
 
   private function createIndividuals()

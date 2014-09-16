@@ -50,6 +50,49 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertEquals(4, count($ga->population));
     $this->assertEquals(4, self::countFiles(self::$tempDir));
   }
+  
+  public function testConstructor_emptyGenomeSize_mustCalculateGenomeSize()
+  {
+    // Arrange
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 2,
+                  'populationSize' => 4,
+                  'selectionMethod' => 'roulette',
+                  'crossoverMethod' => 'simple',
+                  'mutationMethod' => 'simple'
+                 );
+    $json = json_decode(json_encode($json));
+
+    // Act
+    $ga = new GeneticAlgorithm($json);
+
+    // Assert
+    $this->assertEquals(2, $ga->genomeSize);
+  }
+
+  public function testCalculateGenomeSize_oneElementWithTwoClasses_genomeSizeMustBe2()
+  {
+    // Arrange
+    $properties = json_decode('{"h1":["class1","class2"]}');
+
+    // Act
+    $genomeSize = GeneticAlgorithm::calculateGenomeSize($properties);
+
+    // Assert
+    $this->assertEquals(2, $genomeSize);
+  }
+
+  public function testCalculateGenomeSize_twoElementsWithTwoClassesEach_genomeSizeMustBe4()
+  {
+    // Arrange
+    $properties = json_decode('{"h1":["class1","class2"],"h2":["class1","class2"]}');
+
+    // Act
+    $genomeSize = GeneticAlgorithm::calculateGenomeSize($properties);
+
+    // Assert
+    $this->assertEquals(4, $genomeSize);
+  }
 
   public function testLoadIndividuals_generation1WithTwoIndividuals()
   {
