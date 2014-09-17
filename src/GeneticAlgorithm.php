@@ -116,5 +116,22 @@ class GeneticAlgorithm
 
     $this->saveIndividuals();
   }
+
+  public static function getLastGeneticAlgorithmGeneration()
+  {
+    $dir = self::$dir;
+    $lastGeneration = null;
+    if ($handle = opendir($dir))
+    {
+      while (($file = readdir($handle)) !== false)
+      {
+        if (!in_array($file, array('.', '..')) && !is_dir($dir . $file) && strpos($file, '-GA.json'))
+        {
+          $lastGeneration = max(explode('-', $file)[0], $lastGeneration);
+        }
+      }
+    }
+    return $lastGeneration;
+  }
 }
 ?>
