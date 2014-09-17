@@ -1,5 +1,6 @@
 <?php
-function autoload($class) {
+function autoload($class)
+{
   include 'src/' . $class . '.php';
 }
 
