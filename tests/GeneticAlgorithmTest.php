@@ -210,22 +210,22 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertEquals(2, self::countFiles(self::$tempDir));
   }
 
-  public function testGetLastGeneticAlgorithmGeneration_oneGeneticAlgorithm()
+  public function testGetLastGeneration_oneGeneticAlgorithm()
   {
     GeneticAlgorithm::$dir = self::$datasetDir;
-    $this->assertEquals(0, GeneticAlgorithm::getLastGeneticAlgorithmGeneration());
+    $this->assertEquals(0, GeneticAlgorithm::getLastGeneration());
   }
 
-  public function testGetLastGeneticAlgorithmGeneration_twoConsecutivesGeneticAlgorithms()
+  public function testGetLastGeneration_twoConsecutivesGeneticAlgorithms()
   {
     GeneticAlgorithm::$dir = self::$datasetDir;
-    $this->assertEquals(2, GeneticAlgorithm::getLastGeneticAlgorithmGeneration());
+    $this->assertEquals(2, GeneticAlgorithm::getLastGeneration());
   }
 
-  public function testGetLastGeneticAlgorithmGeneration_twoNonConsecutivesGeneticAlgorithms()
+  public function testGetLastGeneration_twoNonConsecutivesGeneticAlgorithms()
   {
     GeneticAlgorithm::$dir = self::$datasetDir;
-    $this->assertEquals(5, GeneticAlgorithm::getLastGeneticAlgorithmGeneration());
+    $this->assertEquals(5, GeneticAlgorithm::getLastGeneration());
   }
 }
 ?>

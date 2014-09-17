@@ -117,7 +117,7 @@ class GeneticAlgorithm
     $this->saveIndividuals();
   }
 
-  public static function getLastGeneticAlgorithmGeneration()
+  public static function getLastGeneration()
   {
     $dir = self::$dir;
     $lastGeneration = null;
