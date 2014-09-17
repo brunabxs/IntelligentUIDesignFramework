@@ -40,4 +40,5 @@ Icon
 # =========================
 tests-output
 *.bat
-/.project
+*.sh
+node_modules/
