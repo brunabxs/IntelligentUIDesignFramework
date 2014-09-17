@@ -37,10 +37,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 4
                  );
     $json = json_decode(json_encode($json));
-    GeneticAlgorithm::$dir = self::$tempDir;
 
     // Act
-    $ga = new GeneticAlgorithm($json);
+    $ga = new GeneticAlgorithm($json, self::$tempDir);
 
     // Assert
     $this->assertEquals(4, count($ga->population));
@@ -93,10 +92,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $ga = $this->mockGeneticAlgorithm();
     $ga->generation = 1;
     $ga->genomeSize = 2;
-    GeneticAlgorithm::$dir = self::$datasetDir;
 
     // Act
-    $ga->loadIndividuals();
+    $ga->loadIndividuals(self::$datasetDir);
 
     // Assert
     $this->assertEquals(2, count($ga->population));
@@ -109,10 +107,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $ga->generation = 2;
     $ga->individualsProperties = json_decode('{"h1":["class1"]}');
     $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
-    GeneticAlgorithm::$dir = self::$tempDir;
 
     // Act
-    $ga->saveIndividuals();
+    $ga->saveIndividuals(self::$tempDir);
 
     // Assert
     $this->assertTrue(self::containsFile(self::$tempDir, '2-0-01.json'));
@@ -127,12 +124,11 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 2
                  );
     $json = json_decode(json_encode($json));
-    $ga = new GeneticAlgorithm($json);
+    $ga = new GeneticAlgorithm($json, self::$tempDir);
     $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
-    GeneticAlgorithm::$dir = self::$tempDir;
 
     // Act
-    $ga->save();
+    $ga->save(self::$tempDir);
 
     // Assert
     $this->assertEquals(1, self::countFiles(self::$tempDir));
@@ -163,10 +159,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
     $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
-    GeneticAlgorithm::$dir = self::$tempDir;
 
     // Act
-    $ga->generateIndividuals();
+    $ga->generateIndividuals(self::$tempDir);
 
     // Assert
     $this->assertEquals(2, count($ga->population));
@@ -182,10 +177,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
     $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
-    GeneticAlgorithm::$dir = self::$tempDir;
 
     // Act
-    $ga->generateIndividuals();
+    $ga->generateIndividuals(self::$tempDir);
 
     // Assert
     $this->assertEquals(3, $ga->generation);
@@ -201,10 +195,9 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $json = json_decode(json_encode($json));
     $ga = new GeneticAlgorithm($json);
     $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
-    GeneticAlgorithm::$dir = self::$tempDir;
 
     // Act
-    $ga->generateIndividuals();
+    $ga->generateIndividuals(self::$tempDir);
 
     // Assert
     $this->assertEquals(2, self::countFiles(self::$tempDir));
@@ -212,20 +205,17 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
 
   public function testGetLastGeneration_oneGeneticAlgorithm()
   {
-    GeneticAlgorithm::$dir = self::$datasetDir;
-    $this->assertEquals(0, GeneticAlgorithm::getLastGeneration());
+    $this->assertEquals(0, GeneticAlgorithm::getLastGeneration(self::$datasetDir));
   }
 
   public function testGetLastGeneration_twoConsecutivesGeneticAlgorithms()
   {
-    GeneticAlgorithm::$dir = self::$datasetDir;
-    $this->assertEquals(2, GeneticAlgorithm::getLastGeneration());
+    $this->assertEquals(2, GeneticAlgorithm::getLastGeneration(self::$datasetDir));
   }
 
   public function testGetLastGeneration_twoNonConsecutivesGeneticAlgorithms()
   {
-    GeneticAlgorithm::$dir = self::$datasetDir;
-    $this->assertEquals(5, GeneticAlgorithm::getLastGeneration());
+    $this->assertEquals(5, GeneticAlgorithm::getLastGeneration(self::$datasetDir));
   }
 }
 ?>

@@ -1,9 +1,7 @@
 <?php
 class GeneticAlgorithm
 {
-  public static $dir = './';
-
-  public function __construct($json=null)
+  public function __construct($json=null, $dir='./')
   {
     $this->json = $json;
     $this->individualsProperties = json_decode($this->json->individualsProperties);
@@ -17,7 +15,7 @@ class GeneticAlgorithm
 
     if ($this->generation == 0)
     {
-      $this->createIndividuals();
+      $this->createIndividuals($dir);
     }
   }
 
@@ -33,19 +31,18 @@ class GeneticAlgorithm
     return $genomeSize;
   }
 
-  private function createIndividuals()
+  private function createIndividuals($dir)
   {
     $this->population = array();
     for ($i = 0; $i < $this->populationSize; $i++)
     {
       $this->population[] = new Individual($this);
     }
-    $this->saveIndividuals(self::$dir);
+    $this->saveIndividuals($dir);
   }
 
-  public function loadIndividuals()
+  public function loadIndividuals($dir)
   {
-    $dir = self::$dir;
     $this->population = array();
     if ($handle = opendir($dir))
     {
@@ -66,15 +63,15 @@ class GeneticAlgorithm
     return $this->population;
   }
 
-  public function saveIndividuals()
+  public function saveIndividuals($dir)
   {
     foreach ($this->population as $index => $individual)
     {
-      $individual->save(self::$dir . $this->generation . '-' . $index . '-');
+      $individual->save($dir . $this->generation . '-' . $index . '-');
     }
   }
 
-  public function save()
+  public function save($dir)
   {
     $fileContent = get_object_vars($this);
     unset($fileContent['json']);
@@ -85,7 +82,7 @@ class GeneticAlgorithm
     {
       $fileContent['individuals'][] = $individual->genome;
     }
-    file_put_contents(self::$dir . $this->generation . '-GA.json', json_encode($fileContent, JSON_PRETTY_PRINT), LOCK_EX);
+    file_put_contents($dir . $this->generation . '-GA.json', json_encode($fileContent, JSON_PRETTY_PRINT), LOCK_EX);
   }
 
   public function selectIndividuals()
@@ -93,7 +90,7 @@ class GeneticAlgorithm
     return call_user_func($this->selectionMethod, $this->population);
   }
 
-  public function generateIndividuals()
+  public function generateIndividuals($dir)
   {
     $this->generation++;
 
@@ -114,12 +111,11 @@ class GeneticAlgorithm
       $individual = call_user_func($this->mutationMethod, $this, $individual);
     }
 
-    $this->saveIndividuals();
+    $this->saveIndividuals($dir);
   }
 
-  public static function getLastGeneration()
+  public static function getLastGeneration($dir)
   {
-    $dir = self::$dir;
     $lastGeneration = null;
     if ($handle = opendir($dir))
     {
