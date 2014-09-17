@@ -76,15 +76,15 @@ class GeneticAlgorithm
 
   public function save()
   {
-    $this->json->individuals = array();
-    foreach ($this->population as $individual)
-    {
-      $this->json->individuals[] = $individual->genome;
-    }
     $fileContent = get_object_vars($this);
     unset($fileContent['json']);
     unset($fileContent['population']);
     $fileContent['individualsProperties'] = json_encode($fileContent['individualsProperties']);
+    $fileContent['individuals'] = array();
+    foreach ($this->population as $individual)
+    {
+      $fileContent['individuals'][] = $individual->genome;
+    }
     file_put_contents(self::$dir . $this->generation . '-GA.json', json_encode($fileContent, JSON_PRETTY_PRINT), LOCK_EX);
   }
 
