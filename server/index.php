@@ -6,9 +6,9 @@ function autoload($class)
 
 spl_autoload_register('autoload');
 
-GeneticAlgorithm::$dir = './resources/';
+$dir = './resources/';
 
-$currentGeneration = GeneticAlgorithm::getLastGeneration();
+$currentGeneration = GeneticAlgorithm::getLastGeneration($dir);
 
 if (!isset($currentGeneration))
 {
@@ -21,7 +21,7 @@ else
 
 $jsonString = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $jsonString);
 $jsonString = trim($jsonString);
-$ga = new GeneticAlgorithm(json_decode($jsonString));
+$ga = new GeneticAlgorithm(json_decode($jsonString), $dir);
 
 if (isset($currentGeneration))
 {
@@ -29,5 +29,5 @@ if (isset($currentGeneration))
   //$ga->generateIndividuals();
 }
 
-$ga->save();
+$ga->save($dir);
 ?>
