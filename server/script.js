@@ -20,9 +20,9 @@
 
 window.onload = function()
 {
-  if (__AppConfig)
+  if ( __AppConfig )
   {
-    for ( var element in __AppConfig )
+    for ( var element in __AppConfig.classes )
     {
       // find all elements
       var elements;
@@ -44,7 +44,7 @@ window.onload = function()
       {
         var classAttr = elements[i].getAttribute('class');
         classAttr = classAttr ? classAttr : '';
-        elements[i].setAttribute('class', classAttr + __AppConfig[element])
+        elements[i].setAttribute('class', classAttr + __AppConfig.classes[element])
       }
     }
   }

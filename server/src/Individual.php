@@ -30,7 +30,7 @@ class Individual
       $start += $numBits;
       $json[$element] = $index < $numClasses ? $classes[$index] : '';
     }
-    return json_encode($json);
+    return json_encode(array('generation' => $this->ga->generation, 'genome' => $this->genome, 'classes' => $json));
   }
 
   public function save($dir)

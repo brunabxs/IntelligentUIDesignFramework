@@ -34,6 +34,7 @@ class IndividualTest extends MyUnit_Framework_TestCase
   {
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
+    $ga->generation = 0;
     $ga->individualsProperties = json_decode('{"h1":["class1"]}');
 
     // Act
@@ -43,16 +44,17 @@ class IndividualTest extends MyUnit_Framework_TestCase
     $json11 = (new Individual($ga, '11'))->convertToJSON();
 
     // Assert
-    $this->assertEquals('{"h1":"class1"}', $json00);
-    $this->assertEquals('{"h1":""}', $json01);
-    $this->assertEquals('{"h1":""}', $json10);
-    $this->assertEquals('{"h1":""}', $json11);
+    $this->assertEquals('{"generation":0,"genome":"00","classes":{"h1":"class1"}}', $json00);
+    $this->assertEquals('{"generation":0,"genome":"01","classes":{"h1":""}}', $json01);
+    $this->assertEquals('{"generation":0,"genome":"10","classes":{"h1":""}}', $json10);
+    $this->assertEquals('{"generation":0,"genome":"11","classes":{"h1":""}}', $json11);
   }
 
   public function testConvertToJSON_oneElementWithTwoClasses()
   {
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
+    $ga->generation = 0;
     $ga->individualsProperties = json_decode('{"h1":["class1","class2"]}');
 
     // Act
@@ -62,16 +64,17 @@ class IndividualTest extends MyUnit_Framework_TestCase
     $json11 = (new Individual($ga, '11'))->convertToJSON();
 
     // Assert
-    $this->assertEquals('{"h1":"class1"}', $json00);
-    $this->assertEquals('{"h1":"class2"}', $json01);
-    $this->assertEquals('{"h1":""}', $json10);
-    $this->assertEquals('{"h1":""}', $json11);
+    $this->assertEquals('{"generation":0,"genome":"00","classes":{"h1":"class1"}}', $json00);
+    $this->assertEquals('{"generation":0,"genome":"01","classes":{"h1":"class2"}}', $json01);
+    $this->assertEquals('{"generation":0,"genome":"10","classes":{"h1":""}}', $json10);
+    $this->assertEquals('{"generation":0,"genome":"11","classes":{"h1":""}}', $json11);
   }
 
   public function testConvertToJSON_oneElementWithThreeClasses()
   {
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
+    $ga->generation = 0;
     $ga->individualsProperties = json_decode('{"h1":["class1","class2","class3"]}');
 
     // Act
@@ -81,16 +84,17 @@ class IndividualTest extends MyUnit_Framework_TestCase
     $json11 = (new Individual($ga, '11'))->convertToJSON();
 
     // Assert
-    $this->assertEquals('{"h1":"class1"}', $json00);
-    $this->assertEquals('{"h1":"class2"}', $json01);
-    $this->assertEquals('{"h1":"class3"}', $json10);
-    $this->assertEquals('{"h1":""}', $json11);
+    $this->assertEquals('{"generation":0,"genome":"00","classes":{"h1":"class1"}}', $json00);
+    $this->assertEquals('{"generation":0,"genome":"01","classes":{"h1":"class2"}}', $json01);
+    $this->assertEquals('{"generation":0,"genome":"10","classes":{"h1":"class3"}}', $json10);
+    $this->assertEquals('{"generation":0,"genome":"11","classes":{"h1":""}}', $json11);
   }
 
   public function testSave_fileNameMustContainsGenome()
   {
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
+    $ga->generation = 0;
     $ga->individualsProperties = json_decode('{"h1":["class1"]}');
     $dir = self::$tempDir;
 
@@ -106,6 +110,7 @@ class IndividualTest extends MyUnit_Framework_TestCase
   {
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
+    $ga->generation = 0;
     $ga->individualsProperties = json_decode('{"h1":["class1"]}');
     $dir = self::$tempDir;
 
@@ -113,7 +118,7 @@ class IndividualTest extends MyUnit_Framework_TestCase
     (new Individual($ga, '00'))->save($dir);
 
     // Assert
-    $this->assertEquals('__AppConfig={"h1":"class1"}', file_get_contents($dir . '00.json'));
+    $this->assertEquals('__AppConfig={"generation":0,"genome":"00","classes":{"h1":"class1"}}', file_get_contents($dir . '00.json'));
   }
 }
 ?>
