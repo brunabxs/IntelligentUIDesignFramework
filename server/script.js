@@ -18,6 +18,34 @@
   s.parentNode.insertBefore(g,s);
 })();
 
-window.onload = function() {
-  // TODO load classes
+window.onload = function()
+{
+  if (__AppConfig)
+  {
+    for ( var element in __AppConfig )
+    {
+      // find all elements
+      var elements;
+      if ( element.startsWith('.') )
+      {
+        elements = document.getElementsByClassName(element.replace('\.', ''));
+      }
+      else if ( element.startsWith('#') )
+      {
+        elements = [document.getElementById(element.replace('#', ''))];
+      }
+      else
+      {
+        elements = document.getElementsByTagName(element);
+      }
+
+      // for each element, append class
+      for ( var i = 0; i < elements.length; i++ )
+      {
+        var classAttr = elements[i].getAttribute('class');
+        classAttr = classAttr ? classAttr : '';
+        elements[i].setAttribute('class', classAttr + __AppConfig[element])
+      }
+    }
+  }
 }
