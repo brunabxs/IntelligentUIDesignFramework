@@ -38,5 +38,17 @@ class PiwikScore
     }
     return '';
   }
+
+  public static function getScores($generation, $genomes, $methods, $startDate, $endDate, $siteId, $token)
+  {
+    $scores = array();
+    foreach ($genomes as $genome)
+    {
+      $url = self::getURL($generation, $genome, $methods, $startDate, $endDate, $siteId, $token);
+      $fetched = file_get_contents($url);
+      $scores[$genome] = unserialize($fetched);
+    }
+    return $scores;
+  }
 }
 ?>
