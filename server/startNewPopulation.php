@@ -1,12 +1,10 @@
 <?php
-function autoload($class)
+foreach (glob(dirname(__FILE__) . "/src/*.php") as $filename)
 {
-  include 'src/' . $class . '.php';
+  include $filename;
 }
 
-spl_autoload_register('autoload');
-
-$dir = './resources/';
+$dir = dirname(__FILE__) . '/resources/';
 
 $currentGeneration = GeneticAlgorithm::getLastGeneration($dir);
 
