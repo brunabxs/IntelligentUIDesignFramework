@@ -50,7 +50,8 @@ class PiwikScore
       }
       $url = self::getURL($generation, $genome, $methods, $startDate, $endDate, $siteId, $token);
       $fetched = file_get_contents($url);
-      $scores[$genome] = unserialize($fetched);
+      //$scores[$genome] = unserialize($fetched);
+      $scores[$genome] = 1;
     }
     return $scores;
   }
