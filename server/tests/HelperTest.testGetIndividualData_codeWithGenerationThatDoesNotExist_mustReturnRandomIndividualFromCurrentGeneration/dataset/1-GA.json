@@ -1,0 +1,15 @@
+{
+    "individualsProperties": "{\"h1\":[\"class1\",\"class2\"],\"h2\":[\"class1\",\"class2\"]}",
+    "generation": 1,
+    "populationSize": 4,
+    "genomeSize": 4,
+    "selectionMethod": "SelectionMethod::roulette",
+    "crossoverMethod": "CrossoverMethod::simple",
+    "mutationMethod": "MutationMethod::simple",
+    "individuals": [
+        "0000",
+        "1111",
+        "0010",
+        "0001"
+    ]
+}
