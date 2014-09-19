@@ -51,11 +51,14 @@ class GeneticAlgorithm
         if (!in_array($file, array('.', '..')) && !is_dir($dir . $file))
         {
           $individual = split('-', $file);
-          $generation = $individual[0];
-          $genome = split('.', $individual[2])[0];
-          if ($generation == $this->generation)
+          if (count($individual) == 3)
           {
-            $this->population[] = new Individual($this, $genome);
+            $generation = $individual[0];
+            $genome = split('\.', $individual[2])[0];
+            if ($generation == $this->generation)
+            {
+              $this->population[] = new Individual($this, $genome);
+            }
           }
         }
       }
