@@ -44,6 +44,10 @@ class PiwikScore
     $scores = array();
     foreach ($genomes as $genome)
     {
+      if (isset($scores[$genome]))
+      {
+        continue;
+      }
       $url = self::getURL($generation, $genome, $methods, $startDate, $endDate, $siteId, $token);
       $fetched = file_get_contents($url);
       $scores[$genome] = unserialize($fetched);
