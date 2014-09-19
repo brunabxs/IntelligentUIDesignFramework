@@ -2,9 +2,16 @@
 (function() {
   var url = (("https:" == document.location.protocol) ? "https" : "http") + "://localhost/";
 
+  var myCode;
+  var cookie = document.cookie.split(';')
+  if ( cookie.length > 0 && cookie[0].indexOf('myCode') != -1)
+  {
+    myCode = cookie[0].substring('myCode'.length, cookie[0].length);
+  }
+
   // metrics and styles
   var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
-  g.defer=true; g.async=false; g.src=url+'script.php';
+  g.defer=true; g.async=false; g.src=url+'script.php' + (myCode ? '?code='+myCode : '');
   s.parentNode.insertBefore(g,s);
 
   _paq.push(['setTrackerUrl', url + 'piwik/piwik.php']);
@@ -18,7 +25,20 @@
 
 window.onload = function()
 {
-  _paq.push(['setCustomVariable', 1, 'GA', __AppConfig.generation + '.' + __AppConfig.genome, 'page']);
+  var myCode;
+  var cookie = document.cookie.split(';')
+  if ( cookie.length > 0 && cookie[0].indexOf('myCode') != -1)
+  {
+    myCode = cookie[0].substring('myCode'.length, cookie[0].length);
+  }
+
+  if (!myCode)
+  {
+    myCode = __AppConfig.generation + '.' + __AppConfig.genome;
+    document.cookie='myCode=' + myCode + ';expires=' + (new Date((new Date()).getTime() + (1*24*60*60*1000)).toUTCString()) + ';path=/';
+  }
+
+  _paq.push(['setCustomVariable', 1, 'GA', myCode, 'page']);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
 
