@@ -5,6 +5,7 @@
   <testsuites>
     <testsuite name="PHPGeneticAlgorithmTestSuite">
       <directory>tests/IndividualDAOTest.php</directory>
+      <directory>tests/PopulationDAOTest.php</directory>
     </testsuite>
   </testsuites>
 </phpunit>
