@@ -1,7 +1,7 @@
 <?php
 class GeneticAlgorithm
 {
-  public function __construct($json=null, $dir='./')
+  public function __construct($json=null)
   {
     $this->json = $json;
     $this->individualsProperties = json_decode($this->json->individualsProperties);
@@ -12,11 +12,6 @@ class GeneticAlgorithm
     $this->crossoverMethod = (isset($this->json->crossoverMethod) ? $this->json->crossoverMethod : 'CrossoverMethod::simple');
     $this->mutationMethod = (isset($this->json->mutationMethod) ? $this->json->mutationMethod : 'MutationMethod::simple');
     $this->population = null;
-
-    if ($this->generation == 0)
-    {
-      $this->createIndividuals($dir);
-    }
   }
 
   public static function calculateGenomeSize($properties)
@@ -31,8 +26,13 @@ class GeneticAlgorithm
     return $genomeSize;
   }
 
-  private function createIndividuals($dir)
+  public function createIndividuals($dir)
   {
+    if ($this->generation != 0)
+    {
+      return;
+    }
+    
     $this->population = array();
     for ($i = 0; $i < $this->populationSize; $i++)
     {

@@ -29,23 +29,6 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertEquals(null, $ga->population);
   }
 
-  public function testConstructor_generation0TriggersIndividualsCreation()
-  {
-    // Arrange
-    $json = array('individualsProperties' => '{"h1":["class1"]}',
-                  'generation' => 0,
-                  'populationSize' => 4
-                 );
-    $json = json_decode(json_encode($json));
-
-    // Act
-    $ga = new GeneticAlgorithm($json, self::$tempDir);
-
-    // Assert
-    $this->assertEquals(4, count($ga->population));
-    $this->assertEquals(4, self::countFiles(self::$tempDir));
-  }
-  
   public function testConstructor_emptyGenomeSize_mustCalculateGenomeSize()
   {
     // Arrange
@@ -86,6 +69,42 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
     $this->assertEquals(4, $genomeSize);
   }
 
+  public function testCreateIndividuals_generation0_mustCreateIndividuals()
+  {
+    // Arrange
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 0,
+                  'populationSize' => 4
+                 );
+    $json = json_decode(json_encode($json));
+    $ga = new GeneticAlgorithm($json);
+
+    // Act
+    $ga->createIndividuals(self::$tempDir);
+
+    // Assert
+    $this->assertEquals(4, count($ga->population));
+    $this->assertEquals(4, self::countFiles(self::$tempDir));
+  }
+
+  public function testCreateIndividuals_generationDifferentFrom0_mustNotCreateIndividuals()
+  {
+    // Arrange
+    $json = array('individualsProperties' => '{"h1":["class1"]}',
+                  'generation' => 1,
+                  'populationSize' => 4
+                 );
+    $json = json_decode(json_encode($json));
+    $ga = new GeneticAlgorithm($json);
+
+    // Act
+    $ga->createIndividuals(self::$tempDir);
+
+    // Assert
+    $this->assertEquals(null, $ga->population);
+    $this->assertEquals(0, self::countFiles(self::$tempDir));
+  }
+
   public function testLoadIndividuals_generation1WithTwoIndividuals()
   {
     // Arrange
@@ -124,7 +143,7 @@ class GeneticAlgorithmTest extends MyUnit_Framework_TestCase
                   'populationSize' => 2
                  );
     $json = json_decode(json_encode($json));
-    $ga = new GeneticAlgorithm($json, self::$tempDir);
+    $ga = new GeneticAlgorithm($json);
     $ga->population = array(new Individual($ga, '01', 0.6), new Individual($ga, '10', 0.4));
 
     // Act
