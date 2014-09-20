@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
   <head>
     <title>Server App</title>
@@ -9,31 +9,36 @@
   <body>
     <div id="appWrapper">
       <nav id="appMenu">
-        <a id="appMenuSelected" href="#">Your Information</a>
-        <a href="#">Configure App</a>
-        <a href="#">Finish</a>
+        <a id="appMenuSelected" href="#">Informações Gerais</a>
+        <a href="#">Finalização</a>
       </nav>
 
       <section id="appContent">
         <header>
-          <h1 class="appContentTitle">Your info!</h1>
-          <p class="appContentInfo">Content</p>
+          <h1 class="appContentTitle">Indique suas informações para configuração do aplicativo</h1>
+          <p class="appContentInfo">Preencha os campos obrigatórios (*) para que seus dados possam ser enviados para nossos servidores.</p>
         </header>
 
-        <form class="appContentData">
-          <label for="app1" class="required">Input 1</label>
-          <input id="app1" name="" type="text" title="" required autofocus />
+        <form name="form_generalInformation" method="post" action="index.php" class="appContentData">
+          <label>Ferramenta de Web Analytics utilizada</label>
+          <span id="txt_analyticsTool">Piwik</span>
 
-          <label for="app2">Input 2</label>
-          <input id="app2" name="" type="text" title="" />
+          <label for="token" class="required">Token de acesso da Piwik</label>
+          <input id="txt_token" name="txt_token" type="text" title="" required autofocus />
 
-          <label>Input 2</label>
-          <span id="app2b">LALALA</span>
+          <label for="versions" class="required">Número de versões</label>
+          <input id="txt_versions" name="txt_versions" type="number" min="1" step="1" title="" required />
 
-          <label for="app3">Input 3</label>
-          <textarea id="app3" name="" title=""></textarea>
+          <label>Número máximo de experimentos</label>
+          <span id="txt_exp">-</span>
 
-          <input id="button" name="" type="submit" value="Send" class="appContentButton" />
+          <label>Tempo máximo de execução de um experimento (dias)</label>
+          <span id="txt_time">-</span>
+
+          <label for="app3" class="required">Elementos e classes</label>
+          <textarea id="txt_prop" name="txt_prop" title="" required></textarea>
+
+          <input id="btn_submit" name="btn_submit" type="submit" value="Send" class="appContentButton" />
         </form>
 
         <footer>Designed by Bruna Xavier</footer>
