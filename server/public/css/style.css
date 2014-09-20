@@ -143,6 +143,11 @@ section#appContent .appContentData textarea {
   min-height: 200px;
 }
 
+section#appContent .appContentData pre {
+  padding: 20px 25px;
+  border: 1px solid #999;
+}
+
 section#appContent .appContentButton {
   padding: 11px 32px;
   border: solid 1px #004F72;
