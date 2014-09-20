@@ -4,6 +4,7 @@ class GeneticAlgorithmController
   public function __construct($dir)
   {
     $this->gaDAO = new GeneticAlgorithmDAO();
+    $this->populationDAO = new PopulationDAO();
     $this->dir = $dir;
     $this->ga = $this->gaDAO->load($this->dir);
   }
@@ -33,8 +34,34 @@ class GeneticAlgorithmController
       {
         $individual->score = $scores[$individual->genome];
       }
+
+      $this->ga->population = $this->createNewGeneration($scores);
     }
     $this->gaDAO->save($this->dir, $this->ga);
+  }
+
+  private function createNewGeneration($scores)
+  {
+    // select
+    $selectedIndividuals = call_user_func('MethodsForSelection::' . $this->ga->methodForSelection, $this->ga->population->individuals);
+
+    // crossover
+    $newIndividuals = array();
+    for ($i = 0; $i < count($selectedIndividuals); $i += 2)
+    {
+      $genome1 = $selectedIndividuals[$i]->genome;
+      $genome2 = $selectedIndividuals[$i+1]->genome;
+      $offsprings = call_user_func('MethodsForCrossover::' . $this->ga->methodForCrossover, $genome1, $genome2);
+      $newIndividuals = array_merge($newIndividuals, $offsprings);
+    }
+
+    // mutation
+    foreach ($newIndividuals as &$individualGenome)
+    {
+      $individualGenome = call_user_func('MethodsForMutation::' . $this->ga->methodForMutation, $individualGenome);
+    }
+
+    return $this->populationDAO->create($this->ga, $this->ga->population->generation + 1, $newIndividuals);
   }
 }
 ?>
