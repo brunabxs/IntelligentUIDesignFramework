@@ -39,6 +39,22 @@ class PopulationDAO
     file_put_contents(self::getFile($dir, $population->generation), $json, LOCK_EX);
   }
 
+  public static function getLastGeneration($dir)
+  {
+    $lastGeneration = null;
+    if ($handle = opendir($dir))
+    {
+      while (($file = readdir($handle)) !== false)
+      {
+        if (!in_array($file, array('.', '..')) && !is_dir($dir . $file) && strpos($file, '-GA.json'))
+        {
+          $lastGeneration = max(explode('-', $file)[0], $lastGeneration);
+        }
+      }
+    }
+    return $lastGeneration;
+  }
+
   public static function getFile($dir, $generation)
   {
     return $dir . $generation . '-GA.json';

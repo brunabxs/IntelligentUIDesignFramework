@@ -130,6 +130,21 @@ class PopulationDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals('{"generation":1,"individuals":["011","000"]}', file_get_contents($dir . '1-GA.json'));
   }
 
+  public function testGetLastGeneration_onePopulation()
+  {
+    $this->assertEquals(0, PopulationDAO::getLastGeneration(self::$datasetDir));
+  }
+
+  public function testGetLastGeneration_twoConsecutivesPopulations()
+  {
+    $this->assertEquals(2, PopulationDAO::getLastGeneration(self::$datasetDir));
+  }
+
+  public function testGetLastGeneration_twoNonConsecutivesPopulations()
+  {
+    $this->assertEquals(5, PopulationDAO::getLastGeneration(self::$datasetDir));
+  }
+
   protected function mockPopulationDAO()
   {
     $dao = $this->getMockBuilder('PopulationDAO')
