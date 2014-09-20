@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿<?php
+  if ($_SERVER['REQUEST_METHOD'] == 'POST')
+  {
+    if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop']))
+    {
+      // salvar informações
+
+      header('location:finish.php');
+    }
+    else
+    {
+      header('location:error.php');
+    }
+  }
+?>
+
+<!DOCTYPE html>
 <html>
   <head>
     <title>Server App</title>
@@ -9,8 +25,9 @@
   <body>
     <div id="appWrapper">
       <nav id="appMenu">
-        <a id="appMenuSelected" href="#">Informações Gerais</a>
-        <a href="#">Finalização</a>
+        <span>Cadastro</span>
+        <span id="appMenuSelected">Informações Gerais</span>
+        <span>Finalização</span>
       </nav>
 
       <section id="appContent">
@@ -19,7 +36,7 @@
           <p class="appContentInfo">Preencha os campos obrigatórios (*) para que seus dados possam ser enviados para nossos servidores.</p>
         </header>
 
-        <form name="form_generalInformation" method="post" action="index.php" class="appContentData">
+        <form name="form_generalInformation" method="post" action="info.php" class="appContentData">
           <label>Ferramenta de Web Analytics utilizada</label>
           <span id="txt_analyticsTool">Piwik</span>
 

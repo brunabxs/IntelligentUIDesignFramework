@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿<?php
+  $txt_script = 'TESTE DE SCRIPT';
+?>
+
+<!DOCTYPE html>
 <html>
   <head>
     <title>Server App</title>
@@ -9,8 +13,9 @@
   <body>
     <div id="appWrapper">
       <nav id="appMenu">
-        <a href="#">Informações Gerais</a>
-        <a id="appMenuSelected" href="#">Finalização</a>
+        <span>Cadastro</span>
+        <span>Informações Gerais</span>
+        <span id="appMenuSelected">Finalização</span>
       </nav>
 
       <section id="appContent">
@@ -21,8 +26,7 @@
 
         <div class="appContentData">
           <label>Copie e cole no cabeçalho das páginas de sua aplicação</label>
-          <pre>
-JS aqui</pre>
+          <pre><?php echo $txt_script; ?></pre>
         </div>
 
         <footer>Designed by Bruna Xavier</footer>
@@ -30,3 +34,4 @@ JS aqui</pre>
     </div>
   </body>
 </html>
+
