@@ -15,7 +15,7 @@ class GeneticAlgorithmDAO
     return $ga;
   }
 
-  public function load($dir)
+  public function load($dir, $generation=null)
   {
     $json = file_get_contents(self::getFile($dir));
     $json = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $json);
@@ -29,7 +29,14 @@ class GeneticAlgorithmDAO
     $mutationMethod = $json->mutationMethod;
 
     $ga = new GeneticAlgorithm($populationSize, $genomeSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod);
-    $ga->population = $this->populationDAO->loadLastGeneration($dir, $ga);
+
+    $lastGeneration = PopulationDAO::getLastGeneration($dir);
+    if (!isset($generation) || $generation > $lastGeneration)
+    {
+      $generation = $lastGeneration;
+    }
+    $ga->population = $this->populationDAO->load($dir, $ga, $generation);
+
     return $ga;
   }
 

@@ -88,17 +88,61 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals($dir . 'properties.json', $fileName);
   }
 
-  public function testLoad()
+  public function testLoad_generation1_mustLoadGeneration1()
   {
     // Arrange
     $gaDAO = $this->mockGeneticAlgorithmDAO();
     $gaDAO->populationDAO = $this->mockPopulationDAO();
     $gaDAO->populationDAO->expects($this->any())
-                         ->method('loadLastGeneration')
+                         ->method('load')
+                         ->will($this->returnValue('POPULATION_INSTANCE'));
+
+    // Act
+    $ga = $gaDAO->load(self::$datasetDir, 1);
+
+    // Assert
+    $this->assertEquals(2, $ga->genomeSize);
+    $this->assertEquals(3, $ga->populationSize);
+    $this->assertEquals(array("h1"=>array("class1", "class2")), $ga->properties);
+    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
+    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
+    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
+    $this->assertEquals('POPULATION_INSTANCE', $ga->population);
+  }
+
+  public function testLoad_noGeneration_mustLoadLastGeneration()
+  {
+    // Arrange
+    $gaDAO = $this->mockGeneticAlgorithmDAO();
+    $gaDAO->populationDAO = $this->mockPopulationDAO();
+    $gaDAO->populationDAO->expects($this->any())
+                         ->method('load')
                          ->will($this->returnValue('POPULATION_INSTANCE'));
 
     // Act
     $ga = $gaDAO->load(self::$datasetDir);
+
+    // Assert
+    $this->assertEquals(2, $ga->genomeSize);
+    $this->assertEquals(3, $ga->populationSize);
+    $this->assertEquals(array("h1"=>array("class1", "class2")), $ga->properties);
+    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
+    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
+    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
+    $this->assertEquals('POPULATION_INSTANCE', $ga->population);
+  }
+
+  public function testLoad_generation100_mustLoadLastGeneration()
+  {
+    // Arrange
+    $gaDAO = $this->mockGeneticAlgorithmDAO();
+    $gaDAO->populationDAO = $this->mockPopulationDAO();
+    $gaDAO->populationDAO->expects($this->any())
+                         ->method('load')
+                         ->will($this->returnValue('POPULATION_INSTANCE'));
+
+    // Act
+    $ga = $gaDAO->load(self::$datasetDir, 100);
 
     // Assert
     $this->assertEquals(2, $ga->genomeSize);
