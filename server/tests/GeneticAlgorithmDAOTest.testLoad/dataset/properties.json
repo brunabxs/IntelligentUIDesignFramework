@@ -1,0 +1,12 @@
+﻿{
+    "properties": "{
+        \"h1\": [
+            \"class1\",
+            \"class2\"
+        ]
+    }",
+    "populationSize": 3,
+    "selectionMethod": "SelectionMethod::roulette",
+    "crossoverMethod": "CrossoverMethod::simple",
+    "mutationMethod": "MutationMethod::simple"
+}

@@ -6,18 +6,41 @@ class GeneticAlgorithmDAO
     $this->populationDAO = new PopulationDAO();
   }
 
-  public function create($populationSize, $individualProperties, $selectionMethod, $crossoverMethod, $mutationMethod)
+  public function create($populationSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod)
   {
-    $genomeSize = self::generateGenomeSize($individualProperties);
+    $genomeSize = self::generateGenomeSize($properties);
 
-    $ga = new GeneticAlgorithm($populationSize, $genomeSize, $individualProperties, $selectionMethod, $crossoverMethod, $mutationMethod);
+    $ga = new GeneticAlgorithm($populationSize, $genomeSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod);
     $ga->population = $this->populationDAO->create($ga, 0);
+    return $ga;
+  }
+
+  public function load($dir)
+  {
+    $json = file_get_contents(self::getFile($dir));
+    $json = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $json);
+    $json = json_decode($json);
+
+    $populationSize = $json->populationSize;
+    $properties = json_decode($json->properties, true);
+    $genomeSize = self::generateGenomeSize($properties);
+    $selectionMethod = $json->selectionMethod;
+    $crossoverMethod = $json->crossoverMethod;
+    $mutationMethod = $json->mutationMethod;
+
+    $ga = new GeneticAlgorithm($populationSize, $genomeSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod);
+    $ga->population = $this->populationDAO->loadLastGeneration($dir, $ga);
     return $ga;
   }
 
   public function save($dir, $ga)
   {
     $ga->populationDAO->save($dir, $ga->population);
+  }
+
+  public static function getFile($dir)
+  {
+    return $dir . 'properties.json';
   }
 
   public static function generateGenomeSize($properties)

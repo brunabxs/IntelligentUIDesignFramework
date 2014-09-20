@@ -76,6 +76,40 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals('POPULATION_INSTANCE', $ga->population);
   }
 
+  public function testGetFile()
+  {
+    // Arrange
+    $dir = self::$tempDir;
+
+    // Act
+    $fileName = GeneticAlgorithmDAO::getFile($dir);
+
+    // Assert
+    $this->assertEquals($dir . 'properties.json', $fileName);
+  }
+
+  public function testLoad()
+  {
+    // Arrange
+    $gaDAO = $this->mockGeneticAlgorithmDAO();
+    $gaDAO->populationDAO = $this->mockPopulationDAO();
+    $gaDAO->populationDAO->expects($this->any())
+                         ->method('loadLastGeneration')
+                         ->will($this->returnValue('POPULATION_INSTANCE'));
+
+    // Act
+    $ga = $gaDAO->load(self::$datasetDir);
+
+    // Assert
+    $this->assertEquals(2, $ga->genomeSize);
+    $this->assertEquals(3, $ga->populationSize);
+    $this->assertEquals(array("h1"=>array("class1", "class2")), $ga->properties);
+    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
+    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
+    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
+    $this->assertEquals('POPULATION_INSTANCE', $ga->population);
+  }
+
   protected function mockGeneticAlgorithmDAO()
   {
     $dao = $this->getMockBuilder('GeneticAlgorithmDAO')
