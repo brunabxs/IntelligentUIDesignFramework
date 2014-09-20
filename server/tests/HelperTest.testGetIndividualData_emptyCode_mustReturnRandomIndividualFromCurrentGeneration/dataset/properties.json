@@ -7,7 +7,7 @@
         ]
     }",
     "populationSize": 2,
-    "selectionMethod": "SelectionMethod::roulette",
-    "crossoverMethod": "CrossoverMethod::simple",
-    "mutationMethod": "MutationMethod::simple"
+    "methodForSelection": "roulette",
+    "methodForCrossover": "simple",
+    "methodForMutation": "simple"
 }

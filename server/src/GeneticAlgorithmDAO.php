@@ -15,11 +15,11 @@ class GeneticAlgorithmDAO
     $populationSize = $json->populationSize;
     $properties = json_decode($json->properties, true);
     $genomeSize = self::generateGenomeSize($properties);
-    $selectionMethod = $json->selectionMethod;
-    $crossoverMethod = $json->crossoverMethod;
-    $mutationMethod = $json->mutationMethod;
+    $methodForSelection = $json->methodForSelection;
+    $methodForCrossover = $json->methodForCrossover;
+    $methodForMutation = $json->methodForMutation;
 
-    $ga = new GeneticAlgorithm($populationSize, $genomeSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod);
+    $ga = new GeneticAlgorithm($populationSize, $genomeSize, $properties, $methodForSelection, $methodForCrossover, $methodForMutation);
 
     $lastGeneration = PopulationDAO::getLastGeneration($dir);
     if (!isset($lastGeneration))

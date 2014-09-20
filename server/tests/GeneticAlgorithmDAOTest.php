@@ -78,9 +78,9 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals(2, $ga->genomeSize);
     $this->assertEquals(3, $ga->populationSize);
     $this->assertEquals(array("h1"=>array("class1", "class2")), $ga->properties);
-    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
-    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
-    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
+    $this->assertEquals('roulette', $ga->methodForSelection);
+    $this->assertEquals('simple', $ga->methodForCrossover);
+    $this->assertEquals('simple', $ga->methodForMutation);
     $this->assertEquals('POPULATION_INSTANCE', $ga->population);
   }
 
@@ -100,9 +100,9 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals(2, $ga->genomeSize);
     $this->assertEquals(3, $ga->populationSize);
     $this->assertEquals(array("h1"=>array("class1", "class2")), $ga->properties);
-    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
-    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
-    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
+    $this->assertEquals('roulette', $ga->methodForSelection);
+    $this->assertEquals('simple', $ga->methodForCrossover);
+    $this->assertEquals('simple', $ga->methodForMutation);
     $this->assertEquals('POPULATION_INSTANCE', $ga->population);
   }
 
@@ -122,9 +122,9 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals(2, $ga->genomeSize);
     $this->assertEquals(3, $ga->populationSize);
     $this->assertEquals(array("h1"=>array("class1", "class2")), $ga->properties);
-    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
-    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
-    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
+    $this->assertEquals('roulette', $ga->methodForSelection);
+    $this->assertEquals('simple', $ga->methodForCrossover);
+    $this->assertEquals('simple', $ga->methodForMutation);
     $this->assertEquals('POPULATION_INSTANCE', $ga->population);
   }
 
@@ -144,9 +144,9 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals(2, $ga->genomeSize);
     $this->assertEquals(3, $ga->populationSize);
     $this->assertEquals(array("h1"=>array("class1", "class2")), $ga->properties);
-    $this->assertEquals('SelectionMethod::roulette', $ga->selectionMethod);
-    $this->assertEquals('CrossoverMethod::simple', $ga->crossoverMethod);
-    $this->assertEquals('MutationMethod::simple', $ga->mutationMethod);
+    $this->assertEquals('roulette', $ga->methodForSelection);
+    $this->assertEquals('simple', $ga->methodForCrossover);
+    $this->assertEquals('simple', $ga->methodForMutation);
     $this->assertEquals('POPULATION_INSTANCE', $ga->population);
   }
 

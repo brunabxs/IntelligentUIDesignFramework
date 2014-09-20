@@ -11,7 +11,7 @@
     }",
     "populationSize": 4,
     "populationSize": 3,
-    "selectionMethod": "roulette",
-    "crossoverMethod": "simple",
-    "mutationMethod": "simple"
+    "methodForSelection": "roulette",
+    "methodForCrossover": "simple",
+    "methodForMutation": "simple"
 }
