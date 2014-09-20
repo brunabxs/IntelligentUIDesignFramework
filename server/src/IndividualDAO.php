@@ -31,6 +31,11 @@ class IndividualDAO
     file_put_contents(self::getFile($dir, $generation, $index, $individual->genome), $json, LOCK_EX);
   }
 
+  public function getFileContent($dir, $generation, $index, $genome)
+  {
+    return file_get_contents(self::getFile($dir, $generation, $index, $genome));
+  }
+
   public static function getFile($dir, $generation, $index, $genome)
   {
     return $dir . $generation . '-' . $index . '-' . $genome . '.json';
