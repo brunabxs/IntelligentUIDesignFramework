@@ -1,5 +1,5 @@
 <?php
-class MutationMethod
+class MethodsForMutation
 {
   public static $prob = 0.01;
 
@@ -13,22 +13,21 @@ class MutationMethod
     return rand($start, $end - 1);
   }
 
-  public static function simple($ga, $individual, $point=null)
+  public static function simple($genome, $point=null)
   {
     if (self::rand() > self::$prob)
     {
-      return new Individual($ga, $individual->genome);
+      return $genome;
     }
 
     if (!isset($point))
     {
-      $point = self::randPoint(0, $ga->genomeSize);
+      $point = self::randPoint(0, strlen($genome));
     }
 
-    $genome = $individual->genome;
     $genome[$point] = $genome[$point] == '1' ? '0' : '1';
 
-    return new Individual($ga, $genome);
+    return $genome;
   }
 }
 ?>

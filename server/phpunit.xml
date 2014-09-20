@@ -9,6 +9,7 @@
       <directory>tests/GeneticAlgorithmDAOTest.php</directory>
       <directory>tests/MethodsForCrossoverTest.php</directory>
       <directory>tests/MethodsForSelectionTest.php</directory>
+      <directory>tests/MethodsForMutationTest.php</directory>
     </testsuite>
   </testsuites>
 </phpunit>
