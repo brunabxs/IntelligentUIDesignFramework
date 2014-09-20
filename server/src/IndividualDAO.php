@@ -13,6 +13,18 @@ class IndividualDAO
     return new Individual($genome, $properties, $score);
   }
 
+  public function load($dir, $ga, $generation, $genomes)
+  {
+    $individuals = array();
+    foreach ($genomes as $index => $genome)
+    {
+      $properties = self::generateProperties($ga, $genome);
+      $individuals[] = new Individual($genome, $properties, null);
+    }
+
+    return $individuals;
+  }
+
   public function save($dir, $generation, $index, $individual)
   {
     $json = '__AppConfig=' . self::convertToJSON($generation, $individual);
@@ -46,7 +58,7 @@ class IndividualDAO
   {
     $properties = array();
     $start = 0;
-    foreach ($ga->individualsProperties as $element => $classes)
+    foreach ($ga->properties as $element => $classes)
     {
       $numClasses = count($classes);
       $numBits = strlen(decbin(ceil(log($numClasses+1, 2))));

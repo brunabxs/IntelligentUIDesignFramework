@@ -7,7 +7,7 @@ class IndividualDAOTest extends MyUnit_Framework_TestCase
     // Arrange
     $ga = $this->mockGeneticAlgorithm();
     $ga->genomeSize = 2;
-    $ga->individualsProperties = json_decode('{"h1":["class1","class2"]}');
+    $ga->properties = json_decode('{"h1":["class1","class2"]}');
 
     $individualDAO = $this->mockIndividualDAO();
 
@@ -24,7 +24,7 @@ class IndividualDAOTest extends MyUnit_Framework_TestCase
     $ga = $this->mockGeneticAlgorithm();
     $ga->genomeSize = 2;
     $genome = '11';
-    $ga->individualsProperties = json_decode('{"h1":["class1","class2"]}');
+    $ga->properties = json_decode('{"h1":["class1","class2"]}');
 
     $individualDAO = $this->mockIndividualDAO();
 
@@ -73,6 +73,47 @@ class IndividualDAOTest extends MyUnit_Framework_TestCase
 
     // Assert
     $this->assertEquals($dir . '0-1-0101.json', $fileName);
+  }
+
+  public function testLoad_fourFiles_mustLoadFourIndividuals()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->properties = array("h1"=>array("class1"), "h2"=>array("class2"));
+    $generation = 1;
+    $genomes = array("10", "11", "00", "10");
+
+    $individualDAO = $this->mockIndividualDAO();
+
+    // Act
+    $individuals = $individualDAO->load(self::$datasetDir, $ga, $generation, $genomes);
+
+    // Assert
+    $this->assertEquals(4, count($individuals));
+    $this->assertEquals('10', $individuals[0]->genome);
+    $this->assertEquals('11', $individuals[1]->genome);
+    $this->assertEquals('00', $individuals[2]->genome);
+    $this->assertEquals('10', $individuals[3]->genome);
+  }
+
+  public function testLoad_oneFileWithOneIndividual_mustLoadOneIndividual()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->properties = array("h1"=>array("class1"), "h2"=>array("class2"));
+    $generation = 5;
+    $genomes = array("10");
+
+    $individualDAO = $this->mockIndividualDAO();
+
+    // Act
+    $individuals = $individualDAO->load(self::$datasetDir, $ga, $generation, $genomes);
+
+    // Assert
+    $this->assertEquals(1, count($individuals));
+    $this->assertEquals('10', $individuals[0]->genome);
+    $this->assertEquals('{"h1":"","h2":"class2"}', $individuals[0]->properties);
+    $this->assertNull($individuals[0]->score);
   }
 
   public function testSave_fileNameMustContainsGenerationIndexAndGenome()
