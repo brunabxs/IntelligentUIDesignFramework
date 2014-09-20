@@ -7,6 +7,7 @@
       <directory>tests/IndividualDAOTest.php</directory>
       <directory>tests/PopulationDAOTest.php</directory>
       <directory>tests/GeneticAlgorithmDAOTest.php</directory>
+      <directory>tests/MethodsForCrossoverTest.php</directory>
     </testsuite>
   </testsuites>
 </phpunit>
