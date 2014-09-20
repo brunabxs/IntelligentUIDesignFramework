@@ -17,6 +17,17 @@ class PopulationDAO
     return new Population($generation, $individuals);
   }
 
+  public function load($dir, $ga, $generation)
+  {
+    $json = file_get_contents(self::getFile($dir, $generation));
+    $json = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $json);
+    $json = json_decode($json);
+
+    $individuals = $this->individualDAO->load($dir, $ga, $generation, $json->individuals);
+
+    return new Population($generation, $individuals);
+  }
+
   public function save($dir, $population)
   {
     foreach ($population->individuals as $index => $individual)

@@ -76,6 +76,23 @@ class PopulationDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals($dir . '0-GA.json', $fileName);
   }
 
+  public function testLoad_fourIndividuals_mustLoadFourIndividuals()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->properties = array("h1"=>array("class1", "class2"));
+    $generation = 1;
+
+    $populationDAO = new PopulationDAO();
+
+    // Act
+    $population = $populationDAO->load(self::$datasetDir, $ga, $generation);
+
+    // Assert
+    $this->assertEquals(1, $population->generation);
+    $this->assertEquals(4, count($population->individuals));
+  }
+
   public function testSave_fileNameMustContainsGeneration()
   {
     // Arrange
