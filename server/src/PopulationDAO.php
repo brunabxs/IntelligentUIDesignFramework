@@ -28,6 +28,11 @@ class PopulationDAO
     return new Population($generation, $individuals);
   }
 
+  public function loadLastGeneration($dir, $ga)
+  {
+    return $this->load($dir, $ga, self::getLastGeneration($dir));
+  }
+
   public function save($dir, $population)
   {
     foreach ($population->individuals as $index => $individual)

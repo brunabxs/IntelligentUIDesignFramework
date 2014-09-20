@@ -68,7 +68,7 @@ class PopulationDAOTest extends MyUnit_Framework_TestCase
     // Arrange
     $dir = self::$tempDir;
     $generation = 0;
-    
+
     // Act
     $fileName = PopulationDAO::getFile($dir, $generation);
 
@@ -90,6 +90,22 @@ class PopulationDAOTest extends MyUnit_Framework_TestCase
 
     // Assert
     $this->assertEquals(1, $population->generation);
+    $this->assertEquals(4, count($population->individuals));
+  }
+
+  public function testLoadLastGeneration_fourIndividuals_mustLoadFourIndividuals()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->properties = array("h1"=>array("class1", "class2"));
+
+    $populationDAO = new PopulationDAO();
+
+    // Act
+    $population = $populationDAO->loadLastGeneration(self::$datasetDir, $ga);
+
+    // Assert
+    $this->assertEquals(2, $population->generation);
     $this->assertEquals(4, count($population->individuals));
   }
 
@@ -148,9 +164,9 @@ class PopulationDAOTest extends MyUnit_Framework_TestCase
   protected function mockPopulationDAO()
   {
     $dao = $this->getMockBuilder('PopulationDAO')
-               ->disableOriginalConstructor()
-               ->setMethods(NULL)
-               ->getMock();
+                ->disableOriginalConstructor()
+                ->setMethods(NULL)
+                ->getMock();
     return $dao;
   }
 
