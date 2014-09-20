@@ -3,10 +3,16 @@
   var url = (("https:" == document.location.protocol) ? "https" : "http") + "://localhost/";
 
   var myCode;
-  var cookie = document.cookie.split(';')
-  if ( cookie.length > 0 && cookie[0].indexOf('myCode') != -1)
-  {
-    myCode = cookie[0].substring('myCode'.length, cookie[0].length);
+  var cname = 'myCode';
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for ( var i = 0; i < ca.length; i++ ) {
+    var c = ca[i];
+    while ( c.charAt(0) == ' ' ) c = c.substring(1);
+    if ( c.indexOf(name) != -1 ) {
+      myCode = c.substring(name.length, c.length);
+      break;
+    }
   }
 
   // metrics and styles
@@ -26,10 +32,16 @@
 window.onload = function()
 {
   var myCode;
-  var cookie = document.cookie.split(';')
-  if ( cookie.length > 0 && cookie[0].indexOf('myCode') != -1)
-  {
-    myCode = cookie[0].substring('myCode'.length, cookie[0].length);
+  var cname = 'myCode';
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for ( var i = 0; i < ca.length; i++ ) {
+    var c = ca[i];
+    while ( c.charAt(0) == ' ' ) c = c.substring(1);
+    if ( c.indexOf(name) != -1 ) {
+      myCode = c.substring(name.length, c.length);
+      break;
+    }
   }
 
   if (!myCode)
@@ -44,7 +56,7 @@ window.onload = function()
 
   if ( __AppConfig )
   {
-    for ( var element in __AppConfig.classes )
+    for ( var element in __AppConfig.properties )
     {
       // find all elements
       var elements;
@@ -66,7 +78,7 @@ window.onload = function()
       {
         var classAttr = elements[i].getAttribute('class');
         classAttr = classAttr ? classAttr : '';
-        elements[i].setAttribute('class', classAttr + __AppConfig.classes[element])
+        elements[i].setAttribute('class', classAttr + __AppConfig.properties[element])
       }
     }
   }

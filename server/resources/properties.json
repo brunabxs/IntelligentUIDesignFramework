@@ -1,5 +1,5 @@
 ﻿{
-    "individualsProperties": "{
+    "properties": "{
         \"h1\": [
             \"class1\",
             \"class2\"
@@ -9,6 +9,9 @@
             \"class2\"
         ]
     }",
-    "generation": 0,
-    "populationSize": 4
+    "populationSize": 4,
+    "populationSize": 3,
+    "selectionMethod": "roulette",
+    "crossoverMethod": "simple",
+    "mutationMethod": "simple"
 }

@@ -6,29 +6,14 @@ foreach (glob(dirname(__FILE__) . "/src/*.php") as $filename)
 
 $dir = dirname(__FILE__) . '/resources/';
 
-$currentGeneration = GeneticAlgorithm::getLastGeneration($dir);
+$gaDAO = new GeneticAlgorithmDAO();
+$ga = $gaDAO->load($dir);
 
-if (!isset($currentGeneration))
+$lastGeneration = PopulationDAO::getLastGeneration($dir);
+if (isset($lastGeneration))
 {
-  $jsonString = file_get_contents($dir . 'properties.json');
-}
-else
-{
-  $jsonString = file_get_contents($dir . $currentGeneration . '-GA.json');
-}
-
-$jsonString = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $jsonString);
-$jsonString = trim($jsonString);
-$ga = new GeneticAlgorithm(json_decode($jsonString));
-
-if (!isset($currentGeneration))
-{
-  $ga->createIndividuals($dir);
-}
-else
-{
-  $generation = $currentGeneration;
-  $genomes = $ga->json->individuals;
+  $generation = $ga->population->generation;
+  $genomes = $ga->population->individuals;
   $methods = array(0 => array('name'=>'VisitFrequency.get'));
   $startDate = date('Y-m-d');
   $endDate = date('Y-m-d');
@@ -37,14 +22,10 @@ else
 
   $scores = PiwikScore::getScores($generation, $genomes, $methods, $startDate, $endDate, $siteId, $token);
 
-  $ga->loadIndividuals($dir);
-  foreach ($ga->population as $individual)
+  foreach ($ga->population->individuals as $individual)
   {
     $individual->score = $scores[$individual->genome];
   }
-
-  $ga->generateIndividuals($dir);
 }
-
-$ga->save($dir);
+$gaDAO->save($dir, $ga);
 ?>

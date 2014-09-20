@@ -10,5 +10,5 @@ $dir = './resources/';
 
 $code = isset($_GET['code']) ? $_GET['code'] : null;
 
-echo Helper::getIndividualData($dir, $code);
+echo (new Helper())->getIndividualData($dir, $code);
 ?>
