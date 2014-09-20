@@ -6,14 +6,23 @@ class PopulationDAO
     $this->individualDAO = new IndividualDAO();
   }
 
-  public function create($ga, $generation)
+  public function create($ga, $generation, $genomes=null)
   {
     $individuals = array();
-    for ($i = 0; $i < $ga->populationSize; $i++)
+    if (!isset($genomes))
     {
-      $individuals[] = $this->individualDAO->create($ga);
+      for ($i = 0; $i < $ga->populationSize; $i++)
+      {
+        $individuals[] = $this->individualDAO->create($ga);
+      }
     }
-
+    else
+    {
+      for ($i = 0; $i < count($genomes); $i++)
+      {
+        $individuals[] = $this->individualDAO->create($ga, $genomes[$i]);
+      }
+    }
     return new Population($generation, $individuals);
   }
 

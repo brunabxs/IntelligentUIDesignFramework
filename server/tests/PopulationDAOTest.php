@@ -22,6 +22,25 @@ class PopulationDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals(3, count($population->individuals));
   }
 
+  public function testCreate_withGenomes_mustCreateIndividualsWithSelectedGenomes()
+  {
+    // Arrange
+    $ga = $this->mockGeneticAlgorithm();
+    $ga->properties = array("h1"=>array("class1"));
+
+    $genomes = array("0", "1", "0");
+
+    $populationDAO = $this->mockPopulationDAO();
+    $populationDAO->individualDAO = $this->mockIndividualDAO();
+
+    // Act
+    $population = $populationDAO->create($ga, 1, $genomes);
+
+    // Assert
+    $this->assertEquals(1, $population->generation);
+    $this->assertEquals(3, count($population->individuals));
+  }
+
   public function testConvertToJSON_oneIndividual_jsonMustContainsGenerationAndOneGenome()
   {
     // Arrange
