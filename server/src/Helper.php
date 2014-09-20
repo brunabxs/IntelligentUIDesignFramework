@@ -1,7 +1,13 @@
 <?php
 class Helper
 {
-  public static function getIndividualData($dir, $code)
+  public function __construct()
+  {
+    $this->gaDAO = new GeneticAlgorithmDAO();
+    $this->individualDAO = new IndividualDAO();
+  }
+
+  public function getIndividualData($dir, $code)
   {
     $generation = null;
     $genome = null;
@@ -13,33 +19,23 @@ class Helper
       $genome = $code[1];
     }
 
-    $generation = self::updateGeneration($dir, $generation);
-    
-    $jsonString = file_get_contents($dir . $generation . '-GA.json');
-    $jsonString = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $jsonString);
-    $jsonString = trim($jsonString);
-    $json = json_decode($jsonString);
-    $individuals = $json->individuals;
+    $ga = $this->gaDAO->load($dir, $generation);
 
-    $index = self::updateIndividualIndex($individuals, $genome);
+    $generation = $ga->population->generation;
+    $index = self::findIndividualIndex($ga->population->individuals, $genome);
+    $individual = $ga->population->individuals[$index];
 
-    return file_get_contents($dir . $generation . '-' . $index . '-' . $individuals[$index] . '.json');
+    return $this->individualDAO->getFileContent($dir, $generation, $index, $individual->genome);
   }
 
-  private static function updateGeneration($dir, $generation)
+  private static function findIndividualIndex($individuals, $genome)
   {
-    $currentGeneration = GeneticAlgorithm::getLastGeneration($dir);
-
-    if (!isset($generation))
+    $genomes = array();
+    foreach ($individuals as $individual)
     {
-      $generation = $currentGeneration;
+      $genomes[] = $individual->genome;
     }
-
-    return min($currentGeneration, $generation);
-  }
-
-  private static function updateIndividualIndex($genomes, $genome)
-  {
+    
     $index = array_search($genome, $genomes);
 
     if (!isset($index) || $index == false)
