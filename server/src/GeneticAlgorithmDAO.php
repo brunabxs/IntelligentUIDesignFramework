@@ -6,15 +6,6 @@ class GeneticAlgorithmDAO
     $this->populationDAO = new PopulationDAO();
   }
 
-  public function create($populationSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod)
-  {
-    $genomeSize = self::generateGenomeSize($properties);
-
-    $ga = new GeneticAlgorithm($populationSize, $genomeSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod);
-    $ga->population = $this->populationDAO->create($ga, 0);
-    return $ga;
-  }
-
   public function load($dir, $generation=null)
   {
     $json = file_get_contents(self::getFile($dir));
@@ -31,11 +22,18 @@ class GeneticAlgorithmDAO
     $ga = new GeneticAlgorithm($populationSize, $genomeSize, $properties, $selectionMethod, $crossoverMethod, $mutationMethod);
 
     $lastGeneration = PopulationDAO::getLastGeneration($dir);
-    if (!isset($generation) || $generation > $lastGeneration)
+    if (!isset($lastGeneration))
     {
-      $generation = $lastGeneration;
+      $ga->population = $this->populationDAO->create($ga, 0);
     }
-    $ga->population = $this->populationDAO->load($dir, $ga, $generation);
+    else
+    {
+      if (!isset($generation) || $generation > $lastGeneration)
+      {
+        $generation = $lastGeneration;
+      }
+      $ga->population = $this->populationDAO->load($dir, $ga, $generation);
+    }
 
     return $ga;
   }
