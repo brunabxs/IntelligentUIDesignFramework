@@ -40,7 +40,7 @@ class GeneticAlgorithmDAO
 
   public function save($dir, $ga)
   {
-    $ga->populationDAO->save($dir, $ga->population);
+    $this->populationDAO->save($dir, $ga->population);
   }
 
   public static function getFile($dir)
