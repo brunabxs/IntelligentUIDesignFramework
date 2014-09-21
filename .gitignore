@@ -42,3 +42,4 @@ tests-output
 *.bat
 *.sh
 node_modules/
+smarty/
