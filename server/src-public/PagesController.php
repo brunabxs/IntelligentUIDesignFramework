@@ -34,6 +34,9 @@ class PagesController
 
     'logout' => array('AppContentTitle' => 'Você foi deslogado!',
                       'AppContentInfo'  => 'Entre em contado com email@email e dê seu feedback do serviço.'),
+
+    'error' => array('AppContentTitle' => 'Ooopsie! Ocorreu um erro no nosso servidor',
+                     'AppContentInfo'  => 'Entre em contado com email@email e relate o ocorrido.'),
   );
   
   public static function build($smarty, $step)
