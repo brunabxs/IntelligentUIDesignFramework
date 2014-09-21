@@ -9,7 +9,7 @@
 
   if (!isset($_SESSION['user']))
   {
-    header('location:index.php');
+    header('location:step1-login.php');
   }
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST')
@@ -36,7 +36,7 @@
           $gaDAO = new GeneticAlgorithmDAO();
           $gaDAO->create($dir, $_POST['txt_versions'], json_encode($json), 'roulette', 'simple', 'simple');
           $_SESSION['allow_ga_cretion'] = false;
-          header('location:finish.php');
+          header('location:step3-script.php');
         }
         catch (Exception $e)
         {
@@ -56,17 +56,17 @@
       $smarty->assign('AppContentTitle', 'Indique suas informações para configuração do aplicativo');
       $smarty->assign('AppContentInfo', 'Preencha os campos obrigatórios (*) para que seus dados possam ser enviados para nossos servidores.');
 
-      $smarty->assign('AppMenu', array('from'=>1, 'to'=>3, 'current'=>2));
-      $smarty->assign('AppContent', 'info-edit.tpl');
-      $smarty->assign('Controller', 'info.php');
+      $smarty->assign('AppMenu', array('from'=>1, 'to'=>5, 'current'=>2));
+      $smarty->assign('AppContent', 'step2-prepare.tpl');
+      $smarty->assign('Controller', 'step2-prepare.php');
     }
     else
     {
       $smarty->assign('AppContentTitle', 'Veja as informações de configuração do aplicativo');
       $smarty->assign('AppContentInfo', 'Veja os dados enviados enviados para nossos servidores.');
 
-      $smarty->assign('AppMenu', array('from'=>1, 'to'=>2, 'current'=>2));
-      $smarty->assign('AppContent', 'info-view.tpl');
+      $smarty->assign('AppMenu', array('from'=>1, 'to'=>5, 'current'=>5));
+      $smarty->assign('AppContent', 'step5-result.tpl');
     }
   }
 
