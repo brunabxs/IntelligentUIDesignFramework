@@ -1,7 +1,7 @@
 ﻿<?php
 class PagesController
 {
-  public static $pages = array(
+  private static $pages = array(
     1 => array('AppContentTitle' => 'Idenfifique-se',
                'AppContentInfo'  => 'Preencha os campos obrigatórios (*) para que possa acessar nossos serviços.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>1),
@@ -18,7 +18,16 @@ class PagesController
                'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>3),
                'AppContent'      => 'step3-script.tpl',
-               'Content'         => 'TESTE DE SCRIPT',
+               'Content'         => '
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://localhost/script.js"&gt;&lt;/script&gt;</span>  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+  &lt;/body&gt;
+&lt;/html&gt;
+',
                'Controller'      => 'index.php'),
 
     4 => array('AppContentTitle' => 'Está quase tudo pronto',
