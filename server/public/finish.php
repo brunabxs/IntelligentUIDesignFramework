@@ -1,4 +1,5 @@
 ﻿<?php
+  session_start();
   $txt_script = 'TESTE DE SCRIPT';
 ?>
 
