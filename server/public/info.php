@@ -1,11 +1,24 @@
 ﻿<?php
   if ($_SERVER['REQUEST_METHOD'] == 'POST')
   {
-    if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop']))
+    if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop_json']))
     {
-      // salvar informações
+      $json = json_decode($_POST['txt_prop_json']);
+      if (!isset($json))
+      {
+        header('location:error.php');
+      }
 
-      header('location:finish.php');
+      $properties = array("populationSize"     => $_POST['txt_versions'],
+                          "methodForSelection" => "roulette",
+                          "methodForCrossover" => "simple",
+                          "methodForMutation"  => "simple",
+                          "properties"         => json_encode($json));
+      // salvar
+
+      die (json_encode($properties));
+
+      //header('location:finish.php');
     }
     else
     {
@@ -36,7 +49,7 @@
           <p class="appContentInfo">Preencha os campos obrigatórios (*) para que seus dados possam ser enviados para nossos servidores.</p>
         </header>
 
-        <form name="form_generalInformation" method="post" action="info.php" class="appContentData">
+        <form name="form_generalInformation" method="post" action="info.php" class="appContentData" onsubmit="return validate();">
           <label>Ferramenta de Web Analytics utilizada</label>
           <span id="txt_analyticsTool">Piwik</span>
 
@@ -52,8 +65,9 @@
           <label>Tempo máximo de execução de um experimento (dias)</label>
           <span id="txt_time">-</span>
 
-          <label for="app3" class="required">Elementos e classes</label>
+          <label for="app3" class="required">Elementos e classes no formato JSON</label>
           <textarea id="txt_prop" name="txt_prop" title="" required></textarea>
+          <input id="txt_prop_json" name="txt_prop_json" type="hidden" />
 
           <input id="btn_submit" name="btn_submit" type="submit" value="Send" class="appContentButton" />
         </form>
