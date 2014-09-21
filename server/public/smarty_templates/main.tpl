@@ -8,15 +8,23 @@
   </head>
   <body>
     <div id="appWrapper">
-      <nav id="appMenu">
-        {for $index={$AppMenu['from']} to {$AppMenu['current']}-1}
-          <span>Passo {$index}</span>
-        {/for}
-        <span id="appMenuSelected">Passo {$AppMenu['current']}</span>
-        {for $index={$AppMenu['current']}+1 to {$AppMenu['to']}}
-          <span>Passo {$index}</span>
-        {/for}
-      </nav>
+      {if isset($AppMenu)}
+        <nav id="appMenu">
+          {for $index={$AppMenu['from']} to {$AppMenu['current']}-1}
+            <span>Passo {$index}</span>
+          {/for}
+
+          <span id="appMenuSelected">Passo {$AppMenu['current']}</span>
+
+          {for $index={$AppMenu['current']}+1 to {$AppMenu['to']}}
+            <span>Passo {$index}</span>
+          {/for}
+
+          {if isset($smarty.session.user)}
+            <a id="appMenuLogout" href="logout.php">Logout</a>
+          {/if}
+        </nav>
+      {/if}
 
       <section id="appContent">
         <header>
@@ -24,7 +32,9 @@
           <p class="appContentInfo">{$AppContentInfo}</p>
         </header>
 
-        {include file={$AppContent}}
+        {if isset($AppContent)}
+          {include file={$AppContent}}
+        {/if}
 
         <footer>Designed by Bruna Xavier</footer>
       </div>

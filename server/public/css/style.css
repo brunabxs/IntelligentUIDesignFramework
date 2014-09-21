@@ -72,6 +72,17 @@ nav#appMenu #appMenuSelected:after {
   border-left-color: rgb(0, 190, 255);
 }
 
+nav#appMenu #appMenuLogout {
+  float: right;
+  color: #333;
+  background-color: transparent;
+}
+
+nav#appMenu #appMenuLogout:before,
+nav#appMenu #appMenuLogout:after {
+  border: none;
+}
+
 section#appContent {
   color: #f3f3f3;
   background-color: #333;
