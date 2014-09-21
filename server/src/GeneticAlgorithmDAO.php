@@ -69,7 +69,7 @@ class GeneticAlgorithmDAO
     foreach ($properties as $element => $classes)
     {
       $numClasses = count($classes) + 1;
-      $numBits = strlen(decbin(ceil(log($numClasses, 2))));
+      $numBits = ceil(log($numClasses, 2));
       $genomeSize += $numBits;
     }
     return $genomeSize;

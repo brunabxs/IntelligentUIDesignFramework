@@ -66,7 +66,7 @@ class IndividualDAO
     foreach ($ga->properties as $element => $classes)
     {
       $numClasses = count($classes);
-      $numBits = strlen(decbin(ceil(log($numClasses+1, 2))));
+      $numBits = ceil(log($numClasses+1, 2));
       $genomePart = substr($genome, $start, $numBits);
       $index = bindec($genomePart);
       $start += $numBits;
