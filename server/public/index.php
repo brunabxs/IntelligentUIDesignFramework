@@ -10,8 +10,6 @@
     include $filename;
   }
 
-  require './smarty/Smarty.class.php';
-
   function processStep1()
   {
     $_SESSION['user'] = $_POST['txt_user'];
@@ -76,36 +74,31 @@
   {
     $dir = dirname(__FILE__) . '/../resources/';
 
-    $smarty = new Smarty();
-    $smarty->setTemplateDir('./smarty_templates/');
-    $smarty->setCompileDir('./smarty_templates_c/');
     if (!isset($_SESSION['user']))
     {
       $_SESSION['step'] = 1;
-      $smarty = PagesController::build($smarty, $_SESSION['step']);
+      PagesController::build($_SESSION['step']);
     }
     else if (!is_file(GeneticAlgorithmDAO::getFile($dir)))
     {
       $_SESSION['step'] = 2;
-      $smarty = PagesController::build($smarty, $_SESSION['step']);
+      PagesController::build($_SESSION['step']);
     }
     else if (!is_file($dir . 'script-ready.txt'))
     {
       $_SESSION['step'] = 3;
-      $smarty = PagesController::build($smarty, $_SESSION['step']);
+      PagesController::build($_SESSION['step']);
     }
     else if (!is_file(PopulationDAO::getFile($dir, 0)))
     {
       $_SESSION['step'] = 4;
-      $smarty = PagesController::build($smarty, $_SESSION['step']);
+      PagesController::build($_SESSION['step']);
     }
     else
     {
       $_SESSION['step'] = 5;
-      $smarty = PagesController::build($smarty, $_SESSION['step']);
+      PagesController::build($_SESSION['step']);
     }
-
-    $smarty->display('main.tpl');
   }
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST')

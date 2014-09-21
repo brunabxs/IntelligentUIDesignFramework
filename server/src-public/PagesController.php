@@ -39,13 +39,20 @@ class PagesController
                      'AppContentInfo'  => 'Entre em contado com email@email e relate o ocorrido.'),
   );
   
-  public static function build($smarty, $step)
+  public static function build($page)
   {
-    foreach (self::$pages[$step] as $key => $value)
+    require '../public/smarty/Smarty.class.php';
+
+    $smarty = new Smarty();
+    $smarty->setTemplateDir('./smarty_templates/');
+    $smarty->setCompileDir('./smarty_templates_c/');
+
+    foreach (self::$pages[$page] as $key => $value)
     {
       $smarty->assign($key, $value);
     }
-    return $smarty;
+
+    $smarty->display('main.tpl');
   }
 }
 ?>
