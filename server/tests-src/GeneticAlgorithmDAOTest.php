@@ -50,6 +50,25 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals(4, $genomeSize);
   }
 
+  public function testCreate_mustCreateFile()
+  {
+    // Arrange
+    $gaDAO = $this->mockGeneticAlgorithmDAO();
+    $dir = self::$tempDir;
+    $populationSize = 2;
+    $properties = '{"h1":["class1", "class2"]; "h2":["class1", "class2"]}';
+    $methodForSelection = 'roulette';
+    $methodForCrossover = 'simple';
+    $methodForMutation = 'simple';
+
+    // Act
+    $ga = $gaDAO->create($dir, $populationSize, $properties, $methodForSelection, $methodForCrossover, $methodForMutation);
+
+    // Assert
+    $this->assertEquals(1, self::countFiles($dir));
+    $this->assertEquals(1, self::containsFile($dir, 'properties.json'));
+  }
+
   public function testGetFile()
   {
     // Arrange

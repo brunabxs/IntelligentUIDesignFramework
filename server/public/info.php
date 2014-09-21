@@ -1,4 +1,11 @@
 ﻿<?php
+  foreach (glob(dirname(__FILE__) . '/../src/*.php') as $filename)
+  {
+    include $filename;
+  }
+
+  $dir = dirname(__FILE__) . '/../resources/';
+
   if ($_SERVER['REQUEST_METHOD'] == 'POST')
   {
     if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop_json']))
@@ -9,16 +16,14 @@
         header('location:error.php');
       }
 
-      $properties = array("populationSize"     => $_POST['txt_versions'],
-                          "methodForSelection" => "roulette",
-                          "methodForCrossover" => "simple",
-                          "methodForMutation"  => "simple",
-                          "properties"         => json_encode($json));
-      // salvar
-
-      die (json_encode($properties));
-
-      //header('location:finish.php');
+      try {
+        $gaDAO = new GeneticAlgorithmDAO();
+        $gaDAO->create($dir, $_POST['txt_versions'], json_encode($json), 'roulette', 'simple', 'simple');
+        header('location:finish.php');
+      }
+      catch (Exception $e) {
+        header('location:error.php');
+      }
     }
     else
     {

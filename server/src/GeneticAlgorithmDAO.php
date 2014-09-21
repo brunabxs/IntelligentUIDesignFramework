@@ -6,6 +6,16 @@ class GeneticAlgorithmDAO
     $this->populationDAO = new PopulationDAO();
   }
 
+  public function create($dir, $populationSize, $properties, $methodForSelection, $methodForCrossover, $methodForMutation)
+  {
+    $json = json_encode(array("populationSize"     => $populationSize,
+                              "methodForSelection" => $methodForSelection,
+                              "methodForCrossover" => $methodForCrossover,
+                              "methodForMutation"  => $methodForMutation,
+                              "properties"         => $properties), JSON_PRETTY_PRINT);
+    file_put_contents(self::getFile($dir), $json, LOCK_EX);
+  }
+
   public function load($dir, $generation=null)
   {
     $json = file_get_contents(self::getFile($dir));
