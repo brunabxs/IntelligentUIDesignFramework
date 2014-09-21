@@ -6,8 +6,8 @@ abstract class MyUnit_Framework_TestCase extends PHPUnit_Framework_TestCase
 
   protected function setUp()
   {
-    self::$tempDir = './tests/' . get_class($this) . '.' . $this->getName() . '/';
-    self::$datasetDir = './tests/' . get_class($this) . '.' . $this->getName() . '/dataset/';
+    self::$tempDir = dirname(__FILE__) . '/' . get_class($this) . '.' . $this->getName() . '/';
+    self::$datasetDir = dirname(__FILE__) . '/' . get_class($this) . '.' . $this->getName() . '/dataset/';
 
     if (!is_dir(self::$tempDir))
     {
