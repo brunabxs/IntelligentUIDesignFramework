@@ -5,10 +5,6 @@
   {
     include $filename;
   }
-  foreach (glob(dirname(__FILE__) . '/../src-public/*.php') as $filename)
-  {
-    include $filename;
-  }
 
   function processStep1()
   {
