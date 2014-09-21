@@ -1,21 +1,34 @@
 ﻿var _paq = _paq || [];
+var _GA = _GA || {};
+_GA.cookie = 'myCode';
+_GA.setCookie = function(cvalue)
+{
+  if (_GA.getCookie()) return;
+
+  var date = new Date();
+  date.setTime(date.getTime() + (24*60*60*1000));
+  var expires = "expires=" + date.toUTCString();
+  document.cookie = _GA.cookie + "=" + cvalue + "; " + expires;
+};
+_GA.getCookie = function()
+{
+  var name = _GA.cookie + "=";
+  var cookies = document.cookie.split(';');
+  for (var i=0; i < cookies.length; i++)
+  {
+    var cookie = cookies[i];
+    while (cookie.charAt(0) == ' ') cookie = cookie.substring(1);
+    if (cookie.indexOf(name) != -1) return cookie.substring(name.length, cookie.length);
+  }
+  return "";
+};
+
 (function() {
   var url = (("https:" == document.location.protocol) ? "https" : "http") + "://localhost/";
 
-  var myCode;
-  var cname = 'myCode';
-  var name = cname + "=";
-  var ca = document.cookie.split(';');
-  for ( var i = 0; i < ca.length; i++ ) {
-    var c = ca[i];
-    while ( c.charAt(0) == ' ' ) c = c.substring(1);
-    if ( c.indexOf(name) != -1 ) {
-      myCode = c.substring(name.length, c.length);
-      break;
-    }
-  }
+  var myCode = _GA.getCookie();
 
-  // metrics and styles
+  // styleClasses
   var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
   g.defer=true; g.async=false; g.src=url+'script.php' + (myCode ? '?code='+myCode : '');
   s.parentNode.insertBefore(g,s);
@@ -31,26 +44,9 @@
 
 window.onload = function()
 {
-  var myCode;
-  var cname = 'myCode';
-  var name = cname + "=";
-  var ca = document.cookie.split(';');
-  for ( var i = 0; i < ca.length; i++ ) {
-    var c = ca[i];
-    while ( c.charAt(0) == ' ' ) c = c.substring(1);
-    if ( c.indexOf(name) != -1 ) {
-      myCode = c.substring(name.length, c.length);
-      break;
-    }
-  }
+  _GA.setCookie(__AppConfig.generation + '.' + __AppConfig.genome);
 
-  if (!myCode)
-  {
-    myCode = __AppConfig.generation + '.' + __AppConfig.genome;
-    document.cookie='myCode=' + myCode + ';expires=' + (new Date((new Date()).getTime() + (1*24*60*60*1000)).toUTCString()) + ';path=/';
-  }
-
-  _paq.push(['setCustomVariable', 1, 'GA', myCode, 'page']);
+  _paq.push(['setCustomVariable', 1, 'GA', _GA.getCookie(), 'page']);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
 
