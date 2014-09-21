@@ -50,7 +50,7 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     $this->assertEquals(4, $genomeSize);
   }
 
-  public function testCreate_mustCreateFile()
+  public function testCreate_fileDoesNotExist_mustCreateFile()
   {
     // Arrange
     $gaDAO = $this->mockGeneticAlgorithmDAO();
@@ -67,6 +67,32 @@ class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
     // Assert
     $this->assertEquals(1, self::countFiles($dir));
     $this->assertEquals(1, self::containsFile($dir, 'properties.json'));
+  }
+
+  public function testCreate_fileExists_mustNotCreateFile()
+  {
+    // Arrange
+    $gaDAO = $this->mockGeneticAlgorithmDAO();
+    $dir = self::$datasetDir;
+    $populationSize = 2;
+    $properties = '{"h1":["class1", "class2"]; "h2":["class1", "class2"]}';
+    $methodForSelection = 'roulette';
+    $methodForCrossover = 'simple';
+    $methodForMutation = 'simple';
+
+    // Act
+    try
+    {
+      $ga = $gaDAO->create($dir, $populationSize, $properties, $methodForSelection, $methodForCrossover, $methodForMutation);
+      $this->fail('Exception expected');
+    }
+    catch (Exception $e)
+    {
+      $this->assertEquals('Genetic Algorithm properties file already created', $e->getMessage());
+      return;
+    }
+
+    $this->fail('Exception expected');
   }
 
   public function testGetFile()

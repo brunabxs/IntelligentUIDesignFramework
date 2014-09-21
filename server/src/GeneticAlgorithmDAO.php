@@ -8,6 +8,11 @@ class GeneticAlgorithmDAO
 
   public function create($dir, $populationSize, $properties, $methodForSelection, $methodForCrossover, $methodForMutation)
   {
+    if (is_file(self::getFile($dir)))
+    {
+      throw new Exception('Genetic Algorithm properties file already created');
+    }
+
     $json = json_encode(array("populationSize"     => $populationSize,
                               "methodForSelection" => $methodForSelection,
                               "methodForCrossover" => $methodForCrossover,
