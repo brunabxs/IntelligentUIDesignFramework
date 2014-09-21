@@ -64,11 +64,21 @@ function convertToJSON(jsonString) {
 
 function validate() {
   try {
-    jQuery("#txt_prop_json").val(JSON.stringify(convertToJSON(jQuery("#txt_prop").val())));
+    jQuery('#txt_prop_json').val(JSON.stringify(convertToJSON(jQuery('#txt_prop').val())));
     return true;
   }
   catch (error) {
-    console.log(error);
+    jQuery('#appModal p').text(error);
+    jQuery('#appModal').dialog({
+      title: 'Opsie! Ocorreu algum erro',
+      modal: true,
+      resizable: false,
+      buttons: [{
+        text: "OK", click: function() {
+          jQuery(this).dialog("close");
+        }
+      }]
+    });
     return false;
   }
 }
