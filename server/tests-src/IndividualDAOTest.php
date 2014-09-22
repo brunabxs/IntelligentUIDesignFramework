@@ -148,7 +148,7 @@ class IndividualDAOTest extends MyUnit_Framework_TestCase
     $individualDAO->save($dir, $generation, $index, $individual);
 
     // Assert
-    $this->assertEquals('__AppConfig={"generation":0,"genome":"00","properties":{"h1":"class1"}}', file_get_contents($dir . '0-1-00.json'));
+    $this->assertEquals('{"generation":0,"genome":"00","properties":{"h1":"class1"}}', file_get_contents($dir . '0-1-00.json'));
   }
 
   protected function mockIndividualDAO()

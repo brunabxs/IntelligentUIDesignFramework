@@ -27,7 +27,7 @@ class IndividualDAO
 
   public function save($dir, $generation, $index, $individual)
   {
-    $json = '__AppConfig=' . self::convertToJSON($generation, $individual);
+    $json = self::convertToJSON($generation, $individual);
     file_put_contents(self::getFile($dir, $generation, $index, $individual->genome), $json, LOCK_EX);
   }
 
