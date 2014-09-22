@@ -53,6 +53,9 @@
     {
       $controller = new GeneticAlgorithmController($dir);
       $controller->execute();
+
+      CronController::removeAllJobs();
+      CronController::addJob();
       return true;
     }
     catch (Exception $e)
