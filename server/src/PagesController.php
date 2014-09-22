@@ -18,11 +18,33 @@ class PagesController
                'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>3),
                'AppContent'      => 'step3-script.tpl',
-               'Content'         => '
+               'Content1'        => '
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
-<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://localhost/script.js"&gt;&lt;/script&gt;</span>  &lt;/head&gt;
+<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"&gt;&lt;/script&gt;</span><span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://localhost/script.js"&gt;&lt;/script&gt;</span>  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+  &lt;/body&gt;
+&lt;/html&gt;
+',
+               'Content2'        => '
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    ...
+<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript"&gt;jQuery(document).ready(function(){ jQuery(this).executeGA(); });&lt;/script&gt;</span>  &lt;/head&gt;
+  &lt;body&gt;
+    ...
+  &lt;/body&gt;
+&lt;/html&gt;
+',
+               'Content3'        => '
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+<span style="font-weight:bold;margin:0;display:block;">    &lt;link ... /&gt;</span>    ...
+  &lt;/head&gt;
   &lt;body&gt;
     ...
   &lt;/body&gt;
