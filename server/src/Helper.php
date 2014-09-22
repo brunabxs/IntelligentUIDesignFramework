@@ -12,7 +12,7 @@ class Helper
     $generation = null;
     $genome = null;
 
-    $code = split('\.', $code);
+    $code = preg_split('/\./', $code);
     if (count($code) == 2)
     {
       $generation = $code[0];

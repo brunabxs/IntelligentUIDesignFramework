@@ -13,7 +13,7 @@ class MethodsForCrossover
     return rand($start, $end - 1);
   }
 
-  public function simple($genome1, $genome2, $point=null)
+  public static function simple($genome1, $genome2, $point=null)
   {
     if (strlen($genome1) != strlen($genome2))
     {
