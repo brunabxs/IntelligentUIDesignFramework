@@ -72,8 +72,6 @@ class PagesController
   
   public static function build($page)
   {
-    require '../public/smarty/Smarty.class.php';
-
     $smarty = new Smarty();
     $smarty->setTemplateDir('./smarty_templates/');
     $smarty->setCompileDir('./smarty_templates_c/');

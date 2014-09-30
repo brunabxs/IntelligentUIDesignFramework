@@ -1,10 +1,8 @@
 ﻿<?php
   session_start();
 
-  foreach (glob(dirname(__FILE__) . '/../src/*.php') as $filename)
-  {
-    include $filename;
-  }
+  require 'vendor/autoload.php';
+  define('RESOURCES_DIR', dirname(__FILE__) . '/resources/');
 
   function processStep1()
   {
@@ -14,7 +12,6 @@
 
   function processStep2()
   {
-    $dir = dirname(__FILE__) . '/../resources/';
     $json = json_decode($_POST['txt_prop_json']);
     if (!isset($json))
     {
@@ -23,7 +20,7 @@
     try
     {
       $gaDAO = new GeneticAlgorithmDAO();
-      $gaDAO->create($dir, $_POST['txt_versions'], json_encode($json), 'roulette', 'simple', 'simple');
+      $gaDAO->create(RESOURCES_DIR, $_POST['txt_versions'], json_encode($json), 'roulette', 'simple', 'simple');
       return true;
     }
     catch (Exception $e)
@@ -34,10 +31,9 @@
 
   function processStep3()
   {
-    $dir = dirname(__FILE__) . '/../resources/';
     try
     {
-      file_put_contents($dir . 'script-ready.txt', '');
+      file_put_contents(RESOURCES_DIR . 'script-ready.txt', '');
       return true;
     }
     catch (Exception $e)
@@ -48,10 +44,9 @@
 
   function processStep4()
   {
-    $dir = dirname(__FILE__) . '/../resources/';
     try
     {
-      $controller = new GeneticAlgorithmController($dir);
+      $controller = new GeneticAlgorithmController(RESOURCES_DIR);
       $controller->execute();
 
       CronController::removeAllJobs();
@@ -71,24 +66,22 @@
 
   function redirect()
   {
-    $dir = dirname(__FILE__) . '/../resources/';
-
     if (!isset($_SESSION['user']))
     {
       $_SESSION['step'] = 1;
       PagesController::build($_SESSION['step']);
     }
-    else if (!is_file(GeneticAlgorithmDAO::getFile($dir)))
+    else if (!is_file(GeneticAlgorithmDAO::getFile(RESOURCES_DIR)))
     {
       $_SESSION['step'] = 2;
       PagesController::build($_SESSION['step']);
     }
-    else if (!is_file($dir . 'script-ready.txt'))
+    else if (!is_file(RESOURCES_DIR . 'script-ready.txt'))
     {
       $_SESSION['step'] = 3;
       PagesController::build($_SESSION['step']);
     }
-    else if (!is_file(PopulationDAO::getFile($dir, 0)))
+    else if (!is_file(PopulationDAO::getFile(RESOURCES_DIR, 0)))
     {
       $_SESSION['step'] = 4;
       PagesController::build($_SESSION['step']);

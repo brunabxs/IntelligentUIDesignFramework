@@ -4,7 +4,7 @@
          bootstrap="phpunit-autoload.php">
   <testsuites>
     <testsuite name="PHPGeneticAlgorithmTestSuite">
-      <directory>tests-src</directory>
+      <directory>tests/src</directory>
     </testsuite>
   </testsuites>
 </phpunit>

@@ -38,8 +38,7 @@ Icon
 # =========================
 # Project Files
 # =========================
-tests-output
 *.bat
 *.sh
-node_modules/
-smarty/
+vendor/
+composer.lock

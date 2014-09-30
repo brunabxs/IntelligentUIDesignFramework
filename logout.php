@@ -1,7 +1,7 @@
 ﻿<?php
   session_start();
 
-  include dirname(__FILE__) . '/../src/PagesController.php';
+  require 'vendor/autoload.php';
 
   unset($_SESSION['user']);
 

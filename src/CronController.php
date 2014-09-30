@@ -3,7 +3,7 @@ class CronController
 {
   private static $php = '/opt/lampp/bin/php';
 
-  private static $script = '/opt/lampp/htdocs/scripts/newGeneration.php';
+  private static $script = '/opt/lampp/htdocs/newGeneration.php';
 
   private static $tempFile = '/tmp/crontab.txt';
 
