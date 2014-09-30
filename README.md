@@ -1,6 +1,6 @@
 ##Intelligent UI Design Framework for Web
 
-![Estado do projeto](https://travis-ci.org/brunabxs/PHPGeneticAlgorithm.svg?branch=master)
+![Estado do projeto](https://travis-ci.org/brunabxs/IntelligentUIDesignFramework.svg?branch=master)
 
 #### O que é?
 Framework que combina Algoritmo Genético, Web Analytics e Teste A/B (MVT) para gerar, avaliar e encontrar novos designs de interfaces web. O objetivo é tentar aprimorar um já existente, embasado nas métricas de uso do sistema.
