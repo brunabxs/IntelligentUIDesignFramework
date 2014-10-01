@@ -1,7 +1,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd"
          backupGlobals="true"
-         bootstrap="phpunit-autoload.php">
+         bootstrap="vendor/autoload.php">
   <testsuites>
     <testsuite name="PHPGeneticAlgorithmTestSuite">
       <directory>tests/src</directory>
