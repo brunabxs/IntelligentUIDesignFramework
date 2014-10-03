@@ -23,5 +23,10 @@ class UserDAO extends AbstractDAO
   {
     return parent::updateInstance(self::$entity, self::$entityKey);
   }
+
+  public function setInstance($instance)
+  {
+    parent::$instance = $instance;
+  }
 }
 ?>
