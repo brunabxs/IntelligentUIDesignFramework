@@ -1,6 +1,6 @@
 <?php
 include_once 'MyAnotherUnit_Framework_TestCase.php';
-class AbstractDAOTest extends MyAnotherUnit_Framework_TestCase
+class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
 {
   public function testGetClassAttributes_classUser_mustReturnAllAttributes()
   {
