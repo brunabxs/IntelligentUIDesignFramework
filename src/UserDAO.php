@@ -6,7 +6,7 @@ class UserDAO extends AbstractDAO
     parent::__constructor();
   }
 
-  public function loadInstance($id)
+  public function loadInstanceById($id)
   {
     return parent::loadInstance('User', array(array('user_oid', $id)));
   }
