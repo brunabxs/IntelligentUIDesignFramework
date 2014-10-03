@@ -1,15 +1,25 @@
 <?php
 class GeneticAlgorithm
 {
-  public function __construct($populationSize, $genomeSize, $properties, $methodForSelection, $methodForCrossover, $methodForMutation)
+  public $geneticAlgorithm_oid;
+  public $populationSize;
+  public $genomeSize;
+  public $methodForSelection;
+  public $methodForCrossover;
+  public $methodForMutation;
+  public $properties;
+  public $user_oid;
+
+  public function __construct($geneticAlgorithm_oid, $populationSize, $genomeSize, $methodForSelection, $methodForCrossover, $methodForMutation, $properties, $user_oid)
   {
+    $this->geneticAlgorithm_oid = $geneticAlgorithm_oid;
     $this->populationSize = $populationSize;
     $this->genomeSize = $genomeSize;
-    $this->properties = $properties;
     $this->methodForSelection = $methodForSelection;
     $this->methodForCrossover = $methodForCrossover;
     $this->methodForMutation = $methodForMutation;
-    $this->population = null;
+    $this->properties = $properties;
+    $this->user_oid = $user_oid;
   }
 }
 ?>

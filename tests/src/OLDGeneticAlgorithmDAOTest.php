@@ -1,54 +1,8 @@
 <?php
 include_once 'MyUnit_Framework_TestCase.php';
-class GeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
+class OLDGeneticAlgorithmDAOTest extends MyUnit_Framework_TestCase
 {
-  public function testGenerateGenomeSize_oneElementWithOneClass_genomeSizeMustBe1()
-  {
-    // Arrange
-    $properties = array("h1"=>array("class1"));
 
-    // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
-
-    // Assert
-    $this->assertEquals(1, $genomeSize);
-  }
-
-  public function testGenerateGenomeSize_oneElementWithTwoClasses_genomeSizeMustBe2()
-  {
-    // Arrange
-    $properties = array("h1"=>array("class1", "class2"));
-
-    // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
-
-    // Assert
-    $this->assertEquals(2, $genomeSize);
-  }
-
-  public function testGenerateGenomeSize_twoElementsWithOneClassEach_genomeSizeMustBe2()
-  {
-    // Arrange
-    $properties = array("h1"=>array("class1"), "h2"=>array("class2"));
-
-    // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
-
-    // Assert
-    $this->assertEquals(2, $genomeSize);
-  }
-
-  public function testGenerateGenomeSize_twoElementsWithTwoClassesEach_genomeSizeMustBe4()
-  {
-    // Arrange
-    $properties = array("h1"=>array("class1", "class2"), "h2"=>array("class3", "class4"));
-
-    // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
-
-    // Assert
-    $this->assertEquals(4, $genomeSize);
-  }
 
   public function testCreate_fileDoesNotExist_mustCreateFile()
   {

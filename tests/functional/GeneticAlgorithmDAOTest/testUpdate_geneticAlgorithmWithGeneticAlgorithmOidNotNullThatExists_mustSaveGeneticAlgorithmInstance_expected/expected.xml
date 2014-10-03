@@ -1,0 +1,10 @@
+﻿<dataset>
+  <GeneticAlgorithm geneticAlgorithm_oid="9d3f75d2-4a72-11e4-b320-000df0ba9bdc"
+    populationSize="4"
+    genomeSize="4"
+    methodForSelection="roulette"
+    methodForCrossover="simple2"
+    methodForMutation="simple2"
+    properties="h2:class2"
+    user_oid="4afaacf8-4a71-11e4-b320-000df0ba9bdc" />
+</dataset>
