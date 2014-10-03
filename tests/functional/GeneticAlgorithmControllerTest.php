@@ -16,5 +16,18 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     $queryTable = $this->getConnection()->createQueryTable('GeneticAlgorithm', 'SELECT populationSize, genomeSize, methodForSelection, methodForCrossover, methodForMutation, properties, user_oid from GeneticAlgorithm');
     $this->assertTablesEqual($expectedTable, $queryTable);
   }
+
+  public function testCreate_mustSyncGeneticAlgorithm()
+  {
+    // Arrange
+    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
+
+    // Act
+    $geneticAlgorithmController->create($user, 2, '{"h1":["class1"]}');
+
+    // Assert
+    $this->assertNotNull($geneticAlgorithmController->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+  }
 }
 ?>

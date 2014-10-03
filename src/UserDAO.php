@@ -28,5 +28,10 @@ class UserDAO extends AbstractDAO
   {
     $this->instance = $instance;
   }
+
+  public function sync()
+  {
+    return parent::loadInstance(self::$entity, array(array('name', $this->instance->name)));
+  }
 }
 ?>

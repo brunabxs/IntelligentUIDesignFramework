@@ -13,6 +13,9 @@ class GeneticAlgorithmController
     $geneticAlgorithm = new GeneticAlgorithm(null, $populationSize, null, 'roulette', 'simple', 'simple', $properties, $user->user_oid);
     $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
     $this->geneticAlgorithmDAO->persist();
+    $this->geneticAlgorithmDAO->sync();
+
+    // TODO criar a primeira geração
   }
 
   public function execute()

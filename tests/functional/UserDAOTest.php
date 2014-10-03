@@ -115,6 +115,35 @@ class UserDAOTest extends MyDatabase_TestCase
     $this->assertTablesEqual($expectedTable, $queryTable);
   }
 
+  public function testSync_userExists_mustSetUserInstanceByName()
+  {
+    // Arrange
+    $userDAO = $this->mockUserDAO();
+    $userDAO->instance = new User(null, 'user1', null, null);
+
+    // Act
+    $result = $userDAO->sync();
+
+    // Assert
+    $this->assertNotNull($userDAO->instance);
+    $this->assertEquals('9d3f75d2-4a72-11e4-b320-000df0ba9bdc', $userDAO->instance->user_oid);
+    $this->assertEquals('user1', $userDAO->instance->name);
+    $this->assertEquals('user1@users.com', $userDAO->instance->email);
+  }
+
+  public function testSync_userDoesNotExist_mustSetUserInstanceToNull()
+  {
+    // Arrange
+    $userDAO = $this->mockUserDAO();
+    $userDAO->instance = new User(null, 'user2', null, null);
+
+    // Act
+    $result = $userDAO->sync();
+
+    // Assert
+    $this->assertNull($userDAO->instance);
+  }
+
   protected function mockUserDAO()
   {
     $stub = $this->getMockBuilder('UserDAO')

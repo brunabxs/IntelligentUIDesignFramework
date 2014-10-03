@@ -120,6 +120,40 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
     $this->assertTablesEqual($expectedTable, $queryTable);
   }
 
+  public function testSync_geneticAlgorithmExists_mustSetGeneticAlgorithmInstanceByUserOid()
+  {
+    // Arrange
+    $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, '9d3f75d2-4a72-11e4-b320-000df0ba9bdc');
+
+    // Act
+    $result = $geneticAlgorithmDAO->sync();
+
+    // Assert
+    $this->assertNotNull($geneticAlgorithmDAO->instance);
+    $this->assertEquals('9d3f75d2-4a72-11e4-b320-000df0ba9bdc', $geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->assertEquals('2', $geneticAlgorithmDAO->instance->populationSize);
+    $this->assertEquals('2', $geneticAlgorithmDAO->instance->genomeSize);
+    $this->assertEquals('roulette', $geneticAlgorithmDAO->instance->methodForSelection);
+    $this->assertEquals('simple', $geneticAlgorithmDAO->instance->methodForCrossover);
+    $this->assertEquals('simple', $geneticAlgorithmDAO->instance->methodForMutation);
+    $this->assertEquals('h1:class1', $geneticAlgorithmDAO->instance->properties);
+    $this->assertEquals('9d3f75d2-4a72-11e4-b320-000df0ba9bdc', $geneticAlgorithmDAO->instance->user_oid);
+  }
+
+  public function testSync_geneticAlgorithmDoesNotExist_mustSetGeneticAlgorithmInstanceToNull()
+  {
+    // Arrange
+    $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, '00000000-0000-0000-0000-000000000002');
+
+    // Act
+    $result = $geneticAlgorithmDAO->sync();
+
+    // Assert
+    $this->assertNull($geneticAlgorithmDAO->instance);
+  }
+
   protected function mockGeneticAlgorithmDAO()
   {
     $stub = $this->getMockBuilder('GeneticAlgorithmDAO')

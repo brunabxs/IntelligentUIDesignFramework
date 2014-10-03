@@ -30,6 +30,11 @@ class GeneticAlgorithmDAO extends AbstractDAO
     $this->instance = $instance;
   }
 
+  public function sync()
+  {
+    return parent::loadInstance(self::$entity, array(array('user_oid', $this->instance->user_oid)));
+  }
+
   public static function generateGenomeSize($properties)
   {
     $decodedProperties = json_decode($properties);
@@ -42,5 +47,6 @@ class GeneticAlgorithmDAO extends AbstractDAO
     }
     return $genomeSize;
   }
+
 }
 ?>

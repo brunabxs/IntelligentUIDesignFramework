@@ -129,6 +129,35 @@ class GenerationDAOTest extends MyDatabase_TestCase
     $this->assertTablesEqual($expectedTable, $queryTable);
   }
 
+  public function testSync_generationExists_mustSetGenerationInstanceByNumberAndGeneticAlgorithmOid()
+  {
+    // Arrange
+    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO->instance = new Generation(null, '0', '00000000-0000-0000-0000-000000000001');
+
+    // Act
+    $result = $generationDAO->sync();
+
+    // Assert
+    $this->assertNotNull($generationDAO->instance);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $generationDAO->instance->generation_oid);
+    $this->assertEquals('0', $generationDAO->instance->number);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $generationDAO->instance->geneticAlgorithm_oid);
+  }
+
+  public function testSync_generationDoesNotExist_mustSetGenerationInstanceToNull()
+  {
+    // Arrange
+    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO->instance = new Generation(null, '1', '00000000-0000-0000-0000-000000000001');
+
+    // Act
+    $result = $generationDAO->sync();
+
+    // Assert
+    $this->assertNull($generationDAO->instance);
+  }
+
   protected function mockGenerationDAO()
   {
     $stub = $this->getMockBuilder('GenerationDAO')

@@ -28,5 +28,11 @@ class GenerationDAO extends AbstractDAO
   {
     $this->instance = $instance;
   }
+
+  public function sync()
+  {
+    return parent::loadInstance(self::$entity, array(array('number', $this->instance->number),
+                                                     array('geneticAlgorithm_oid', $this->instance->geneticAlgorithm_oid)));
+  }
 }
 ?>

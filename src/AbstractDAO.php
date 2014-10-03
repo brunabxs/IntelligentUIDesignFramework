@@ -1,5 +1,5 @@
 <?php
-class AbstractDAO
+abstract class AbstractDAO
 {
   public $instance = null;
 
@@ -7,6 +7,12 @@ class AbstractDAO
   {
     $this->instance = null;
   }
+
+  abstract public function loadById($id);
+  abstract public function persist();
+  abstract public function update();
+  abstract public function setInstance($instance);
+  abstract public function sync();
 
   public static function getClassAttributes($className)
   {
