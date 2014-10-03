@@ -7,7 +7,6 @@ class GeneticAlgorithmDAO extends AbstractDAO
   public function __constructor()
   {
     parent::__constructor();
-    //$this->populationDAO = new PopulationDAO();
   }
 
   public function loadById($id)
@@ -44,3 +43,4 @@ class GeneticAlgorithmDAO extends AbstractDAO
     return $genomeSize;
   }
 }
+?>
