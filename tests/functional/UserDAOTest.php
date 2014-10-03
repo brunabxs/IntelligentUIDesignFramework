@@ -75,7 +75,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User('4afaacf8-4a71-11e4-b320-000df0ba9bdc', 'user2', 123456, 'user2@users.com');
+    $userDAO->instance = new User(null, 'user2', 123456, 'user2@users.com');
 
     // Act
     $result = $userDAO->update();
