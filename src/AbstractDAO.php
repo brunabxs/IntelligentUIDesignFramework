@@ -34,10 +34,38 @@ class AbstractDAO
       {
         $where[] = $param[0] . '=\'' . $param[1] . '\'';
       }
-      $where = implode(' and ', $where);
-      $where = ' where ' . $where;
+      $where = implode(' AND ', $where);
+      $where = ' WHERE ' . $where;
     }
-    return 'SELECT ' . $select . ' from ' . $entityName . $where;
+
+    return 'SELECT ' . $select . ' FROM ' . $entityName . $where;
+  }
+
+  public static function getInsertQuery($entityName, $instance, $key)
+  {
+    $attributes = self::getClassAttributes($entityName);
+    $insert = implode(', ', $attributes);
+
+    $values = array();
+    foreach ($attributes as $attribute)
+    {
+      if ($key == $attribute)
+      {
+        $values[] = 'UUID()';
+      }
+      else if ($instance->$attribute != null)
+      {
+        $values[] = '\'' . $instance->$attribute . '\'';
+      }
+      else
+      {
+        $values[] = 'null';
+      }
+    }
+    $values = implode(', ', $values);
+    $values = ' VALUES (' . $values . ')';
+
+    return 'INSERT INTO ' . $entityName . ' (' . $insert . ')' . $values;
   }
 
   public static function getInstance($entityName, $params)
@@ -55,6 +83,17 @@ class AbstractDAO
     if (count($result) === 1)
     {
       $this->instance = self::getInstance($entityName, $result[0]);
+    }
+    return $result;
+  }
+
+  public function persistInstance($entityName, $key)
+  {
+    $result = null;
+    if ($this->instance->$key == null)
+    {
+      $query = self::getInsertQuery($entityName, $this->instance, $key);
+      $result = Database::executeInsertQuery($query);
     }
     return $result;
   }

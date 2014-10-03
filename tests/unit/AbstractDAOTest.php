@@ -28,7 +28,7 @@ class AbstractDAOTest extends MyAnotherUnit_Framework_TestCase
     $query = AbstractDAO::getSelectQuery($entity, array($parameter1));
 
     // Assert
-    $this->assertEquals('SELECT user_oid, name, password, email from User where user_oid=\'123\'', $query);
+    $this->assertEquals('SELECT user_oid, name, password, email FROM User WHERE user_oid=\'123\'', $query);
   }
 
   public function testGetSelectQuery_twoParameters()
@@ -42,7 +42,7 @@ class AbstractDAOTest extends MyAnotherUnit_Framework_TestCase
     $query = AbstractDAO::getSelectQuery($entity, array($parameter1, $parameter2));
 
     // Assert
-    $this->assertEquals('SELECT user_oid, name, password, email from User where user_oid=\'123\' and name=\'user\'', $query);
+    $this->assertEquals('SELECT user_oid, name, password, email FROM User WHERE user_oid=\'123\' AND name=\'user\'', $query);
   }
 
   public function testGetSelectQuery_noParameter()
@@ -54,7 +54,49 @@ class AbstractDAOTest extends MyAnotherUnit_Framework_TestCase
     $query = AbstractDAO::getSelectQuery($entity, array());
 
     // Assert
-    $this->assertEquals('SELECT user_oid, name, password, email from User', $query);
+    $this->assertEquals('SELECT user_oid, name, password, email FROM User', $query);
+  }
+
+  public function testGetInsertQuery_allInstancesAttributeSet()
+  {
+    // Arrange
+    $entity = 'User';
+    $instance = new User(null, 'user', 'pass', 'user@users.com');
+    $key = 'user_oid';
+
+    // Act
+    $query = AbstractDAO::getInsertQuery($entity, $instance, $key);
+
+    // Assert
+    $this->assertEquals('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), \'user\', \'pass\', \'user@users.com\')', $query);
+  }
+
+  public function testGetInsertQuery_oneInstancesAttributeSet()
+  {
+    // Arrange
+    $entity = 'User';
+    $instance = new User(null, 'user', null, null);
+    $key = 'user_oid';
+
+    // Act
+    $query = AbstractDAO::getInsertQuery($entity, $instance, $key);
+
+    // Assert
+    $this->assertEquals('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), \'user\', null, null)', $query);
+  }
+
+  public function testGetInsertQuery_noInstancesAttributeSet()
+  {
+    // Arrange
+    $entity = 'User';
+    $instance = new User(null, null, null, null);
+    $key = 'user_oid';
+
+    // Act
+    $query = AbstractDAO::getInsertQuery($entity, $instance, $key);
+
+    // Assert
+    $this->assertEquals('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), null, null, null)', $query);
   }
 
   public function testGetInstance_userEntity()

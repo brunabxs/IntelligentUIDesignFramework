@@ -6,20 +6,14 @@ class UserDAO extends AbstractDAO
     parent::__constructor();
   }
 
-  public function loadInstanceById($id)
+  public function loadById($id)
   {
     return parent::loadInstance('User', array(array('user_oid', $id)));
   }
 
-  public function persistInstance()
+  public function persist()
   {
-    $result = null;
-    if ($this->instance->user_oid == null)
-    {
-      $values = '\'' . $this->instance->name . '\',' . $this->instance->password . ',\'' . $this->instance->email . '\'';
-      $result = Database::executeInsertQuery('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), ' . $values . ')');
-    }
-    return $result;
+    return parent::persistInstance('User', 'user_oid');
   }
 
   public function updateInstance()
