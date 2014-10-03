@@ -68,6 +68,27 @@ class AbstractDAO
     return 'INSERT INTO ' . $entityName . ' (' . $insert . ')' . $values;
   }
 
+  public static function getUpdateQuery($entityName, $instance, $key)
+  {
+    $attributes = self::getClassAttributes($entityName);
+
+    $set = array();
+    foreach ($attributes as $attribute)
+    {
+      if ($instance->$attribute != null)
+      {
+        $set[] = $attribute . '=\'' . $instance->$attribute . '\'';
+      }
+      else
+      {
+        $set[] = $attribute . '=null';
+      }
+    }
+    $set = implode(', ', $set);
+
+    return 'UPDATE ' . $entityName . ' SET ' . $set . ' WHERE ' . $key . ' = \'' . $instance->$key . '\'';
+  }
+
   public static function getInstance($entityName, $params)
   {
     $reflector = new ReflectionClass($entityName);
@@ -94,6 +115,17 @@ class AbstractDAO
     {
       $query = self::getInsertQuery($entityName, $this->instance, $key);
       $result = Database::executeInsertQuery($query);
+    }
+    return $result;
+  }
+
+  public function updateInstance($entityName, $key)
+  {
+    $result = null;
+    if ($this->instance->$key != null)
+    {
+      $query = self::getUpdateQuery($entityName, $this->instance, $key);
+      $result = Database::executeUpdateQuery($query);
     }
     return $result;
   }

@@ -71,35 +71,35 @@ class UserDAOTest extends MyDatabase_TestCase
     $this->assertEquals(1, $this->getConnection()->getRowCount('User'));
   }
 
-  public function testUpdateInstance_userWithUserOidNull_mustNotSaveUserInstance()
+  public function testUpdate_userWithUserOidNull_mustNotSaveUserInstance()
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
     $userDAO->instance = new User('4afaacf8-4a71-11e4-b320-000df0ba9bdc', 'user2', 123456, 'user2@users.com');
 
     // Act
-    $result = $userDAO->updateInstance();
+    $result = $userDAO->update();
 
     // Assert
     $this->assertEquals(0, $result);
     $this->assertEquals(1, $this->getConnection()->getRowCount('User'));
   }
 
-  public function testUpdateInstance_userWithUserOidNotNullThatDoesNotExist_mustNotSaveUserInstance()
+  public function testUpdate_userWithUserOidNotNullThatDoesNotExist_mustNotSaveUserInstance()
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
     $userDAO->instance = new User('4afaacf8-4a71-11e4-b320-000df0ba9bdc', 'user2', 123456, 'user2@users.com');
 
     // Act
-    $result = $userDAO->updateInstance();
+    $result = $userDAO->update();
 
     // Assert
     $this->assertEquals(0, $result);
     $this->assertEquals(1, $this->getConnection()->getRowCount('User'));
   }
 
-  public function testUpdateInstance_userWithUserOidNotNullThatExists_mustSaveUserInstance()
+  public function testUpdate_userWithUserOidNotNullThatExists_mustSaveUserInstance()
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
@@ -107,7 +107,7 @@ class UserDAOTest extends MyDatabase_TestCase
     $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('User');
 
     // Act
-    $result = $userDAO->updateInstance();
+    $result = $userDAO->update();
 
     // Assert
     $this->assertEquals(1, $result);

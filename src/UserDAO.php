@@ -16,18 +16,9 @@ class UserDAO extends AbstractDAO
     return parent::persistInstance('User', 'user_oid');
   }
 
-  public function updateInstance()
+  public function update()
   {
-    $result = null;
-    if ($this->instance->user_oid != null)
-    {
-      $values = 'user_oid=\'' . $this->instance->user_oid . '\', ' .
-                'name=\'' . $this->instance->name . '\',' .
-                'password=' . $this->instance->password . ',' .
-                'email=\'' . $this->instance->email . '\'';
-      $result = Database::executeUpdateQuery('UPDATE User SET ' . $values . ' WHERE user_oid = \'' . $this->instance->user_oid. '\'');
-    }
-    return $result;
+    return parent::updateInstance('User', 'user_oid');
   }
 }
 ?>

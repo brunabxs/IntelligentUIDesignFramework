@@ -99,6 +99,34 @@ class AbstractDAOTest extends MyAnotherUnit_Framework_TestCase
     $this->assertEquals('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), null, null, null)', $query);
   }
 
+  public function testGetUpdateQuery_allInstancesAttributeSet()
+  {
+    // Arrange
+    $entity = 'User';
+    $instance = new User('12345', 'userA', 'passA', 'userA@users.com');
+    $key = 'user_oid';
+
+    // Act
+    $query = AbstractDAO::getUpdateQuery($entity, $instance, $key);
+
+    // Assert
+    $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=\'userA\', password=\'passA\', email=\'userA@users.com\' WHERE user_oid = \'12345\'', $query);
+  }
+
+  public function testGetUpdateQuery_noInstancesAttributeSet()
+  {
+    // Arrange
+    $entity = 'User';
+    $instance = new User('12345', null, null, null);
+    $key = 'user_oid';
+
+    // Act
+    $query = AbstractDAO::getUpdateQuery($entity, $instance, $key);
+
+    // Assert
+    $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=null, password=null, email=null WHERE user_oid = \'12345\'', $query);
+  }
+
   public function testGetInstance_userEntity()
   {
     // Arrange
