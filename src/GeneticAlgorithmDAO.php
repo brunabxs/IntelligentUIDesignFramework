@@ -28,13 +28,14 @@ class GeneticAlgorithmDAO extends AbstractDAO
   public function setInstance($instance)
   {
     $instance->genomeSize = self::generateGenomeSize($instance->properties);
-    parent::$instance = $instance;
+    $this->instance = $instance;
   }
 
   public static function generateGenomeSize($properties)
   {
+    $decodedProperties = json_decode($properties);
     $genomeSize = 0;
-    foreach ($properties as $element => $classes)
+    foreach ($decodedProperties as $element => $classes)
     {
       $numClasses = count($classes) + 1;
       $numBits = ceil(log($numClasses, 2));

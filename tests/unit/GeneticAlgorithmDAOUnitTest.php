@@ -5,7 +5,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
   public function testGenerateGenomeSize_oneElementWithOneClass_genomeSizeMustBe1()
   {
     // Arrange
-    $properties = array("h1"=>array("class1"));
+    $properties = '{"h1":["class1"]}';
 
     // Act
     $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
@@ -17,7 +17,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
   public function testGenerateGenomeSize_oneElementWithTwoClasses_genomeSizeMustBe2()
   {
     // Arrange
-    $properties = array("h1"=>array("class1", "class2"));
+    $properties = '{"h1":["class1", "class2"]}';
 
     // Act
     $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
@@ -29,7 +29,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
   public function testGenerateGenomeSize_twoElementsWithOneClassEach_genomeSizeMustBe2()
   {
     // Arrange
-    $properties = array("h1"=>array("class1"), "h2"=>array("class2"));
+    $properties = '{"h1":["class1"], "h2":["class2"]}';
 
     // Act
     $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
@@ -41,7 +41,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
   public function testGenerateGenomeSize_twoElementsWithTwoClassesEach_genomeSizeMustBe4()
   {
     // Arrange
-    $properties = array("h1"=>array("class1", "class2"), "h2"=>array("class3", "class4"));
+    $properties = '{"h1":["class1", "class2"], "h2":["class3", "class4"]}';
 
     // Act
     $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);

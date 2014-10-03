@@ -26,7 +26,7 @@ class UserDAO extends AbstractDAO
 
   public function setInstance($instance)
   {
-    parent::$instance = $instance;
+    $this->instance = $instance;
   }
 }
 ?>
