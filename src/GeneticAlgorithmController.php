@@ -2,10 +2,12 @@
 class GeneticAlgorithmController
 {
   public $geneticAlgorithmDAO;
+  public $generationDAO;
 
   public function __construct()
   {
     $this->geneticAlgorithmDAO = new GeneticAlgorithmDAO();
+    $this->generationDAO = new GenerationDAO();
   }
 
   public function create($user, $populationSize, $properties)
@@ -15,7 +17,10 @@ class GeneticAlgorithmController
     $this->geneticAlgorithmDAO->persist();
     $this->geneticAlgorithmDAO->sync();
 
-    // TODO criar a primeira geração
+    $generation = new Generation(null, '0', $this->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->generationDAO->setInstance($generation);
+    $this->generationDAO->persist();
+    $this->generationDAO->sync();
   }
 
   public function execute()

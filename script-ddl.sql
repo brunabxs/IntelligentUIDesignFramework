@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Generation;
 DROP TABLE IF EXISTS GeneticAlgorithm;
 DROP TABLE IF EXISTS User;
 
