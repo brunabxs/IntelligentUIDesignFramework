@@ -19,80 +19,33 @@ class AbstractDAO
     return $return;
   }
 
-  public static function getSelectQuery($entityName, $params)
-  {
-    $select = implode(', ', self::getClassAttributes($entityName));
-
-    if (count($params) === 0)
-    {
-      $where = '';
-    }
-    else
-    {
-      $where = array();
-      foreach ($params as $param)
-      {
-        $where[] = $param[0] . '=\'' . $param[1] . '\'';
-      }
-      $where = implode(' AND ', $where);
-      $where = ' WHERE ' . $where;
-    }
-
-    return 'SELECT ' . $select . ' FROM ' . $entityName . $where;
-  }
-
-  public static function getInsertQuery($entityName, $instance, $key)
-  {
-    $attributes = self::getClassAttributes($entityName);
-    $insert = implode(', ', $attributes);
-
-    $values = array();
-    foreach ($attributes as $attribute)
-    {
-      if ($key == $attribute)
-      {
-        $values[] = 'UUID()';
-      }
-      else if ($instance->$attribute != null)
-      {
-        $values[] = '\'' . $instance->$attribute . '\'';
-      }
-      else
-      {
-        $values[] = 'null';
-      }
-    }
-    $values = implode(', ', $values);
-    $values = ' VALUES (' . $values . ')';
-
-    return 'INSERT INTO ' . $entityName . ' (' . $insert . ')' . $values;
-  }
-
-  public static function getUpdateQuery($entityName, $instance, $key)
-  {
-    $attributes = self::getClassAttributes($entityName);
-
-    $set = array();
-    foreach ($attributes as $attribute)
-    {
-      if ($instance->$attribute != null)
-      {
-        $set[] = $attribute . '=\'' . $instance->$attribute . '\'';
-      }
-      else
-      {
-        $set[] = $attribute . '=null';
-      }
-    }
-    $set = implode(', ', $set);
-
-    return 'UPDATE ' . $entityName . ' SET ' . $set . ' WHERE ' . $key . ' = \'' . $instance->$key . '\'';
-  }
-
   public static function getInstance($entityName, $params)
   {
     $reflector = new ReflectionClass($entityName);
     return $reflector->newInstanceArgs($params);
+  }
+
+  public static function getSelectQuery($entityName, $params)
+  {
+    $entityAttibutes = self::getClassAttributes($entityName);
+    return QueryBuilder::getSelectClause($entityName, $entityAttibutes) .
+           QueryBuilder::getFromClause($entityName) .
+           QueryBuilder::getWhereClause($entityName, $params);
+  }
+
+  public static function getInsertQuery($entityName, $instance, $key)
+  {
+    $entityAttibutes = self::getClassAttributes($entityName);
+    return QueryBuilder::getInsertClause($entityName, $entityAttibutes) .
+           QueryBuilder::getValuesClause($instance, $entityAttibutes, $key);
+  }
+
+  public static function getUpdateQuery($entityName, $instance, $key)
+  {
+    $entityAttibutes = self::getClassAttributes($entityName);
+    return QueryBuilder::getUpdateClause($entityName) .
+           QueryBuilder::getSetClause($instance, $entityAttibutes, $key) .
+           QueryBuilder::getWhereClause($entityName, array(array($key, $instance->$key)));
   }
 
   public function loadInstance($entityName, $params)
@@ -128,6 +81,83 @@ class AbstractDAO
       $result = Database::executeUpdateQuery($query);
     }
     return $result;
+  }
+}
+
+class QueryBuilder
+{
+  public static function getSelectClause($entityName, $entityAttributes)
+  {
+    $select = implode(', ', $entityAttributes);
+    return 'SELECT ' . $select;
+  }
+
+  public static function getFromClause($entityName)
+  {
+    return ' FROM ' . $entityName;
+  }
+
+  public static function getWhereClause($entityName, $params)
+  {
+    if (count($params) > 0)
+    {
+      $where = array();
+      foreach ($params as $param)
+      {
+        $where[] = $param[0] . '=\'' . $param[1] . '\'';
+      }
+      $where = implode(' AND ', $where);
+      return ' WHERE ' . $where;
+    }
+    return '';
+  }
+
+  public static function getInsertClause($entityName, $entityAttributes)
+  {
+    return 'INSERT INTO ' . $entityName . ' (' . implode(', ', $entityAttributes) . ')';
+  }
+
+  public static function getValuesClause($instance, $entityAttributes, $entityKeyAttribute)
+  {
+    $values = array();
+    foreach ($entityAttributes as $attribute)
+    {
+      if ($entityKeyAttribute == $attribute)
+      {
+        $values[] = 'UUID()';
+      }
+      else if ($instance->$attribute != null)
+      {
+        $values[] = '\'' . $instance->$attribute . '\'';
+      }
+      else
+      {
+        $values[] = 'null';
+      }
+    }
+    return ' VALUES (' . implode(', ', $values) . ')';
+  }
+
+  public static function getUpdateClause($entityName)
+  {
+    return 'UPDATE ' . $entityName;
+  }
+
+  public static function getSetClause($instance, $entityAttributes)
+  {
+    $set = array();
+    foreach ($entityAttributes as $attribute)
+    {
+      if ($instance->$attribute != null)
+      {
+        $set[] = $attribute . '=\'' . $instance->$attribute . '\'';
+      }
+      else
+      {
+        $set[] = $attribute . '=null';
+      }
+    }
+    return ' SET ' . implode(', ', $set);
   }
 }
 ?>

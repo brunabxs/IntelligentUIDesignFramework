@@ -110,7 +110,7 @@ class AbstractDAOTest extends MyAnotherUnit_Framework_TestCase
     $query = AbstractDAO::getUpdateQuery($entity, $instance, $key);
 
     // Assert
-    $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=\'userA\', password=\'passA\', email=\'userA@users.com\' WHERE user_oid = \'12345\'', $query);
+    $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=\'userA\', password=\'passA\', email=\'userA@users.com\' WHERE user_oid=\'12345\'', $query);
   }
 
   public function testGetUpdateQuery_noInstancesAttributeSet()
@@ -124,7 +124,7 @@ class AbstractDAOTest extends MyAnotherUnit_Framework_TestCase
     $query = AbstractDAO::getUpdateQuery($entity, $instance, $key);
 
     // Assert
-    $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=null, password=null, email=null WHERE user_oid = \'12345\'', $query);
+    $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=null, password=null, email=null WHERE user_oid=\'12345\'', $query);
   }
 
   public function testGetInstance_userEntity()
