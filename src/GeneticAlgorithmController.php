@@ -1,12 +1,18 @@
-<?php
+﻿<?php
 class GeneticAlgorithmController
 {
-  public function __construct($dir)
+  public $geneticAlgorithmDAO;
+
+  public function __construct()
   {
-    $this->gaDAO = new GeneticAlgorithmDAO();
-    $this->populationDAO = new PopulationDAO();
-    $this->dir = $dir;
-    $this->ga = $this->gaDAO->load($this->dir);
+    $this->geneticAlgorithmDAO = new GeneticAlgorithmDAO();
+  }
+
+  public function create($user, $populationSize, $properties)
+  {
+    $geneticAlgorithm = new GeneticAlgorithm(null, $populationSize, null, 'roulette', 'simple', 'simple', $properties, $user->user_oid);
+    $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
+    $this->geneticAlgorithmDAO->persist();
   }
 
   public function execute()

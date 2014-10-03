@@ -1,0 +1,9 @@
+﻿<dataset>
+  <GeneticAlgorithm populationSize="2"
+    genomeSize="1"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"]}'
+    user_oid="00000000-0000-0000-0000-000000000001" />
+</dataset>
