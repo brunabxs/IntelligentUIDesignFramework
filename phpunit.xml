@@ -9,9 +9,11 @@
     <var name="DB_DBNAME" value="db_test" />
   </php>
   <testsuites>
+<!--
     <testsuite name="TestSuite">
       <directory>tests/src</directory>
     </testsuite>
+-->
     <testsuite name="Functional TestSuite">
       <directory>tests/functional</directory>
     </testsuite>
