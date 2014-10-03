@@ -2,9 +2,18 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.2/phpunit.xsd"
          backupGlobals="true"
          bootstrap="vendor/autoload.php">
+  <php>
+    <var name="DB_DSN" value="mysql:dbname=db_test;host=localhost" />
+    <var name="DB_USER" value="root" />
+    <var name="DB_PASSWD" value="" />
+    <var name="DB_DBNAME" value="db_test" />
+  </php>
   <testsuites>
-    <testsuite name="PHPGeneticAlgorithmTestSuite">
+    <testsuite name="TestSuite">
       <directory>tests/src</directory>
+    </testsuite>
+    <testsuite name="Functional TestSuite">
+      <directory>tests/functional</directory>
     </testsuite>
   </testsuites>
 </phpunit>

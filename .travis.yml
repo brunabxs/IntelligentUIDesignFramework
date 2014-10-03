@@ -1,5 +1,14 @@
 language: php
+
 php:
   - "5.5"
 
-before_script: composer install
+mysql:
+  database: db_test
+  username: root
+  encoding: utf8
+
+before_script:
+  - composer install
+  - mysql -e 'create database db_test'
+  - mysql db_test < script-ddl.sql
