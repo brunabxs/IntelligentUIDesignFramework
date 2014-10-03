@@ -1,26 +1,14 @@
 <?php
-class UserDAO
+class UserDAO extends AbstractDAO
 {
-  public $instance = null;
-
   public function __constructor()
   {
-    $this->instance = null;
+    parent::__constructor();
   }
 
   public function loadInstance($id)
   {
-    $result = Database::executeSelectQuery('SELECT * from User where user_oid = \'' . $id . '\'');
-    if (count($result) === 1)
-    {
-      $result = $result[0];
-      $this->instance = new User($result['user_oid'], $result['name'], $result['password'], $result['email']);
-    }
-    else
-    {
-      $this->instance = null;
-    }
-    return $result;
+    return parent::loadInstance('User', array(array('user_oid', $id)));
   }
 
   public function persistInstance()
