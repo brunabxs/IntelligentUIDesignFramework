@@ -1,14 +1,14 @@
 <?php
-class MethodsForCrossover
+class GeneticAlgorithmCrossover
 {
   public static $prob = 0.8;
 
-  public static function rand()
+  private static function rand()
   {
     return rand(0, 10000) / 10000.0;
   }
 
-  public static function randPoint($start, $end)
+  private static function randPoint($start, $end)
   {
     return rand($start, $end - 1);
   }
