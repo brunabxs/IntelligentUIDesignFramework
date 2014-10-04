@@ -1,7 +1,25 @@
 <dataset>
   <Individual individual_oid="00000000-0000-0000-0000-000000000001"
     genome="0"
-    properties='{"h1":[]}'
-    generationFraction='1'
+    properties='{"h1":""}'
+    generationFraction="1"
     generation_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Generation generation_oid="00000000-0000-0000-0000-000000000001"
+    number="0"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
+
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
+    populationSize="1"
+    genomeSize="1"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"]}'
+    user_oid="00000000-0000-0000-0000-000000000001" />
+
+  <User user_oid="00000000-0000-0000-0000-000000000001"
+    name="user1"
+    password="password1"
+    email="user1@users.com" />
 </dataset>

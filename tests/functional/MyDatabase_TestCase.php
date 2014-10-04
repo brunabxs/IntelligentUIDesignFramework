@@ -36,18 +36,20 @@ abstract class MyDatabase_TestCase extends PHPUnit_Extensions_Database_TestCase
   final public function getDataSet()
   {
     $datasetDir = dirname(__FILE__) . '/' . get_class($this) . '/dataset/';
-    $baseScenario = $this->createFlatXmlDataSet($datasetDir . 'base.xml');
+    
     $myScenarioFile = $datasetDir . $this->getName() . '.xml';
-
     if (is_file($myScenarioFile))
     {
-      $myScenario = $this->createFlatXmlDataSet($myScenarioFile);
-      $compositeScenario = new PHPUnit_Extensions_Database_DataSet_CompositeDataSet();
-      $compositeScenario->addDataSet($baseScenario);
-      $compositeScenario->addDataSet($myScenario);
-      return $compositeScenario;
+      return $this->createFlatXmlDataSet($myScenarioFile);
     }
-    return $baseScenario;
+
+    $baseScenarioFile = $datasetDir . 'base.xml';
+    if (is_file($baseScenarioFile))
+    {
+      return $this->createFlatXmlDataSet($datasetDir . 'base.xml');
+    }
+
+    return null;
   }
 
   public function getExpectedDataset($file)

@@ -14,7 +14,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($individualDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $individualDAO->instance->individual_oid);
     $this->assertEquals('0', $individualDAO->instance->genome);
-    $this->assertEquals('{"h1":[]}', $individualDAO->instance->properties);
+    $this->assertEquals('{"h1":""}', $individualDAO->instance->properties);
     $this->assertEquals('1', $individualDAO->instance->generationFraction);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $individualDAO->instance->generation_oid);
   }
@@ -35,7 +35,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $individualDAO = $this->mockIndividualDAO();
-    $individualDAO->instance = new Individual(null, '1', '{"h1":["class1"]}', '0', '00000000-0000-0000-0000-000000000001');
+    $individualDAO->instance = new Individual(null, '1', '{"h1":"class1"}', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $individualDAO->persist();
@@ -49,7 +49,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $individualDAO = $this->mockIndividualDAO();
-    $individualDAO->instance = new Individual(null, '0', '{"h1":[]}', '0', '00000000-0000-0000-0000-000000000001');
+    $individualDAO->instance = new Individual(null, '0', '{"h1":""}', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $individualDAO->persist();
@@ -63,7 +63,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $individualDAO = $this->mockIndividualDAO();
-    $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000002', '0', '{"h1":[]}', '0', '00000000-0000-0000-0000-000000000001');
+    $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000002', '0', '{"h1":""}', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $individualDAO->persist();
@@ -77,7 +77,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $individualDAO = $this->mockIndividualDAO();
-    $individualDAO->instance = new Individual(null, '0', '{"h1":[]}', '0', '00000000-0000-0000-0000-000000000001');
+    $individualDAO->instance = new Individual(null, '0', '{"h1":""}', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $individualDAO->update();
@@ -91,7 +91,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $individualDAO = $this->mockIndividualDAO();
-    $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000002', '0', '{"h1":[]}', '0', '00000000-0000-0000-0000-000000000001');
+    $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000002', '0', '{"h1":""}', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $individualDAO->update();
@@ -105,7 +105,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $individualDAO = $this->mockIndividualDAO();
-    $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000001', '1', '{"h1":["class1"]}', '1', '00000000-0000-0000-0000-000000000001');
+    $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000001', '1', '{"h1":"class1"}', '1', '00000000-0000-0000-0000-000000000001');
     $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('Individual');
 
     // Act
@@ -130,7 +130,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($individualDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $individualDAO->instance->individual_oid);
     $this->assertEquals('0', $individualDAO->instance->genome);
-    $this->assertEquals('{"h1":[]}', $individualDAO->instance->properties);
+    $this->assertEquals('{"h1":""}', $individualDAO->instance->properties);
     $this->assertEquals('1', $individualDAO->instance->generationFraction);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $individualDAO->instance->generation_oid);
   }
@@ -163,11 +163,11 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertEquals('00000000-0000-0000-0000-000000000002', $individuals[1]->individual_oid);
   }
 
-  public function testLoadAllIndividuals_generationHasTwoIndividuals_mustReturnEmptyArray()
+  public function testLoadAllIndividuals_generationHasNoIndividual_mustReturnEmptyArray()
   {
     // Arrange
     $individualDAO = $this->mockIndividualDAO();
-    $generation = new Generation('00000000-0000-0000-0000-000000000002', null, null);
+    $generation = new Generation('00000000-0000-0000-0000-000000000001', null, null);
 
     // Act
     $individuals = $individualDAO->loadAllIndividuals($generation);

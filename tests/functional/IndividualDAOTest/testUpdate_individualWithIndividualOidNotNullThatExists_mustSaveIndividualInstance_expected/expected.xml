@@ -1,7 +1,7 @@
 <dataset>
   <Individual individual_oid="00000000-0000-0000-0000-000000000001"
     genome="1"
-    properties='{"h1":["class1"]}'
+    properties='{"h1":"class1"}'
     generationFraction='1'
     generation_oid="00000000-0000-0000-0000-000000000001" />
 </dataset>

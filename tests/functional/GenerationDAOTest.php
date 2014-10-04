@@ -162,16 +162,16 @@ class GenerationDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $generationDAO = $this->mockGenerationDAO();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', null, null, null, null, null, null, null);
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null);
 
     // Act
     $generationDAO->loadLastGeneration($geneticAlgorithm);
 
     // Assert
     $this->assertNotNull($generationDAO->instance);
-    $this->assertEquals('00000000-0000-0000-0000-000000000023', $generationDAO->instance->generation_oid);
+    $this->assertEquals('00000000-0000-0000-0000-000000000003', $generationDAO->instance->generation_oid);
     $this->assertEquals('2', $generationDAO->instance->number);
-    $this->assertEquals('00000000-0000-0000-0000-000000000002', $generationDAO->instance->geneticAlgorithm_oid);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $generationDAO->instance->geneticAlgorithm_oid);
   }
 
   public function testLoadLastGeneration_geneticAlgorithmHasOneGeneration_mustSetGenerationInstanceToFirstGeneration()
@@ -194,7 +194,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $generationDAO = $this->mockGenerationDAO();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', null, null, null, null, null, null, null);
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null);
 
     // Act
     $generationDAO->loadLastGeneration($geneticAlgorithm);

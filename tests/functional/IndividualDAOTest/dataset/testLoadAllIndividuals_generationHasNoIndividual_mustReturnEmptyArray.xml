@@ -1,10 +1,12 @@
 <dataset>
+  <Individual />
+
   <Generation generation_oid="00000000-0000-0000-0000-000000000001"
     number="0"
     geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
 
   <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
-    populationSize="1"
+    populationSize="2"
     genomeSize="1"
     methodForSelection="roulette"
     methodForCrossover="simple"
