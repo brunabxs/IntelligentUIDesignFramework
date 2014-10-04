@@ -148,6 +148,47 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertNull($individualDAO->instance);
   }
 
+  public function testLoadAllIndividuals_generationHasTwoIndividuals_mustReturnAllOfThem()
+  {
+    // Arrange
+    $individualDAO = $this->mockIndividualDAO();
+    $generation = new Generation('00000000-0000-0000-0000-000000000001', null, null);
+
+    // Act
+    $individuals = $individualDAO->loadAllIndividuals($generation);
+
+    // Assert
+    $this->assertEquals(2, count($individuals));
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $individuals[0]->individual_oid);
+    $this->assertEquals('00000000-0000-0000-0000-000000000002', $individuals[1]->individual_oid);
+  }
+
+  public function testLoadAllIndividuals_generationHasTwoIndividuals_mustReturnEmptyArray()
+  {
+    // Arrange
+    $individualDAO = $this->mockIndividualDAO();
+    $generation = new Generation('00000000-0000-0000-0000-000000000002', null, null);
+
+    // Act
+    $individuals = $individualDAO->loadAllIndividuals($generation);
+
+    // Assert
+    $this->assertEquals(0, count($individuals));
+  }
+
+  public function testLoadAllIndividuals_mustSetIndividualInstanceToNull()
+  {
+    // Arrange
+    $individualDAO = $this->mockIndividualDAO();
+    $generation = new Generation('00000000-0000-0000-0000-000000000001', null, null);
+
+    // Act
+    $individuals = $individualDAO->loadAllIndividuals($generation);
+
+    // Assert
+    $this->assertNull($individualDAO->instance);
+  }
+
   protected function mockIndividualDAO()
   {
     $stub = $this->getMockBuilder('IndividualDAO')

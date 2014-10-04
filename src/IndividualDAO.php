@@ -35,6 +35,11 @@ class IndividualDAO extends AbstractDAO
                                                      array('generation_oid', $this->instance->generation_oid)));
   }
 
+  public function loadAllIndividuals($generation)
+  {
+    return parent::loadAllInstances(self::$entity, array(array('generation_oid', $generation->generation_oid)), ' ORDER BY genome ');
+  }
+
   public static function generateGenome($geneticAlgorithm)
   {
     $genome = '';

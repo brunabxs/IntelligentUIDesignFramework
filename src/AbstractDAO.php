@@ -54,6 +54,20 @@ abstract class AbstractDAO
            QueryBuilder::getWhereClause($entityName, array(array($key, $instance->$key)));
   }
 
+  public function loadAllInstances($entityName, $params, $append='')
+  {
+    $this->instance = null;
+    $instances = array();
+
+    $query = self::getSelectQuery($entityName, $params) . $append;
+    $result = Database::executeSelectQuery($query);
+    foreach ($result as $row)
+    {
+      $instances[] = self::getInstance($entityName, $row);
+    }
+    return $instances;
+  }
+
   public function loadInstance($entityName, $params, $append='')
   {
     $this->instance = null;
