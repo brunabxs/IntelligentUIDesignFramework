@@ -15,10 +15,10 @@
     </testsuite>
 -->
     <testsuite name="Functional TestSuite">
-      <directory>tests/functional</directory>
+      <directory>src/test/functional</directory>
     </testsuite>
     <testsuite name="Unit TestSuite">
-      <directory>tests/unit</directory>
+      <directory>src/test/unit</directory>
     </testsuite>
   </testsuites>
 </phpunit>

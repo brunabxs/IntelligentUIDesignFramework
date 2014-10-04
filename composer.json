@@ -19,6 +19,6 @@
   },
 
   "autoload": {
-    "classmap": ["src/"]
+    "classmap": ["src/model", "src/action"]
   }
 }
