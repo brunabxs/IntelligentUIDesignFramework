@@ -40,9 +40,9 @@ class GeneticAlgorithmController
 
     foreach ($genomes as $genome => $count)
     {
-      $generationFraction = $count / $this->geneticAlgorithmDAO->instance->populationSize;
+      $quantity = $count;
       $properties = IndividualDAO::generateGenome($this->geneticAlgorithmDAO->instance, $genome);
-      $individual = new Individual(null, $genome, $properties, $generationFraction, $this->generationDAO->instance->generation_oid);
+      $individual = new Individual(null, $genome, $properties, $quantity, null, $this->generationDAO->instance->generation_oid);
       $this->individualDAO->setInstance($individual);
       $this->individualDAO->persist();
     }

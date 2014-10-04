@@ -31,7 +31,8 @@ CREATE TABLE Individual (
   individual_oid char(36),
   genome varchar(30),
   properties text,
-  generationFraction real,
+  quantity int,
+  score real,
   generation_oid char(36)
 );
 
