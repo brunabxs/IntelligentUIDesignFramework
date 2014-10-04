@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS Individual;
 DROP TABLE IF EXISTS Generation;
 DROP TABLE IF EXISTS GeneticAlgorithm;
 DROP TABLE IF EXISTS User;
@@ -26,6 +27,14 @@ CREATE TABLE Generation (
   geneticAlgorithm_oid char(36)
 );
 
+CREATE TABLE Individual (
+  individual_oid char(36),
+  genome varchar(30),
+  properties text,
+  generationFraction real,
+  generation_oid char(36)
+);
+
 ALTER TABLE User ADD CONSTRAINT PK_User PRIMARY KEY (user_oid);
 ALTER TABLE User ADD CONSTRAINT EK_User UNIQUE KEY (name);
 
@@ -34,3 +43,6 @@ ALTER TABLE GeneticAlgorithm ADD CONSTRAINT EK_GeneticAlgorithm UNIQUE KEY (user
 
 ALTER TABLE Generation ADD CONSTRAINT PK_Generation PRIMARY KEY (generation_oid);
 ALTER TABLE Generation ADD CONSTRAINT EK_Generation UNIQUE KEY (number, geneticAlgorithm_oid);
+
+ALTER TABLE Individual ADD CONSTRAINT PK_Individual PRIMARY KEY (individual_oid);
+ALTER TABLE Individual ADD CONSTRAINT EK_Individual UNIQUE KEY (genome, generation_oid);

@@ -1,57 +1,44 @@
 <?php
-class IndividualDAO
+class IndividualDAO extends AbstractDAO
 {
-  public function create($ga, $genome=null, $score=null)
+  private static $entity = 'Individual';
+  private static $entityKey = 'individual_oid';
+
+  public function __constructor()
   {
-    if (!isset($genome))
-    {
-      $genome = self::generateGenome($ga);
-    }
-
-    $properties = self::generateProperties($ga, $genome);
-
-    return new Individual($genome, $properties, $score);
+    parent::__constructor();
   }
 
-  public function load($dir, $ga, $generation, $genomes)
+  public function loadById($id)
   {
-    $individuals = array();
-    foreach ($genomes as $index => $genome)
-    {
-      $properties = self::generateProperties($ga, $genome);
-      $individuals[] = new Individual($genome, $properties, null);
-    }
-
-    return $individuals;
+    return parent::loadInstance(self::$entity, array(array(self::$entityKey, $id)));
   }
 
-  public function save($dir, $generation, $index, $individual)
+  public function persist()
   {
-    $json = self::convertToJSON($generation, $individual);
-    file_put_contents(self::getFile($dir, $generation, $index, $individual->genome), $json, LOCK_EX);
+    return parent::persistInstance(self::$entity, self::$entityKey);
   }
 
-  public function getFileContent($dir, $generation, $index, $genome)
+  public function update()
   {
-    return file_get_contents(self::getFile($dir, $generation, $index, $genome));
+    return parent::updateInstance(self::$entity, self::$entityKey);
   }
 
-  public static function getFile($dir, $generation, $index, $genome)
+  public function setInstance($instance)
   {
-    return $dir . $generation . '-' . $index . '-' . $genome . '.json';
+    $this->instance = $instance;
   }
 
-  public static function convertToJSON($generation, $individual)
+  public function sync()
   {
-    return json_encode(array('generation' => $generation,
-                             'genome' => $individual->genome,
-                             'properties' => json_decode($individual->properties)));
+    return parent::loadInstance(self::$entity, array(array('genome', $this->instance->genome),
+                                                     array('generation_oid', $this->instance->generation_oid)));
   }
 
-  private static function generateGenome($ga)
+  public static function generateGenome($geneticAlgorithm)
   {
     $genome = '';
-    for ($i = 0; $i < $ga->genomeSize; $i++)
+    for ($i = 0; $i < $geneticAlgorithm->genomeSize; $i++)
     {
       $rand = rand(0, 1);
       $genome .= "$rand";
@@ -59,18 +46,27 @@ class IndividualDAO
     return $genome;
   }
 
-  private static function generateProperties($ga, $genome)
+  public static function generateProperties($geneticAlgorithm, $genome)
   {
+    $decodedProperties = json_decode($geneticAlgorithm->properties);
     $properties = array();
     $start = 0;
-    foreach ($ga->properties as $element => $classes)
+    foreach ($decodedProperties as $element => $classes)
     {
       $numClasses = count($classes);
       $numBits = ceil(log($numClasses+1, 2));
       $genomePart = substr($genome, $start, $numBits);
       $index = bindec($genomePart);
       $start += $numBits;
-      $properties[$element] = $index < $numClasses ? $classes[$index] : '';
+
+      if ($index == 0 || $index > $numClasses)
+      {
+        $properties[$element] = '';
+      }
+      else
+      {
+        $properties[$element] = $classes[$index-1];
+      }
     }
     return json_encode($properties);
   }
