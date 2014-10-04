@@ -1,12 +1,12 @@
 <?php
-class MethodsForSelection
+class GeneticAlgorithmSelection
 {
-  public static function rand()
+  private static function rand()
   {
     return rand(0, 10000) / 10000.0;
   }
 
-  public static function getRandomValues($size)
+  private static function getRandomValues($size)
   {
     $values = array();
     for ($i = 0; $i < $size; $i++)
@@ -16,25 +16,26 @@ class MethodsForSelection
     return $values;
   }
 
-  public static function roulette($individuals, $rouletteValues=array())
+  private static function calculateTotalScore($individuals)
   {
     $totalScore = 0;
     foreach ($individuals as $individual)
     {
       $totalScore += $individual->score;
     }
+    return $totalScore;
+  }
 
-    $numSelectedIndividuals = count($individuals);
+  public static function roulette($individuals, $rouletteValues=array())
+  {
+    $totalScore = self::calculateTotalScore($individuals);
+
+    $rouletteValues = empty($rouletteValues) ? self::getRandomValues($numSelectedIndividuals) : $rouletteValues;
+
     $selectedIndividuals = array();
-
-    if (count($rouletteValues) == 0)
+    for ($i = 0; $i < count($individuals); $i++)
     {
-      $rouletteValues = self::getRandomValues($numSelectedIndividuals);
-    }
-
-    for ($i = 0; $i < $numSelectedIndividuals; $i++)
-    {
-      $selectedIndividuals[] = $individuals[$numSelectedIndividuals - 1];
+      $selectedIndividuals[$i] = $individuals[count($individuals) - 1];
       $cummulativeProportion = 0;
       foreach ($individuals as $individual)
       {
