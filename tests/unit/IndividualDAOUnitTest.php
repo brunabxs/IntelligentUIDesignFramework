@@ -8,7 +8,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $geneticAlgorithm = new GeneticAlgorithm(null, null, 2, null, null, null, '{"h1":["class1","class2"]}', null);
 
     // Act
-    $genome = IndividualDAO::generateGenome($geneticAlgorithm);
+    $genome = self::callMethod('IndividualDAO', 'generateGenome', array($geneticAlgorithm));
 
     // Assert
     $this->assertEquals(2, strlen($genome));
@@ -20,7 +20,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $geneticAlgorithm = new GeneticAlgorithm(null, null, 1, null, null, null, '{"h1":["class1"]}', null);
 
     // Act
-    $genome = IndividualDAO::generateGenome($geneticAlgorithm);
+    $genome = self::callMethod('IndividualDAO', 'generateGenome', array($geneticAlgorithm));
 
     // Assert
     $this->assertEquals(1, strlen($genome));
@@ -33,7 +33,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '1';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"class1"}', $properties);
@@ -46,7 +46,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '0';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":""}', $properties);
@@ -59,7 +59,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '00';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"","h2":""}', $properties);
@@ -72,7 +72,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '01';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"","h2":"class2"}', $properties);
@@ -85,7 +85,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '10';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"class1","h2":""}', $properties);
@@ -98,7 +98,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '11';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"class1","h2":"class2"}', $properties);
@@ -111,7 +111,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '000';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"","h2":""}', $properties);
@@ -124,7 +124,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '010';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"class1","h2":""}', $properties);
@@ -137,7 +137,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '100';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"class2","h2":""}', $properties);
@@ -150,7 +150,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '110';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"","h2":""}', $properties);
@@ -163,7 +163,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '001';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"","h2":"class3"}', $properties);
@@ -176,7 +176,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '011';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"class1","h2":"class3"}', $properties);
@@ -189,7 +189,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '101';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"class2","h2":"class3"}', $properties);
@@ -202,7 +202,7 @@ class IndividualDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $genome = '111';
 
     // Act
-    $properties = IndividualDAO::generateProperties($geneticAlgorithm, $genome);
+    $properties = self::callMethod('IndividualDAO', 'generateProperties', array($geneticAlgorithm, $genome));
 
     // Assert
     $this->assertEquals('{"h1":"","h2":"class3"}', $properties);

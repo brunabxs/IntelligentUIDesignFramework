@@ -8,7 +8,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $entity = 'User';
 
     // Act
-    $attributes = AbstractDAO::getClassAttributes($entity);
+    $attributes = self::callMethod('AbstractDAO', 'getClassAttributes', array($entity));
 
     // Assert
     $this->assertEquals(4, count($attributes));
@@ -25,7 +25,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $parameter1 = array('user_oid', '123');
 
     // Act
-    $query = AbstractDAO::getSelectQuery($entity, array($parameter1));
+    $query = self::callMethod('AbstractDAO', 'getSelectQuery', array($entity, array($parameter1)));
 
     // Assert
     $this->assertEquals('SELECT user_oid, name, password, email FROM User WHERE user_oid=\'123\'', $query);
@@ -39,7 +39,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $parameter2 = array('name', 'user');
 
     // Act
-    $query = AbstractDAO::getSelectQuery($entity, array($parameter1, $parameter2));
+    $query = self::callMethod('AbstractDAO', 'getSelectQuery', array($entity, array($parameter1, $parameter2)));
 
     // Assert
     $this->assertEquals('SELECT user_oid, name, password, email FROM User WHERE user_oid=\'123\' AND name=\'user\'', $query);
@@ -51,7 +51,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $entity = 'User';
 
     // Act
-    $query = AbstractDAO::getSelectQuery($entity, array());
+    $query = self::callMethod('AbstractDAO', 'getSelectQuery', array($entity, array()));
 
     // Assert
     $this->assertEquals('SELECT user_oid, name, password, email FROM User', $query);
@@ -65,7 +65,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $key = 'user_oid';
 
     // Act
-    $query = AbstractDAO::getInsertQuery($entity, $instance, $key);
+    $query = self::callMethod('AbstractDAO', 'getInsertQuery', array($entity, $instance, $key));
 
     // Assert
     $this->assertEquals('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), \'user\', \'pass\', \'user@users.com\')', $query);
@@ -79,7 +79,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $key = 'user_oid';
 
     // Act
-    $query = AbstractDAO::getInsertQuery($entity, $instance, $key);
+    $query = self::callMethod('AbstractDAO', 'getInsertQuery', array($entity, $instance, $key));
 
     // Assert
     $this->assertEquals('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), \'user\', null, null)', $query);
@@ -93,7 +93,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $key = 'user_oid';
 
     // Act
-    $query = AbstractDAO::getInsertQuery($entity, $instance, $key);
+    $query = self::callMethod('AbstractDAO', 'getInsertQuery', array($entity, $instance, $key));
 
     // Assert
     $this->assertEquals('INSERT INTO User (user_oid, name, password, email) VALUES (UUID(), null, null, null)', $query);
@@ -107,7 +107,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $key = 'user_oid';
 
     // Act
-    $query = AbstractDAO::getUpdateQuery($entity, $instance, $key);
+    $query = self::callMethod('AbstractDAO', 'getUpdateQuery', array($entity, $instance, $key));
 
     // Assert
     $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=\'userA\', password=\'passA\', email=\'userA@users.com\' WHERE user_oid=\'12345\'', $query);
@@ -121,7 +121,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $key = 'user_oid';
 
     // Act
-    $query = AbstractDAO::getUpdateQuery($entity, $instance, $key);
+    $query = self::callMethod('AbstractDAO', 'getUpdateQuery', array($entity, $instance, $key));
 
     // Assert
     $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=null, password=null, email=null WHERE user_oid=\'12345\'', $query);
@@ -134,7 +134,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $params = array('123', 'user0', '123456', 'user0@users.com');
 
     // Act
-    $instance = AbstractDAO::getInstance($entity, $params);
+    $instance = self::callMethod('AbstractDAO', 'initInstance', array($entity, $params));
 
     // Assert
     $this->assertNotNull($instance);

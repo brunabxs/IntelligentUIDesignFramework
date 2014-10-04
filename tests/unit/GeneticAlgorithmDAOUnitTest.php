@@ -8,7 +8,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $properties = '{"h1":["class1"]}';
 
     // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
+    $genomeSize = self::callMethod('GeneticAlgorithmDAO', 'generateGenomeSize', array($properties));
 
     // Assert
     $this->assertEquals(1, $genomeSize);
@@ -20,7 +20,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $properties = '{"h1":["class1", "class2"]}';
 
     // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
+    $genomeSize = self::callMethod('GeneticAlgorithmDAO', 'generateGenomeSize', array($properties));
 
     // Assert
     $this->assertEquals(2, $genomeSize);
@@ -32,7 +32,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $properties = '{"h1":["class1"], "h2":["class2"]}';
 
     // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
+    $genomeSize = self::callMethod('GeneticAlgorithmDAO', 'generateGenomeSize', array($properties));
 
     // Assert
     $this->assertEquals(2, $genomeSize);
@@ -44,7 +44,7 @@ class GeneticAlgorithmDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $properties = '{"h1":["class1", "class2"], "h2":["class3", "class4"]}';
 
     // Act
-    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
+    $genomeSize = self::callMethod('GeneticAlgorithmDAO', 'generateGenomeSize', array($properties));
 
     // Assert
     $this->assertEquals(4, $genomeSize);

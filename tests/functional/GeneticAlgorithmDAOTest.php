@@ -116,7 +116,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(1, $result);
-    $queryTable = $this->getConnection()->createQueryTable('GeneticAlgorithm', AbstractDAO::getSelectQuery('GeneticAlgorithm', array()));
+    $queryTable = $this->getConnection()->createQueryTable('GeneticAlgorithm', 'SELECT geneticAlgorithm_oid, populationSize, genomeSize, methodForSelection, methodForCrossover, methodForMutation, properties, user_oid FROM GeneticAlgorithm');
     $this->assertTablesEqual($expectedTable, $queryTable);
   }
 

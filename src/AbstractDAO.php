@@ -3,7 +3,7 @@ abstract class AbstractDAO
 {
   public $instance = null;
 
-  public function __constructor()
+  protected function __constructor()
   {
     $this->instance = null;
   }
@@ -14,7 +14,7 @@ abstract class AbstractDAO
   abstract public function setInstance($instance);
   abstract public function sync();
 
-  public static function getClassAttributes($className)
+  private static function getClassAttributes($className)
   {
     $return = array();
     $attributes = get_class_vars($className);
@@ -25,13 +25,13 @@ abstract class AbstractDAO
     return $return;
   }
 
-  public static function getInstance($entityName, $params)
+  private static function initInstance($entityName, $params)
   {
     $reflector = new ReflectionClass($entityName);
     return $reflector->newInstanceArgs($params);
   }
 
-  public static function getSelectQuery($entityName, $params)
+  protected static function getSelectQuery($entityName, $params)
   {
     $entityAttibutes = self::getClassAttributes($entityName);
     return QueryBuilder::getSelectClause($entityName, $entityAttibutes) .
@@ -39,14 +39,14 @@ abstract class AbstractDAO
            QueryBuilder::getWhereClause($entityName, $params);
   }
 
-  public static function getInsertQuery($entityName, $instance, $key)
+  protected static function getInsertQuery($entityName, $instance, $key)
   {
     $entityAttibutes = self::getClassAttributes($entityName);
     return QueryBuilder::getInsertClause($entityName, $entityAttibutes) .
            QueryBuilder::getValuesClause($instance, $entityAttibutes, $key);
   }
 
-  public static function getUpdateQuery($entityName, $instance, $key)
+  protected static function getUpdateQuery($entityName, $instance, $key)
   {
     $entityAttibutes = self::getClassAttributes($entityName);
     return QueryBuilder::getUpdateClause($entityName) .
@@ -54,7 +54,7 @@ abstract class AbstractDAO
            QueryBuilder::getWhereClause($entityName, array(array($key, $instance->$key)));
   }
 
-  public function loadAllInstances($entityName, $params, $append='')
+  protected function loadAllInstances($entityName, $params, $append='')
   {
     $this->instance = null;
     $instances = array();
@@ -63,12 +63,12 @@ abstract class AbstractDAO
     $result = Database::executeSelectQuery($query);
     foreach ($result as $row)
     {
-      $instances[] = self::getInstance($entityName, $row);
+      $instances[] = self::initInstance($entityName, $row);
     }
     return $instances;
   }
 
-  public function loadInstance($entityName, $params, $append='')
+  protected function loadInstance($entityName, $params, $append='')
   {
     $this->instance = null;
 
@@ -76,12 +76,12 @@ abstract class AbstractDAO
     $result = Database::executeSelectQuery($query);
     if (count($result) === 1)
     {
-      $this->instance = self::getInstance($entityName, $result[0]);
+      $this->instance = self::initInstance($entityName, $result[0]);
     }
     return $result;
   }
 
-  public function persistInstance($entityName, $key)
+  protected function persistInstance($entityName, $key)
   {
     $result = null;
     if ($this->instance->$key == null)
@@ -92,7 +92,7 @@ abstract class AbstractDAO
     return $result;
   }
 
-  public function updateInstance($entityName, $key)
+  protected function updateInstance($entityName, $key)
   {
     $result = null;
     if ($this->instance->$key != null)
