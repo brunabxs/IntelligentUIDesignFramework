@@ -8,11 +8,11 @@ class UserDAOTest extends MyDatabase_TestCase
     $userDAO = $this->mockUserDAO();
 
     // Act
-    $userDAO->loadById('9d3f75d2-4a72-11e4-b320-000df0ba9bdc');
+    $userDAO->loadById('00000000-0000-0000-0000-000000000001');
 
     // Assert
     $this->assertNotNull($userDAO->instance);
-    $this->assertEquals('9d3f75d2-4a72-11e4-b320-000df0ba9bdc', $userDAO->instance->user_oid);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $userDAO->instance->user_oid);
     $this->assertEquals('user1', $userDAO->instance->name);
     $this->assertEquals('user1@users.com', $userDAO->instance->email);
   }
@@ -23,7 +23,7 @@ class UserDAOTest extends MyDatabase_TestCase
     $userDAO = $this->mockUserDAO();
 
     // Act
-    $userDAO->loadById('4afaacf8-4a71-11e4-b320-000df0ba9bdc');
+    $userDAO->loadById('00000000-0000-0000-0000-000000000002');
 
     // Assert
     $this->assertNull($userDAO->instance);
@@ -33,7 +33,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User(null, 'username', 123456, 'username@users.com');
+    $userDAO->instance = new User(null, 'newuser', 'newpassword', 'newuser@users.com');
 
     // Act
     $result = $userDAO->persist();
@@ -47,7 +47,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User(null, 'user1', 123456, 'user1@users.com');
+    $userDAO->instance = new User(null, 'user1', 'newpassword', 'newuser@users.com');
 
     // Act
     $result = $userDAO->persist();
@@ -61,7 +61,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User('4afaacf8-4a71-11e4-b320-000df0ba9bdc', 'user2', 123456, 'user2@users.com');
+    $userDAO->instance = new User('00000000-0000-0000-0000-000000000002', 'newuser', 'newpasword', 'newuser@users.com');
 
     // Act
     $result = $userDAO->persist();
@@ -75,7 +75,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User(null, 'user2', 123456, 'user2@users.com');
+    $userDAO->instance = new User(null, 'user1', 'newpassword', 'newuser@users.com');
 
     // Act
     $result = $userDAO->update();
@@ -89,7 +89,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User('4afaacf8-4a71-11e4-b320-000df0ba9bdc', 'user2', 123456, 'user2@users.com');
+    $userDAO->instance = new User('00000000-0000-0000-0000-000000000002', 'user1', 'newpassword', 'newuser@users.com');
 
     // Act
     $result = $userDAO->update();
@@ -103,7 +103,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User('9d3f75d2-4a72-11e4-b320-000df0ba9bdc', 'user2', '123456', 'user2@users.com');
+    $userDAO->instance = new User('00000000-0000-0000-0000-000000000001', 'newuser', 'newpassword', 'newuser@users.com');
     $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('User');
 
     // Act
@@ -126,7 +126,7 @@ class UserDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertNotNull($userDAO->instance);
-    $this->assertEquals('9d3f75d2-4a72-11e4-b320-000df0ba9bdc', $userDAO->instance->user_oid);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $userDAO->instance->user_oid);
     $this->assertEquals('user1', $userDAO->instance->name);
     $this->assertEquals('user1@users.com', $userDAO->instance->email);
   }
@@ -135,7 +135,7 @@ class UserDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $userDAO = $this->mockUserDAO();
-    $userDAO->instance = new User(null, 'user2', null, null);
+    $userDAO->instance = new User(null, 'newuser', null, null);
 
     // Act
     $result = $userDAO->sync();

@@ -1,6 +1,6 @@
 <dataset>
-  <User user_oid="9d3f75d2-4a72-11e4-b320-000df0ba9bdc"
+  <User user_oid="00000000-0000-0000-0000-000000000001"
     name="user1"
-    password="0x24c9e15e52afc47c225b757e7bee1f9d"
+    password="password1"
     email="user1@users.com" />
 </dataset>

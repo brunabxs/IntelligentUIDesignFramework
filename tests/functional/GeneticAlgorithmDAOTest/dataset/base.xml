@@ -1,10 +1,10 @@
 <dataset>
-  <GeneticAlgorithm geneticAlgorithm_oid="9d3f75d2-4a72-11e4-b320-000df0ba9bdc"
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
     populationSize="2"
     genomeSize="2"
     methodForSelection="roulette"
     methodForCrossover="simple"
     methodForMutation="simple"
-    properties="h1:class1"
-    user_oid="9d3f75d2-4a72-11e4-b320-000df0ba9bdc" />
+    properties='{"h1":["class1"],"h2":["class2"]}'
+    user_oid="00000000-0000-0000-0000-000000000001" />
 </dataset>
