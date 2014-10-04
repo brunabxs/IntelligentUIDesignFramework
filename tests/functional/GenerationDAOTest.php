@@ -158,6 +158,51 @@ class GenerationDAOTest extends MyDatabase_TestCase
     $this->assertNull($generationDAO->instance);
   }
 
+  public function testLoadLastGeneration_geneticAlgorithmHasThreeGenerations_mustSetGenerationInstanceToThirdGeneration()
+  {
+    // Arrange
+    $generationDAO = $this->mockGenerationDAO();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', null, null, null, null, null, null, null);
+
+    // Act
+    $generationDAO->loadLastGeneration($geneticAlgorithm);
+
+    // Assert
+    $this->assertNotNull($generationDAO->instance);
+    $this->assertEquals('00000000-0000-0000-0000-000000000023', $generationDAO->instance->generation_oid);
+    $this->assertEquals('2', $generationDAO->instance->number);
+    $this->assertEquals('00000000-0000-0000-0000-000000000002', $generationDAO->instance->geneticAlgorithm_oid);
+  }
+
+  public function testLoadLastGeneration_geneticAlgorithmHasOneGeneration_mustSetGenerationInstanceToFirstGeneration()
+  {
+    // Arrange
+    $generationDAO = $this->mockGenerationDAO();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null);
+
+    // Act
+    $generationDAO->loadLastGeneration($geneticAlgorithm);
+
+    // Assert
+    $this->assertNotNull($generationDAO->instance);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $generationDAO->instance->generation_oid);
+    $this->assertEquals('0', $generationDAO->instance->number);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $generationDAO->instance->geneticAlgorithm_oid);
+  }
+
+  public function testLoadLastGeneration_geneticAlgorithmHasNoGeneration_mustSetGenerationInstanceNull()
+  {
+    // Arrange
+    $generationDAO = $this->mockGenerationDAO();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', null, null, null, null, null, null, null);
+
+    // Act
+    $generationDAO->loadLastGeneration($geneticAlgorithm);
+
+    // Assert
+    $this->assertNull($generationDAO->instance);
+  }
+
   protected function mockGenerationDAO()
   {
     $stub = $this->getMockBuilder('GenerationDAO')

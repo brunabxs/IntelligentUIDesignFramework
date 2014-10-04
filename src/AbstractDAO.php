@@ -54,11 +54,11 @@ abstract class AbstractDAO
            QueryBuilder::getWhereClause($entityName, array(array($key, $instance->$key)));
   }
 
-  public function loadInstance($entityName, $params)
+  public function loadInstance($entityName, $params, $append='')
   {
     $this->instance = null;
 
-    $query = self::getSelectQuery($entityName, $params);
+    $query = self::getSelectQuery($entityName, $params) . $append;
     $result = Database::executeSelectQuery($query);
     if (count($result) === 1)
     {

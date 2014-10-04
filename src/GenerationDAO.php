@@ -34,5 +34,10 @@ class GenerationDAO extends AbstractDAO
     return parent::loadInstance(self::$entity, array(array('number', $this->instance->number),
                                                      array('geneticAlgorithm_oid', $this->instance->geneticAlgorithm_oid)));
   }
+
+  public function loadLastGeneration($geneticAlgorithm)
+  {
+    return parent::loadInstance(self::$entity, array(array('geneticAlgorithm_oid', $geneticAlgorithm->geneticAlgorithm_oid)), ' ORDER BY number DESC LIMIT 1');
+  }
 }
 ?>
