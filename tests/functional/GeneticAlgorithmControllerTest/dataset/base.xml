@@ -1,4 +1,5 @@
 <dataset>
   <GeneticAlgorithm />
   <Generation />
+  <Individual />
 </dataset>

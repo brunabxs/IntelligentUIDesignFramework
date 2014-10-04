@@ -57,5 +57,18 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Assert
     $this->assertNotNull($geneticAlgorithmController->generationDAO->instance->generation_oid);
   }
+
+  public function testCreate_mustPersist4Individuals()
+  {
+    // Arrange
+    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
+
+    // Act
+    $geneticAlgorithmController->create($user, 4, '{"h1":["class1", "class2"]}');
+
+    // Assert
+    $this->assertEquals(4, $this->getConnection()->getRowCount('Individual'));
+  }
 }
 ?>
