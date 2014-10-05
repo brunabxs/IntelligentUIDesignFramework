@@ -30,7 +30,13 @@ class GeneticAlgorithmSelection
   {
     $totalScore = self::calculateTotalScore($individuals);
 
-    $rouletteValues = empty($rouletteValues) ? self::getRandomValues($numSelectedIndividuals) : $rouletteValues;
+    $numIndividuals = 0;
+    foreach ($individuals as $individual)
+    {
+      $numIndividuals += $individual->quantity;
+    }
+
+    $rouletteValues = empty($rouletteValues) ? self::getRandomValues($numIndividuals) : $rouletteValues;
 
     $selectedIndividuals = array();
     for ($i = 0; $i < count($individuals); $i++)
