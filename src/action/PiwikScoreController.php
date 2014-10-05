@@ -29,7 +29,7 @@ class PiwikScoreController
         continue;
       }
       $url = self::getURL($generation, $genome, $params['methods'], $params['startDate'], $params['endDate'], $params['siteId'], $params['token']);
-      $fetched = file_get_contents($url);
+      //$fetched = file_get_contents($url);
       //$scores[$genome] = unserialize($fetched);
       $scores[$genome] = 1;
     }
