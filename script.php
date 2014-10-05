@@ -1,10 +1,11 @@
 <?php
 require 'vendor/autoload.php';
 
-define('RESOURCES_DIR', dirname(__FILE__) . './resources/');
-
-$code = isset($_GET['code']) ? $_GET['code'] : null;
+$geneticAlgorithmCode = isset($_GET['c']) ? $_GET['c'] : null;
+$generationAndIndividualCode = isset($_GET['i']) ? $_GET['i'] : null;
 
 header("Access-Control-Allow-Origin: *");
-echo (new Helper())->getIndividualData(RESOURCES_DIR, $code);
+
+$controller = new GeneticAlgorithmController();
+echo $controller->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
 ?>

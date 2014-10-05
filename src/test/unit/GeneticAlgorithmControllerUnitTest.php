@@ -28,5 +28,18 @@ class GeneticAlgorithmControllerUnitTest extends MyAnotherUnit_Framework_TestCas
     $this->assertEquals(1, count($genomes));
     $this->assertEquals(2, $genomes['000']);
   }
+
+  public function testGenerateJSON()
+  {
+    // Arrange
+    $generation = new Generation(null, 0, null);
+    $individual = new Individual(null, '01', '{"h1":"","h2":"class2"}', null, null, null);
+
+    // Act
+    $json = self::callMethod('GeneticAlgorithmController', 'generateJSON', array($generation, $individual));
+
+    // Assert
+    $this->assertEquals('{"generation":0,"genome":"01","properties":{"h1":"","h2":"class2"}}', $json);
+  }
 }
 ?>

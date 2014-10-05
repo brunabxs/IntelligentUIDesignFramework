@@ -123,6 +123,80 @@ class GeneticAlgorithmController
     }
   }
 
+  public function exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode)
+  {
+    // retrieve genetic algorithm
+    $geneticAlgorithm = new GeneticAlgorithm(null, $geneticAlgorithmCode, null, null, null, null, null, null, null);
+    $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
+    $this->geneticAlgorithmDAO->sync();
+
+    if ($this->geneticAlgorithmDAO->instance === null)
+    {
+      return null;
+    }
+
+    $generation = null;
+    $genome = null;
+
+    $generationAndIndividualCode = preg_split('/\./', $generationAndIndividualCode);
+    if (count($generationAndIndividualCode) == 2)
+    {
+      $generation = $generationAndIndividualCode[0];
+      $genome = $generationAndIndividualCode[1];
+    }
+
+    if ($generation === null && $genome === null)
+    {
+      // retrieve last generation
+      $this->generationDAO->loadLastGeneration($this->geneticAlgorithmDAO->instance);
+
+      // retrieve individuals
+      $individuals = $this->individualDAO->loadAllIndividuals($this->generationDAO->instance);
+
+      // retrieve individual
+      $individual = $individuals[rand(0, count($individuals) - 1)];
+      $this->individualDAO->setInstance($individual);
+    }
+    else
+    {
+      // retrieve generation
+      $generation = new Generation(null, $generation, $this->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+      $this->generationDAO->setInstance($generation);
+      $this->generationDAO->sync();
+
+      if ($this->generationDAO->instance !== null)
+      {
+        // retrieve individual
+        $individual = new Individual(null, $genome, null, null, null, $this->generationDAO->instance->generation_oid);
+        $this->individualDAO->setInstance($individual);
+        $this->individualDAO->sync();
+      }
+
+      if ($this->generationDAO->instance === null || $this->individualDAO->instance === null)
+      {
+        // retrieve last generation
+        $this->generationDAO->loadLastGeneration($this->geneticAlgorithmDAO->instance);
+
+        // retrieve individuals
+        $individuals = $this->individualDAO->loadAllIndividuals($this->generationDAO->instance);
+
+        // retrieve individual
+        $individual = $individuals[rand(0, count($individuals) - 1)];
+        $this->individualDAO->setInstance($individual);
+      }
+    }
+
+    return self::generateJSON($this->generationDAO->instance, $this->individualDAO->instance);
+  }
+
+  private static function generateJSON($generation, $individual)
+  {
+    $part1 = '"generation":' . $generation->number;
+    $part2 = '"genome":"' . $individual->genome . '"';
+    $part3 = '"properties":' . $individual->properties;
+    return '{' . $part1 . ',' . $part2 . ',' . $part3 . '}';
+  }
+
   private static function countGenomes($genomesArray)
   {
     $genomes = array();

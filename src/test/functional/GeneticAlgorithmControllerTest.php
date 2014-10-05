@@ -70,5 +70,61 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     $this->assertEquals(1, $this->getConnection()->getRowCount('GeneticAlgorithm'));
     $this->assertEquals(2, $this->getConnection()->getRowCount('Generation'));
   }
+
+  public function testExportIndividualJSON_generationAndIndividualCodeWithGenerationAndGenomeThatExist_mustReturnIndividualProperties()
+  {
+    // Arrange
+    $geneticAlgorithmCode = '123456';
+    $generationAndIndividualCode = '0.10';
+    $geneticAlgorithmController = new GeneticAlgorithmController();
+
+    // Act
+    $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
+
+    // Assert
+    $this->assertEquals('{"generation":0,"genome":"10","properties":{"h1":"class1","h2":""}}', $json);
+  }
+
+  public function testExportIndividualJSON_generationAndIndividualCodeWithGenomeThatDoesNotExist_mustReturnRandomIndividualPropertiesFromLastGeneration()
+  {
+    // Arrange
+    $geneticAlgorithmCode = '123456';
+    $generationAndIndividualCode = '0.00';
+    $geneticAlgorithmController = new GeneticAlgorithmController();
+
+    // Act
+    $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
+
+    // Assert
+    $this->assertNotNull($json);
+  }
+
+  public function testExportIndividualJSON_generationAndIndividualCodeWithGenerationThatDoesNotExist_mustReturnRandomIndividualPropertiesFromLastGeneration()
+  {
+    // Arrange
+    $geneticAlgorithmCode = '123456';
+    $generationAndIndividualCode = '3.10';
+    $geneticAlgorithmController = new GeneticAlgorithmController();
+
+    // Act
+    $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
+
+    // Assert
+    $this->assertNotNull($json);
+  }
+
+  public function testExportIndividualJSON_emptyGenerationAndIndividualCode_mustReturnRandomIndividualPropertiesFromLastGeneration()
+  {
+    // Arrange
+    $geneticAlgorithmCode = '123456';
+    $generationAndIndividualCode = '';
+    $geneticAlgorithmController = new GeneticAlgorithmController();
+
+    // Act
+    $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
+
+    // Assert
+    $this->assertNotNull($json);
+  }
 }
 ?>
