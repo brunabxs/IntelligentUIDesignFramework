@@ -61,26 +61,28 @@ class GeneticAlgorithmController
     // retrieve individuals
     $individuals = $this->individualDAO->loadAllIndividuals($this->generationDAO->instance);
 
-    //TODO: retrieve scores
-    //TODO: update individuals' scores
-    foreach ($individuals as &$individual)
+    // group genomes
+    $genomes = array();
+    foreach ($individuals as $individual)
     {
-      $individual->score = 1;
+      $genomes[$individual->genome] = $individual->quantity;
     }
-    /*
+
+    // retrieve scores
     $methods = array(0 => array('name'=>'VisitFrequency.get'));
     $startDate = date('Y-m-d');
     $endDate = date('Y-m-d');
     $siteId = 1;
     $token = '09a21a9bf047682b557d6a0193b12189';
+    $params = array('methods' => $methods, 'startDate' => $startDate, 'endDate' => $endDate, 'siteId' => $siteId, 'token' => $token);
 
-    $genomes = array();
-    foreach ($individuals as $individual)
+    $scores = PiwikScoreController::getScores($this->generationDAO->instance->number, $genomes, $params);
+
+    // update individuals' scores
+    foreach ($individuals as &$individual)
     {
-      $genomes[] = $individual->genome;
+      $individual->score = $scores[$individual->genome];
     }
-    $scores = PiwikScore::getScores($this->generationDAO->instance->number, $genomes, $methods, $startDate, $endDate, $siteId, $token);
-    */
 
     // apply method for selection
     $selectedIndividuals = call_user_func('GeneticAlgorithmSelection::' . $this->geneticAlgorithmDAO->instance->methodForSelection, $individuals);
