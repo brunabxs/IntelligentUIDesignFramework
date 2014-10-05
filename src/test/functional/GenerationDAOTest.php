@@ -162,7 +162,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $generationDAO = $this->mockGenerationDAO();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null);
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
 
     // Act
     $generationDAO->loadLastGeneration($geneticAlgorithm);
@@ -178,7 +178,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $generationDAO = $this->mockGenerationDAO();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null);
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
 
     // Act
     $generationDAO->loadLastGeneration($geneticAlgorithm);
@@ -194,7 +194,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $generationDAO = $this->mockGenerationDAO();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null);
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
 
     // Act
     $generationDAO->loadLastGeneration($geneticAlgorithm);

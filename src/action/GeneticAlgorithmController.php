@@ -15,7 +15,8 @@ class GeneticAlgorithmController
   public function create($user, $populationSize, $properties)
   {
     // create genetic algorithm
-    $geneticAlgorithm = new GeneticAlgorithm(null, $populationSize, null, 'roulette', 'simple', 'simple', $properties, $user->user_oid);
+    $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
+    $geneticAlgorithm = new GeneticAlgorithm(null, md5(date('YmdHisu')), $populationSize, $genomeSize, 'roulette', 'simple', 'simple', $properties, $user->user_oid);
     $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
     $this->geneticAlgorithmDAO->persist();
     $this->geneticAlgorithmDAO->sync();
@@ -47,10 +48,10 @@ class GeneticAlgorithmController
     }
   }
 
-  public function createNextGeneration($user)
+  public function createNextGeneration($code)
   {
     // retrieve genetic algorithm
-    $geneticAlgorithm = new GeneticAlgorithm(null, null, null, null, null, null, null, $user->user_oid);
+    $geneticAlgorithm = new GeneticAlgorithm(null, $code, null, null, null, null, null, null, null);
     $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
     $this->geneticAlgorithmDAO->sync();
 

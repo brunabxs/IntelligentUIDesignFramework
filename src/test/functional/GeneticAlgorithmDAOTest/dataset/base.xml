@@ -1,5 +1,6 @@
 <dataset>
   <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
+    code="123456"
     populationSize="2"
     genomeSize="2"
     methodForSelection="roulette"

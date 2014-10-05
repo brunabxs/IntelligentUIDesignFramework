@@ -13,6 +13,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
     // Assert
     $this->assertNotNull($geneticAlgorithmDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->assertEquals('123456', $geneticAlgorithmDAO->instance->code);
     $this->assertEquals('2', $geneticAlgorithmDAO->instance->populationSize);
     $this->assertEquals('2', $geneticAlgorithmDAO->instance->genomeSize);
     $this->assertEquals('roulette', $geneticAlgorithmDAO->instance->methodForSelection);
@@ -38,7 +39,21 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000002');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '654321', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000002');
+
+    // Act
+    $result = $geneticAlgorithmDAO->persist();
+
+    // Assert
+    $this->assertEquals(1, $result);
+    $this->assertEquals(2, $this->getConnection()->getRowCount('GeneticAlgorithm'));
+  }
+
+  public function testPersist_geneticAlgorithmWithDifferentCode_mustSaveGeneticAlgorithmInstance()
+  {
+    // Arrange
+    $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '654321', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $geneticAlgorithmDAO->persist();
@@ -52,7 +67,21 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '654321', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
+
+    // Act
+    $result = $geneticAlgorithmDAO->persist();
+
+    // Assert
+    $this->assertEquals(0, $result);
+    $this->assertEquals(1, $this->getConnection()->getRowCount('GeneticAlgorithm'));
+  }
+
+  public function testPersist_geneticAlgorithmWithSameCode_mustNotSaveGeneticAlgorithmInstance()
+  {
+    // Arrange
+    $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '123456', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $geneticAlgorithmDAO->persist();
@@ -66,7 +95,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', '123456', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $geneticAlgorithmDAO->persist();
@@ -80,7 +109,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '123456', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $geneticAlgorithmDAO->update();
@@ -94,7 +123,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm('00000000-0000-0000-0000-000000000002', '123456', '2', '2', 'roullete', 'simple', 'simple', '{"h1":["class1"],"h2":["class2"]}', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $geneticAlgorithmDAO->update();
@@ -108,7 +137,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', '4', '4', 'roulette2', 'simple2', 'simple2', '{"h1":["class1","class2"],"h2":["class3","class4"]}', '00000000-0000-0000-0000-000000000001');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', '123456', '4', '4', 'roulette2', 'simple2', 'simple2', '{"h1":["class1","class2"],"h2":["class3","class4"]}', '00000000-0000-0000-0000-000000000001');
     $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('GeneticAlgorithm');
 
     // Act
@@ -124,7 +153,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, '00000000-0000-0000-0000-000000000001');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, null, '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $geneticAlgorithmDAO->sync();
@@ -132,6 +161,29 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
     // Assert
     $this->assertNotNull($geneticAlgorithmDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->assertEquals('123456', $geneticAlgorithmDAO->instance->code);
+    $this->assertEquals('2', $geneticAlgorithmDAO->instance->populationSize);
+    $this->assertEquals('2', $geneticAlgorithmDAO->instance->genomeSize);
+    $this->assertEquals('roulette', $geneticAlgorithmDAO->instance->methodForSelection);
+    $this->assertEquals('simple', $geneticAlgorithmDAO->instance->methodForCrossover);
+    $this->assertEquals('simple', $geneticAlgorithmDAO->instance->methodForMutation);
+    $this->assertEquals('{"h1":["class1"],"h2":["class2"]}', $geneticAlgorithmDAO->instance->properties);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $geneticAlgorithmDAO->instance->user_oid);
+  }
+
+  public function testSync_geneticAlgorithmExists_mustSetGeneticAlgorithmInstanceByCode()
+  {
+    // Arrange
+    $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, '123456', null, null, null, null, null, null, null);
+
+    // Act
+    $result = $geneticAlgorithmDAO->sync();
+
+    // Assert
+    $this->assertNotNull($geneticAlgorithmDAO->instance);
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->assertEquals('123456', $geneticAlgorithmDAO->instance->code);
     $this->assertEquals('2', $geneticAlgorithmDAO->instance->populationSize);
     $this->assertEquals('2', $geneticAlgorithmDAO->instance->genomeSize);
     $this->assertEquals('roulette', $geneticAlgorithmDAO->instance->methodForSelection);
@@ -145,7 +197,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $geneticAlgorithmDAO = $this->mockGeneticAlgorithmDAO();
-    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, '00000000-0000-0000-0000-000000000002');
+    $geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, null, '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $geneticAlgorithmDAO->sync();

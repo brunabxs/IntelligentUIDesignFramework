@@ -12,6 +12,7 @@ CREATE TABLE User (
 
 CREATE TABLE GeneticAlgorithm (
   geneticAlgorithm_oid char(36),
+  code varchar(30),
   populationSize int,
   genomeSize int,
   methodForSelection varchar(30),
@@ -40,7 +41,8 @@ ALTER TABLE User ADD CONSTRAINT PK_User PRIMARY KEY (user_oid);
 ALTER TABLE User ADD CONSTRAINT EK_User UNIQUE KEY (name);
 
 ALTER TABLE GeneticAlgorithm ADD CONSTRAINT PK_GeneticAlgorithm PRIMARY KEY (geneticAlgorithm_oid);
-ALTER TABLE GeneticAlgorithm ADD CONSTRAINT EK_GeneticAlgorithm UNIQUE KEY (user_oid);
+ALTER TABLE GeneticAlgorithm ADD CONSTRAINT EK1_GeneticAlgorithm UNIQUE KEY (code);
+ALTER TABLE GeneticAlgorithm ADD CONSTRAINT EK2_GeneticAlgorithm UNIQUE KEY (user_oid);
 
 ALTER TABLE Generation ADD CONSTRAINT PK_Generation PRIMARY KEY (generation_oid);
 ALTER TABLE Generation ADD CONSTRAINT EK_Generation UNIQUE KEY (number, geneticAlgorithm_oid);
