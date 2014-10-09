@@ -90,6 +90,8 @@ class GeneticAlgorithmController
     foreach ($individuals as &$individual)
     {
       $individual->score = $scores[$individual->genome];
+      $this->individualDAO->setInstance($individual);
+      $this->individualDAO->update();
     }
 
     // apply method for selection
