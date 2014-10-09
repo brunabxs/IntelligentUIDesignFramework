@@ -1,7 +1,7 @@
 <?php
 class CronController
 {
-  private static $php = '/opt/lampp/bin/php';
+  private static $php = 'php';
 
   private static $script = '/opt/lampp/htdocs/newGeneration.php';
 
@@ -12,9 +12,9 @@ class CronController
     return shell_exec('crontab -l');
   }
 
-  public static function addJob()
+  public static function addJob($code)
   {
-    file_put_contents(self::$tempFile, self::getJobs() . '* * * * * ' . self::$php . ' ' . self::$script . PHP_EOL);
+    file_put_contents(self::$tempFile, self::getJobs() . createJob($code));
     exec('crontab ' . self::$tempFile);
   }
 
@@ -23,8 +23,9 @@ class CronController
     exec('crontab -r');
   }
 
-  public static function removeJob($job)
+  public static function removeJob($code)
   {
+    $job = createJob($code);
     $allJobs = self::getJobs();
     if (strstr($allJobs, $job))
     {
@@ -32,6 +33,11 @@ class CronController
       file_put_contents(self::$tempFile, $newJobs . PHP_EOL);
       exec('crontab ' . self::$tempFile);
     }
+  }
+
+  private static function createJob($code)
+  {
+    return '* * * * * ' . self::$php . ' ' . self::$script . '?code=' . $code . PHP_EOL;
   }
 }
 ?>
