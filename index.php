@@ -1,26 +1,40 @@
 ﻿<?php
+  require 'vendor/autoload.php';
+
   session_start();
 
-  require 'vendor/autoload.php';
-  define('RESOURCES_DIR', dirname(__FILE__) . '/resources/');
-
-  function processStep1()
+  function processUserLoginPage()
   {
-    $_SESSION['user'] = $_POST['txt_user'];
-    return true;
+    try
+    {
+      $controller = new UserController();
+      $controller->login($_POST['txt_user'], $_POST['txt_password']);
+      $_SESSION['user'] = $controller->userDAO->instance;
+      return true;
+    }
+    catch (Exception $e)
+    {
+      return false;
+    }
   }
 
-  function processStep2()
+  function processServerConfiguration()
   {
     $json = json_decode($_POST['txt_prop_json']);
     if (!isset($json))
     {
       return false;
     }
+
     try
     {
-      $gaDAO = new GeneticAlgorithmDAO();
-      $gaDAO->create(RESOURCES_DIR, $_POST['txt_versions'], json_encode($json), 'roulette', 'simple', 'simple');
+      $controller = new GeneticAlgorithmController();
+      $controller->create($_SESSION['user'], $_POST['txt_versions'], json_encode($json));
+
+      $controller = new ProcessController();
+      $controller->load($_SESSION['user']);
+      $controller->processDAO->instance->serverConfiguration = '1';
+      $controller->update();
       return true;
     }
     catch (Exception $e)
@@ -29,11 +43,14 @@
     }
   }
 
-  function processStep3()
+  function processClientConfiguration()
   {
     try
     {
-      file_put_contents(RESOURCES_DIR . 'script-ready.txt', '');
+      $controller = new ProcessController();
+      $controller->load($_SESSION['user']);
+      $controller->processDAO->instance->clientConfiguration = '1';
+      $controller->update();
       return true;
     }
     catch (Exception $e)
@@ -42,15 +59,21 @@
     }
   }
 
-  function processStep4()
+  function processScheduleNextGeneration()
   {
     try
     {
-      $controller = new GeneticAlgorithmController(RESOURCES_DIR);
-      $controller->execute();
+      $controller = new GeneticAlgorithmController();
+      $controller->load($_SESSION['user']);
+      $code = $controller->geneticAlgorithmDAO->instance->code;
 
       CronController::removeAllJobs();
-      CronController::addJob();
+      CronController::addJob($code);
+
+      $controller = new ProcessController();
+      $controller->load($_SESSION['user']);
+      $controller->processDAO->instance->scheduleNextGeneration = '1';
+      $controller->update();
       return true;
     }
     catch (Exception $e)
@@ -59,90 +82,61 @@
     }
   }
 
-  function redirectToError()
-  {
-    header('location:error.php');
-  }
-
-  function redirect()
+  function loadPage()
   {
     if (!isset($_SESSION['user']))
     {
-      $_SESSION['step'] = 1;
-      PagesController::build($_SESSION['step']);
-    }
-    else if (!is_file(GeneticAlgorithmDAO::getFile(RESOURCES_DIR)))
-    {
-      $_SESSION['step'] = 2;
-      PagesController::build($_SESSION['step']);
-    }
-    else if (!is_file(RESOURCES_DIR . 'script-ready.txt'))
-    {
-      $_SESSION['step'] = 3;
-      PagesController::build($_SESSION['step']);
-    }
-    else if (!is_file(PopulationDAO::getFile(RESOURCES_DIR, 0)))
-    {
-      $_SESSION['step'] = 4;
-      PagesController::build($_SESSION['step']);
+      PagesController::build(1);
     }
     else
     {
-      $_SESSION['step'] = 5;
-      PagesController::build($_SESSION['step']);
+      $processController = new ProcessController();
+      $processController->load($_SESSION['user']);
+
+      if (!$processController->processDAO->instance->serverConfiguration)
+      {
+        PagesController::build(2);
+      }
+      else if (!$processController->processDAO->instance->clientConfiguration)
+      {
+        PagesController::build(3);
+      }
+      else if (!$processController->processDAO->instance->scheduleNextGeneration)
+      {
+        PagesController::build(4);
+      }
+      else
+      {
+        PagesController::build(5);
+      }
     }
   }
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST')
+  if ($_SERVER['REQUEST_METHOD'] === 'POST')
   {
-    if (!isset($_SESSION['user']) && isset($_POST['txt_user']) && isset($_POST['txt_password']))
+    if (isset($_POST['txt_user']) && isset($_POST['txt_password']) && processUserLoginPage())
     {
-      if (processStep1())
-      {
-        $_SESSION['step'] = 1;
-        redirect();
-      }
-      else
-      {
-        redirectToError();
-      }
+      loadPage();
     }
-    else if ($_SESSION['step'] == 2 && isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop_json']))
+    else if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop_json']) && processServerConfiguration())
     {
-      if (processStep2())
-      {
-        redirect();
-      }
-      else
-      {
-        redirectToError();
-      }
+      loadPage();
     }
-    else if ($_SESSION['step'] == 3 && isset($_POST['txt_script']))
+    else if (isset($_POST['txt_script']) && processClientConfiguration())
     {
-      if (processStep3())
-      {
-        redirect();
-      }
-      else
-      {
-        redirectToError();
-      }
+      loadPage();
     }
-    else if ($_SESSION['step'] == 4 && isset($_POST['txt_start']))
+    else if (isset($_POST['txt_start']) && processScheduleNextGeneration())
     {
-      if (processStep4())
-      {
-        redirect();
-      }
-      else
-      {
-        redirectToError();
-      }
+      loadPage();
+    }
+    else
+    {
+      header('location:error.php');
     }
   }
   else
   {
-    redirect();
+    loadPage();
   }
 ?>
