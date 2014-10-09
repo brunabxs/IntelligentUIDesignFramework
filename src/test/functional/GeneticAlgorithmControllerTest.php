@@ -126,5 +126,18 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Assert
     $this->assertNotNull($json);
   }
+
+  public function testLoad()
+  {
+    // Arrange
+    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
+
+    // Act
+    $geneticAlgorithmController->load($user);
+
+    // Assert
+    $this->assertNotNull($geneticAlgorithmController->geneticAlgorithmDAO->instance);
+  }
 }
 ?>

@@ -48,6 +48,14 @@ class GeneticAlgorithmController
     }
   }
 
+  public function load($user)
+  {
+    // retrieve genetic algorithm
+    $geneticAlgorithm = new GeneticAlgorithm(null, null, null, null, null, null, null, null, $user->user_oid);
+    $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
+    $this->geneticAlgorithmDAO->sync();
+  }
+
   public function createNextGeneration($code)
   {
     // retrieve genetic algorithm
