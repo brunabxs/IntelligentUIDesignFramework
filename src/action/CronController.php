@@ -1,9 +1,9 @@
 <?php
 class CronController
 {
-  private static $php = 'php';
+  private static $command = 'wget';
 
-  private static $script = '/opt/lampp/htdocs/newGeneration.php';
+  private static $page = 'localhost/newGeneration.php?code=';
 
   private static $tempFile = '/tmp/crontab.txt';
 
@@ -14,7 +14,7 @@ class CronController
 
   public static function addJob($code)
   {
-    file_put_contents(self::$tempFile, self::getJobs() . createJob($code));
+    file_put_contents(self::$tempFile, self::getJobs() . self::createJob($code));
     exec('crontab ' . self::$tempFile);
   }
 
@@ -37,7 +37,7 @@ class CronController
 
   private static function createJob($code)
   {
-    return '* * * * * ' . self::$php . ' ' . self::$script . '?code=' . $code . PHP_EOL;
+    return '* * * * * ' . self::$command . ' ' . self::$page . $code . PHP_EOL;
   }
 }
 ?>

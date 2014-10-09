@@ -11,7 +11,7 @@ class CronControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $job = self::callMethod('CronController', 'createJob', array($code));
 
     // Assert
-    $this->assertEquals('* * * * * php /opt/lampp/htdocs/newGeneration.php?code=123' . PHP_EOL, $job);
+    $this->assertEquals('* * * * * wget localhost/newGeneration.php?code=123' . PHP_EOL, $job);
   }
 }
 ?>
