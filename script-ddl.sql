@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS Individual;
 DROP TABLE IF EXISTS Generation;
 DROP TABLE IF EXISTS GeneticAlgorithm;
+DROP TABLE IF EXISTS Process;
 DROP TABLE IF EXISTS User;
 
 CREATE TABLE User (
@@ -8,6 +9,14 @@ CREATE TABLE User (
   name varchar(100),
   password varchar(100),
   email varchar(100)
+);
+
+CREATE TABLE Process (
+  process_oid char(36),
+  serverConfiguration tinyint(1),
+  clientConfiguration tinyint(1),
+  scheduleNextGeneration tinyint(1),
+  user_oid char(36)
 );
 
 CREATE TABLE GeneticAlgorithm (
@@ -39,6 +48,9 @@ CREATE TABLE Individual (
 
 ALTER TABLE User ADD CONSTRAINT PK_User PRIMARY KEY (user_oid);
 ALTER TABLE User ADD CONSTRAINT EK_User UNIQUE KEY (name);
+
+ALTER TABLE Process ADD CONSTRAINT PK_Process PRIMARY KEY (process_oid);
+ALTER TABLE Process ADD CONSTRAINT EK_Process UNIQUE KEY (user_oid);
 
 ALTER TABLE GeneticAlgorithm ADD CONSTRAINT PK_GeneticAlgorithm PRIMARY KEY (geneticAlgorithm_oid);
 ALTER TABLE GeneticAlgorithm ADD CONSTRAINT EK1_GeneticAlgorithm UNIQUE KEY (code);

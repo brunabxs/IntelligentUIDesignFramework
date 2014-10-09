@@ -1,0 +1,8 @@
+<dataset>
+  <Process />
+
+  <User user_oid="00000000-0000-0000-0000-000000000001"
+    name="user1"
+    password="password1"
+    email="user1@users.com" />
+</dataset>
