@@ -39,9 +39,13 @@ class GeneticAlgorithmSelection
     $rouletteValues = empty($rouletteValues) ? self::getRandomValues($numIndividuals) : $rouletteValues;
 
     $selectedIndividuals = array();
-    for ($i = 0; $i < count($individuals); $i++)
+    for ($i = 0; $i < $numIndividuals; $i++)
     {
-      $selectedIndividuals[$i] = $individuals[count($individuals) - 1];
+      $selectedIndividuals[] = $individuals[count($individuals) - 1];
+    }
+
+    for ($i = 0; $i < $numIndividuals; $i++)
+    {
       $cummulativeProportion = 0;
       foreach ($individuals as $individual)
       {
