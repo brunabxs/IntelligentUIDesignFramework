@@ -64,5 +64,21 @@ class ProcessControllerTest extends MyDatabase_TestCase
     $this->assertEquals('0', $processController->processDAO->instance->clientConfiguration);
     $this->assertEquals('0', $processController->processDAO->instance->scheduleNextGeneration);
   }
+
+  public function testUpdate()
+  {
+    // Arrange
+    $processController = new ProcessController();
+    $processController->processDAO->loadById('00000000-0000-0000-0000-000000000001');
+    $processController->processDAO->instance->clientConfiguration = '1';
+    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('Process');
+
+    // Act
+    $processController->update();
+
+    // Assert
+    $queryTable = $this->getConnection()->createQueryTable('Process', 'SELECT process_oid, serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid from Process');
+    $this->assertTablesEqual($expectedTable, $queryTable);
+  }
 }
 ?>

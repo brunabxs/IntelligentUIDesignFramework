@@ -20,6 +20,11 @@ class ProcessController
     }
   }
 
+  public function update()
+  {
+    $this->processDAO->update();
+  }
+
   public function create($user)
   {
     $process = new Process(null, '0', '0', '0', $user->user_oid);
