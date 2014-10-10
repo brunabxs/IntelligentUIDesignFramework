@@ -110,7 +110,10 @@
       }
       else
       {
-        PagesController::loadVisualizationPage();
+        $controller = new GeneticAlgorithmController();
+        $controller->load($_SESSION['user']);
+
+        PagesController::loadVisualizationPage($controller->geneticAlgorithmDAO->instance);
       }
     }
   }

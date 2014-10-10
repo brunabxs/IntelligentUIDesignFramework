@@ -6,7 +6,7 @@
   <span id="txt_token">-</span>
 
   <label>Número de versões</label>
-  <span id="txt_versions">-</span>
+  <span id="txt_versions">{$populationSize}</span>
 
   <label>Número máximo de experimentos</label>
   <span id="txt_exp">-</span>
@@ -15,5 +15,5 @@
   <span id="txt_time">-</span>
 
   <label for="txt_prop">Elementos e classes no formato JSON</label>
-  <div id="txt_prop">-</div>
+  <div id="txt_prop">{$properties}</div>
 </div>

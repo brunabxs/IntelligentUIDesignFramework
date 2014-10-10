@@ -78,9 +78,10 @@ class PagesController
     PagesController::build(4);
   }
 
-  public static function loadVisualizationPage()
+  public static function loadVisualizationPage($geneticAlgorithm)
   {
-    PagesController::build(5);
+    PagesController::build(5, array('populationSize'=>$geneticAlgorithm->populationSize,
+                                    'properties'=>$geneticAlgorithm->properties));
   }
 
   public static function loadErrorPage()
