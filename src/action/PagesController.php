@@ -18,39 +18,8 @@ class PagesController
                'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>3),
                'AppContent'      => 'step3-script.tpl',
-               'Content1'        => '
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"&gt;&lt;/script&gt;</span><span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://localhost/script.js"&gt;&lt;/script&gt;</span>  &lt;/head&gt;
-  &lt;body&gt;
-    ...
-  &lt;/body&gt;
-&lt;/html&gt;
-',
-               'Content2'        => '
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    ...
-<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript"&gt;jQuery(document).ready(function(){ jQuery(this).executeGA(); });&lt;/script&gt;</span>  &lt;/head&gt;
-  &lt;body&gt;
-    ...
-  &lt;/body&gt;
-&lt;/html&gt;
-',
-               'Content3'        => '
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-<span style="font-weight:bold;margin:0;display:block;">    &lt;link ... /&gt;</span>    ...
-  &lt;/head&gt;
-  &lt;body&gt;
-    ...
-  &lt;/body&gt;
-&lt;/html&gt;
-',
-               'Controller'      => 'index.php'),
+               'Controller'      => 'index.php',
+               'gaCode'          => '1234555'),
 
     4 => array('AppContentTitle' => 'Está quase tudo pronto',
                'AppContentInfo'  => 'Confirme o início dos experimentos',
@@ -70,7 +39,7 @@ class PagesController
                      'AppContentInfo'  => 'Entre em contado com email@email e relate o ocorrido.'),
   );
   
-  public static function build($page)
+  private static function build($page, $otherParameters=array())
   {
     $smarty = new Smarty();
     $smarty->setTemplateDir('./smarty_templates/');
@@ -81,7 +50,47 @@ class PagesController
       $smarty->assign($key, $value);
     }
 
+    foreach ($otherParameters as $key => $value)
+    {
+      $smarty->assign($key, $value);
+    }
+
     $smarty->display('main.tpl');
+  }
+
+  public static function loadUserLoginPage()
+  {
+    PagesController::build(1);
+  }
+
+  public static function loadServerConfigurationPage()
+  {
+    PagesController::build(2);
+  }
+
+  public static function loadClientConfigurationPage($geneticAlgorithm)
+  {
+    PagesController::build(3, array('code'=>$geneticAlgorithm->code));
+  }
+
+  public static function loadScheduleNextGenerationPage()
+  {
+    PagesController::build(4);
+  }
+
+  public static function loadVisualizationPage()
+  {
+    PagesController::build(5);
+  }
+
+  public static function loadErrorPage()
+  {
+    PagesController::build('error');
+  }
+
+  public static function loadLogoutPage()
+  {
+    PagesController::build('logout');
   }
 }
 ?>

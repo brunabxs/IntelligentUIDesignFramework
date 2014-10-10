@@ -3,7 +3,7 @@
   <span id="txt_analyticsTool">Piwik</span>
 
   <label>Token de acesso da Piwik</label>
-  <span id="txt_token"><?php echo $token; ?></span>
+  <span id="txt_token">-</span>
 
   <label>Número de versões</label>
   <span id="txt_versions">-</span>

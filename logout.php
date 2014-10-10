@@ -5,5 +5,5 @@
 
   unset($_SESSION['user']);
 
-  PagesController::build('logout');
+  PagesController::loadLogoutPage();
 ?>

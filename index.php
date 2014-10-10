@@ -86,7 +86,7 @@
   {
     if (!isset($_SESSION['user']))
     {
-      PagesController::build(1);
+      PagesController::loadUserLoginPage();
     }
     else
     {
@@ -95,19 +95,22 @@
 
       if (!$processController->processDAO->instance->serverConfiguration)
       {
-        PagesController::build(2);
+        PagesController::loadServerConfigurationPage();
       }
       else if (!$processController->processDAO->instance->clientConfiguration)
       {
-        PagesController::build(3);
+        $controller = new GeneticAlgorithmController();
+        $controller->load($_SESSION['user']);
+
+        PagesController::loadClientConfigurationPage($controller->geneticAlgorithmDAO->instance);
       }
       else if (!$processController->processDAO->instance->scheduleNextGeneration)
       {
-        PagesController::build(4);
+        PagesController::loadScheduleNextGenerationPage();
       }
       else
       {
-        PagesController::build(5);
+        PagesController::loadVisualizationPage();
       }
     }
   }
