@@ -1,8 +1,8 @@
 <?php
 require 'vendor/autoload.php';
 
-$geneticAlgorithmCode = isset($_GET['c']) ? $_GET['c'] : null;
-$generationAndIndividualCode = isset($_GET['i']) ? $_GET['i'] : null;
+$geneticAlgorithmCode = isset($_GET['code']) ? $_GET['code'] : null;
+$generationAndIndividualCode = isset($_GET['indiv']) ? $_GET['indiv'] : null;
 
 header("Access-Control-Allow-Origin: *");
 
