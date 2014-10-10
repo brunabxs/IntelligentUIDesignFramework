@@ -41,7 +41,7 @@ class GeneticAlgorithmController
     foreach ($genomes as $genome => $count)
     {
       $quantity = $count;
-      $properties = IndividualDAO::generateGenome($this->geneticAlgorithmDAO->instance, $genome);
+      $properties = IndividualDAO::generateProperties($this->geneticAlgorithmDAO->instance, $genome);
       $individual = new Individual(null, $genome, $properties, $quantity, null, $this->generationDAO->instance->generation_oid);
       $this->individualDAO->setInstance($individual);
       $this->individualDAO->persist();
@@ -126,7 +126,7 @@ class GeneticAlgorithmController
     foreach ($genomes as $genome => $count)
     {
       $quantity = $count;
-      $properties = IndividualDAO::generateGenome($this->geneticAlgorithmDAO->instance, $genome);
+      $properties = IndividualDAO::generateProperties($this->geneticAlgorithmDAO->instance, $genome);
       $individual = new Individual(null, $genome, $properties, $quantity, null, $this->generationDAO->instance->generation_oid);
       $this->individualDAO->setInstance($individual);
       $this->individualDAO->persist();
