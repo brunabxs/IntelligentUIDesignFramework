@@ -1,0 +1,7 @@
+<dataset>
+  <Analytics analytics_oid="00000000-0000-0000-0000-000000000001"
+    token="456token"
+    siteId="2"
+    type="piwik"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
+</dataset>
