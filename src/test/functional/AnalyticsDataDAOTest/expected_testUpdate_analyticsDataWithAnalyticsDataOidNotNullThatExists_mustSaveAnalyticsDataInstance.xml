@@ -1,5 +1,5 @@
 <dataset>
-  <AnalyticsScore analyticsScore_oid="00000000-0000-0000-0000-000000000001"
+  <AnalyticsData analyticsData_oid="00000000-0000-0000-0000-000000000001"
     method="method2"
     columns="column1;column2"
     weight="2"

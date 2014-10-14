@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS AnalyticsScore;
+DROP TABLE IF EXISTS AnalyticsData;
 DROP TABLE IF EXISTS Analytics;
 DROP TABLE IF EXISTS Individual;
 DROP TABLE IF EXISTS Generation;
@@ -56,10 +56,10 @@ CREATE TABLE Analytics (
   geneticAlgorithm_oid char(36)
 );
 
-CREATE TABLE AnalyticsScore (
-  analyticsScore_oid char(36),
+CREATE TABLE AnalyticsData (
+  analyticsData_oid char(36),
   method char(100),
-  columns char(100),
+  columnName char(100),
   weight int,
   analytics_oid char(36)
 );
@@ -83,5 +83,5 @@ ALTER TABLE Individual ADD CONSTRAINT EK_Individual UNIQUE KEY (genome, generati
 ALTER TABLE Analytics ADD CONSTRAINT PK_Analytics PRIMARY KEY (analytics_oid);
 ALTER TABLE Analytics ADD CONSTRAINT EK_Analytics UNIQUE KEY (geneticAlgorithm_oid);
 
-ALTER TABLE AnalyticsScore ADD CONSTRAINT PK_AnalyticsScore PRIMARY KEY (analyticsScore_oid);
-ALTER TABLE AnalyticsScore ADD CONSTRAINT EK_AnalyticsScore UNIQUE KEY (method, analytics_oid);
+ALTER TABLE AnalyticsData ADD CONSTRAINT PK_AnalyticsData PRIMARY KEY (analyticsData_oid);
+ALTER TABLE AnalyticsData ADD CONSTRAINT EK_AnalyticsData UNIQUE KEY (method, analytics_oid);

@@ -1,11 +1,11 @@
 <dataset>
-  <AnalyticsScore method="method1"
+  <AnalyticsData method="method1"
     columns="column"
     weight="1"
     analytics_oid="00000000-0000-0000-0000-000000000001" />
 
-  <AnalyticsScore method="method2"
+  <AnalyticsData method="method1"
     columns="column"
     weight="1"
-    analytics_oid="00000000-0000-0000-0000-000000000001" />
+    analytics_oid="00000000-0000-0000-0000-000000000002" />
 </dataset>
