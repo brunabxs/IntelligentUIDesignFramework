@@ -31,7 +31,7 @@ class GeneticAlgorithmController
     $genomes = array();
     for ($i = 0; $i < $this->geneticAlgorithmDAO->instance->populationSize; $i++)
     {
-      $genomes[] = IndividualDAO::generateGenome($this->geneticAlgorithmDAO->instance);
+      $genomes[] = $this->generateGenome();
     }
 
     // group genomes
@@ -45,6 +45,11 @@ class GeneticAlgorithmController
       $this->individualDAO->instance = new Individual(null, $genome, $properties, $quantity, null, $this->generationDAO->instance->generation_oid);
       $this->individualDAO->persist();
     }
+  }
+
+  public function generateGenome()
+  {
+    return IndividualDAO::generateGenome($this->geneticAlgorithmDAO->instance);
   }
 
   public function load($user)

@@ -54,6 +54,34 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     $this->assertNotNull($geneticAlgorithmController->generationDAO->instance->generation_oid);
   }
 
+  public function testCreate_geneticAlgorithmWithPopulationTwoWithDifferentGenomes_mustPersistTwoIndividualsWithQuantityOne()
+  {
+    // Arrange
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController(array('generateGenome'));
+    $geneticAlgorithmController->method('generateGenome')->will($this->onConsecutiveCalls('01', '11'));
+    $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
+
+    // Act
+    $geneticAlgorithmController->create($user, 2, '{"h1":["class1", "class2"]}');
+
+    // Assert
+    $this->assertActualAndExpectedTablesEqual('Individual', 'SELECT genome, quantity from Individual');
+  }
+
+  public function testCreate_geneticAlgorithmWithPopulationTwoAndWithEqualGenomes_mustPersistOneIndividualWithQuantityTwo()
+  {
+    // Arrange
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController(array('generateGenome'));
+    $geneticAlgorithmController->method('generateGenome')->will($this->onConsecutiveCalls('01', '01'));
+    $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
+
+    // Act
+    $geneticAlgorithmController->create($user, 2, '{"h1":["class1", "class2"]}');
+
+    // Assert
+    $this->assertActualAndExpectedTablesEqual('Individual', 'SELECT genome, quantity from Individual');
+  }
+
   public function testCreateNextGeneration()
   {
     // Arrange
@@ -136,10 +164,10 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     $this->assertNotNull($geneticAlgorithmController->geneticAlgorithmDAO->instance);
   }
 
-  private function mockGeneticAlgorithmController()
+  private function mockGeneticAlgorithmController($methods=NULL)
   {
     $mock = $this->getMockBuilder('GeneticAlgorithmController')
-                 ->setMethods(NULL)
+                 ->setMethods($methods)
                  ->getMock();
 
     $mock->scoreController = $this->mockScoreController();
