@@ -1,94 +1,16 @@
 <?php
 include_once 'MyAnotherUnit_Framework_TestCase.php';
-class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
+class ScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
 {
-  public function testValidadeParameters_allParametersSet_mustValidate()
-  {
-    // Arrange
-    $params = array('methods' => array(), 'startDate' => '', 'endDate' => '',
-                    'siteId' => '', 'token' => '');
-
-    // Act
-    $valid = self::callMethod('PiwikScoreController', 'validateParameters', array($params));
-
-    // Assert
-    $this->assertTrue($valid);
-  }
-
-  public function testValidadeParameters_methodsParameterNotSet_mustNotValidate()
-  {
-    // Arrange
-    $params = array('startDate' => '', 'endDate' => '',
-                    'siteId' => '', 'token' => '');
-
-    // Act
-    $valid = self::callMethod('PiwikScoreController', 'validateParameters', array($params));
-
-    // Assert
-    $this->assertFalse($valid);
-  }
-
-  public function testValidadeParameters_startDateParameterNotSet_mustNotValidate()
-  {
-    // Arrange
-    $params = array('methods' => array(), 'endDate' => '',
-                    'siteId' => '', 'token' => '');
-
-    // Act
-    $valid = self::callMethod('PiwikScoreController', 'validateParameters', array($params));
-
-    // Assert
-    $this->assertFalse($valid);
-  }
-
-  public function testValidadeParameters_endDateParameterNotSet_mustNotValidate()
-  {
-    // Arrange
-    $params = array('methods' => array(), 'startDate' => '',
-                    'siteId' => '', 'token' => '');
-
-    // Act
-    $valid = self::callMethod('PiwikScoreController', 'validateParameters', array($params));
-
-    // Assert
-    $this->assertFalse($valid);
-  }
-
-  public function testValidadeParameters_siteIdParameterNotSet_mustNotValidate()
-  {
-    // Arrange
-    $params = array('methods' => array(), 'startDate' => '', 'endDate' => '',
-                    'token' => '');
-
-    // Act
-    $valid = self::callMethod('PiwikScoreController', 'validateParameters', array($params));
-
-    // Assert
-    $this->assertFalse($valid);
-  }
-
-  public function testValidadeParameters_tokenParameterNotSet_mustNotValidate()
-  {
-    // Arrange
-    $params = array('methods' => array(), 'startDate' => '', 'endDate' => '',
-                    'siteId' => '');
-
-    // Act
-    $valid = self::callMethod('PiwikScoreController', 'validateParameters', array($params));
-
-    // Assert
-    $this->assertFalse($valid);
-  }
-
   public function testGetColumnsURL_twoColumns()
   {
     // Arrange
-    $column1 = array('name' => 'name1');
-    $column2 = array('name' => 'name2');
+    $column1 = 'name1';
+    $column2 = 'name2';
     $columns = array($column1, $column2);
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getColumnsURL', array($columns));
+    $url = self::callMethod('ScoreController', 'getColumnsURL', array($columns));
 
     // Assert
     $this->assertEquals('&columns=name1;name2', $url);
@@ -97,11 +19,11 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
   public function testGetColumnsURL_oneColumn()
   {
     // Arrange
-    $column1 = array('name' => 'name1');
+    $column1 = 'name1';
     $columns = array($column1);
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getColumnsURL', array($columns));
+    $url = self::callMethod('ScoreController', 'getColumnsURL', array($columns));
 
     // Assert
     $this->assertEquals('&columns=name1', $url);
@@ -113,7 +35,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $columns = array();
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getColumnsURL', array($columns));
+    $url = self::callMethod('ScoreController', 'getColumnsURL', array($columns));
 
     // Assert
     $this->assertEquals('', $url);
@@ -131,7 +53,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getURLWithOneMethod', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('ScoreController', 'getURLWithOneMethod', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API'.
@@ -147,7 +69,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     // Arrange
     $generation = 0;
     $genome = '1010';
-    $column1 = array('name'=>'max_actions_returning', 'weight'=>1);
+    $column1 = 'max_actions_returning';
     $methods = array('name'=>'VisitFrequency.get', 'columns'=>array($column1));
     $startDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
     $endDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
@@ -155,7 +77,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getURLWithOneMethod', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('ScoreController', 'getURLWithOneMethod', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API'.
@@ -171,8 +93,8 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     // Arrange
     $generation = 0;
     $genome = '1010';
-    $column1 = array('name'=>'max_actions_returning', 'weight'=>1);
-    $column2 = array('name'=>'bounce_count_returning', 'weight'=>1);
+    $column1 = 'max_actions_returning';
+    $column2 = 'bounce_count_returning';
     $methods = array('name'=>'VisitFrequency.get', 'columns'=>array($column1, $column2));
     $startDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
     $endDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
@@ -180,7 +102,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getURLWithOneMethod', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('ScoreController', 'getURLWithOneMethod', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API'.
@@ -196,8 +118,8 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     // Arrange
     $generation = 0;
     $genome = '1010';
-    $column1 = array('name'=>'max_actions_returning', 'weight'=>1);
-    $column2 = array('name'=>'bounce_count_returning', 'weight'=>1);
+    $column1 = 'max_actions_returning';
+    $column2 = 'bounce_count_returning';
     $methods = array(0 => array('name'=>'VisitFrequency.get', 'columns'=>array($column1, $column2)));
     $startDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
     $endDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
@@ -205,7 +127,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('ScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API'.
@@ -221,8 +143,8 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     // Arrange
     $generation = 0;
     $genome = '1010';
-    $column1 = array('name'=>'max_actions_returning', 'weight'=>1);
-    $column2 = array('name'=>'bounce_count_returning', 'weight'=>1);
+    $column1 = 'max_actions_returning';
+    $column2 = 'bounce_count_returning';
     $methods = array(0 => array('name'=>'VisitFrequency.get', 'columns'=>array($column1, $column2)),
                      1 => array('name'=>'API.get'));
     $startDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
@@ -231,19 +153,20 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('ScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('', $url);
   }
 
+/*
   public function testGetScores_threeGenomes_mustReturnThreeScores()
   {
     // Arrange
     $generation = 0;
     $genomes = array(array('1010' => 2), array('1111' => 1), array('0001' => 1));
-    $column1 = array('name'=>'max_actions_returning', 'weight'=>1);
-    $column2 = array('name'=>'bounce_count_returning', 'weight'=>1);
+    $column1 = 'max_actions_returning';
+    $column2 = 'bounce_count_returning';
     $methods = array(0 => array('name'=>'VisitFrequency.get', 'columns'=>array($column1, $column2)));
     $startDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
     $endDate = date('Y-m-d', mktime(0, 0, 0, 7, 1, 2000));
@@ -253,10 +176,11 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
                     'siteId' => $siteId, 'token' => $token);
 
     // Act
-    $scores = PiwikScoreController::getScores($generation, $genomes, $params);
+    $scores = ScoreController::getScores($generation, $genomes, $params);
 
     // Assert
     $this->assertEquals(3, count($scores));
   }
+*/
 }
 ?>
