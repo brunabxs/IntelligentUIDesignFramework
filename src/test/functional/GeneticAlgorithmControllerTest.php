@@ -5,7 +5,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
   public function testCreate_mustPersistGeneticAlgorithm()
   {
     // Arrange
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
     $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
 
     // Act
@@ -18,7 +18,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
   public function testCreate_mustSyncGeneticAlgorithm()
   {
     // Arrange
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
     $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
 
     // Act
@@ -31,7 +31,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
   public function testCreate_mustPersistGenerationWithNumber0()
   {
     // Arrange
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
     $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
 
     // Act
@@ -44,7 +44,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
   public function testCreate_mustSyncGeneration()
   {
     // Arrange
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
     $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
 
     // Act
@@ -57,7 +57,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
   public function testCreateNextGeneration()
   {
     // Arrange
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
 
     // Act
     $geneticAlgorithmController->createNextGeneration('123456');
@@ -72,7 +72,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Arrange
     $geneticAlgorithmCode = '123456';
     $generationAndIndividualCode = '0.10';
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
 
     // Act
     $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
@@ -86,7 +86,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Arrange
     $geneticAlgorithmCode = '123456';
     $generationAndIndividualCode = '0.00';
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
 
     // Act
     $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
@@ -100,7 +100,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Arrange
     $geneticAlgorithmCode = '123456';
     $generationAndIndividualCode = '3.10';
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
 
     // Act
     $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
@@ -114,7 +114,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Arrange
     $geneticAlgorithmCode = '123456';
     $generationAndIndividualCode = '';
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
 
     // Act
     $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
@@ -126,7 +126,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
   public function testLoad()
   {
     // Arrange
-    $geneticAlgorithmController = new GeneticAlgorithmController();
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
     $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
 
     // Act
@@ -134,6 +134,29 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertNotNull($geneticAlgorithmController->geneticAlgorithmDAO->instance);
+  }
+
+  private function mockGeneticAlgorithmController()
+  {
+    $mock = $this->getMockBuilder('GeneticAlgorithmController')
+                 ->setMethods(NULL)
+                 ->getMock();
+
+    $mock->scoreController = $this->mockScoreController();
+
+    return $mock;
+  }
+
+  private function mockScoreController()
+  {
+    $mock = $this->getMockBuilder('ScoreController')
+                 ->setMethods(array('getScore'))
+                 ->getMock();
+
+    $mock->method('getScore')
+         ->will($this->onConsecutiveCalls(2, 3, 5, 8));
+
+    return $mock;
   }
 }
 ?>
