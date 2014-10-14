@@ -59,7 +59,7 @@ CREATE TABLE Analytics (
 CREATE TABLE AnalyticsData (
   analyticsData_oid char(36),
   method char(100),
-  columnName char(100),
+  columns char(100),
   weight int,
   analytics_oid char(36)
 );
