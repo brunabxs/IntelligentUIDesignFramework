@@ -127,7 +127,7 @@ class AbstractDAOUnitTest extends MyAnotherUnit_Framework_TestCase
     $this->assertEquals('UPDATE User SET user_oid=\'12345\', name=null, password=null, email=null WHERE user_oid=\'12345\'', $query);
   }
 
-  public function testGetInstance_userEntity()
+  public function testInitInstance_userEntity()
   {
     // Arrange
     $entity = 'User';

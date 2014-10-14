@@ -2,10 +2,14 @@
 include_once 'MyDatabase_TestCase.php';
 class AnalyticsDAOTest extends MyDatabase_TestCase
 {
+  private static $table = 'Analytics';
+  private static $query1 = 'SELECT analytics_oid, token, siteId, type, geneticAlgorithm_oid FROM Analytics';
+  private static $query2 = 'SELECT token, siteId, type, geneticAlgorithm_oid FROM Analytics';
+
   public function testLoadById_analyticsWithAnalyticsOidThatExists_mustSetInstanceToAnalyticsObject()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
 
     // Act
     $analyticsDAO->loadById('00000000-0000-0000-0000-000000000001');
@@ -22,7 +26,7 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
   public function testLoadById_analyticsWithAnalyticsOidThatDoesNotExist_mustSetInstanceToNull()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
 
     // Act
     $analyticsDAO->loadById('00000000-0000-0000-0000-000000000002');
@@ -31,10 +35,10 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
     $this->assertNull($analyticsDAO->instance);
   }
 
-  public function testPersist_analyticsWithDifferentGeneticAlgorithmOid_mustSaveAnalyticsInstance()
+  public function testPersist_analyticsWithAnalyticsOidNullWithGeneticAlgorithmOidThatDoesNotExist_mustSaveAnalyticsInstance()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
     $analyticsDAO->instance = new Analytics(null, '456token', '2', 'piwik', '00000000-0000-0000-0000-000000000002');
 
     // Act
@@ -42,13 +46,13 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('Analytics'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_analyticsWithSameGeneticAlgorithmOid_mustNotSaveAnalyticsInstance()
+  public function testPersist_analyticsWithAnalyticsOidNullGeneticAlgorithmOidThatExists_mustNotSaveAnalyticsInstance()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
     $analyticsDAO->instance = new Analytics(null, '456token', '2', 'piwik', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -56,13 +60,13 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Analytics'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testPersist_analyticsWithAnalyticsOidNotNullThatDoesNotExist_mustNotSaveAnalyticsInstance()
+  public function testPersist_analyticsWithAnalyticsOidNotNull_mustNotSaveAnalyticsInstance()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
     $analyticsDAO->instance = new Analytics('00000000-0000-0000-0000-000000000002', '456token', '2', 'piwik', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -70,13 +74,13 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Analytics'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_analyticsWithAnalyticsOidNull_mustNotSaveAnalyticsInstance()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
     $analyticsDAO->instance = new Analytics(null, '456token', '2', 'piwik', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -84,13 +88,13 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Analytics'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
-
+  
   public function testUpdate_analyticsWithAnalyticsOidNotNullThatDoesNotExist_mustNotSaveAnalyticsInstance()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
     $analyticsDAO->instance = new Analytics('00000000-0000-0000-0000-000000000002', '456token', '2', 'piwik', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -98,29 +102,27 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Analytics'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_analyticsWithAnalyticsOidNotNullThatExists_mustSaveAnalyticsInstance()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
-    $analyticsDAO->instance = new Analytics('00000000-0000-0000-0000-000000000001', '456token', '2', 'piwik', '00000000-0000-0000-0000-000000000001');
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('Analytics');
+    $analyticsDAO = new AnalyticsDAO();
+    $analyticsDAO->instance = new Analytics('00000000-0000-0000-0000-000000000001', '456token', '2', 'piwik', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsDAO->update();
 
     // Assert
     $this->assertEquals(1, $result);
-    $queryTable = $this->getConnection()->createQueryTable('Analytics', 'SELECT analytics_oid, token, siteId, type, geneticAlgorithm_oid FROM Analytics');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testSync_analyticsExists_mustSetAnalyticsInstanceByGeneticAlgorithmOid()
+  public function testSync_analyticsWithGeneticAlgorithmOidThatExists_mustSetAnalyticsInstance()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
     $analyticsDAO->instance = new Analytics(null, null, null, null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -135,10 +137,10 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsDAO->instance->geneticAlgorithm_oid);
   }
 
-  public function testSync_analyticsDoesNotExist_mustSetAnalyticsInstanceToNull()
+  public function testSync_analyticsWithGeneticAlgorithmOidThatDoesNotExist_mustSetAnalyticsInstanceToNull()
   {
     // Arrange
-    $analyticsDAO = $this->mockAnalyticsDAO();
+    $analyticsDAO = new AnalyticsDAO();
     $analyticsDAO->instance = new Analytics(null, null, null, null, '00000000-0000-0000-0000-000000000002');
 
     // Act
@@ -146,15 +148,6 @@ class AnalyticsDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertNull($analyticsDAO->instance);
-  }
-
-  protected function mockAnalyticsDAO()
-  {
-    $stub = $this->getMockBuilder('AnalyticsDAO')
-                 ->disableOriginalConstructor()
-                 ->setMethods(NULL)
-                 ->getMock();
-    return $stub;
   }
 }
 ?>

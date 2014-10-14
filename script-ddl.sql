@@ -23,7 +23,7 @@ CREATE TABLE Process (
 
 CREATE TABLE GeneticAlgorithm (
   geneticAlgorithm_oid char(36),
-  code varchar(30),
+  code varchar(36),
   populationSize int,
   genomeSize int,
   methodForSelection varchar(30),
@@ -59,7 +59,7 @@ CREATE TABLE Analytics (
 CREATE TABLE AnalyticsScore (
   analyticsScore_oid char(36),
   method char(100),
-  methodColumn char(100),
+  columns char(100),
   weight int,
   analytics_oid char(36)
 );
@@ -84,4 +84,4 @@ ALTER TABLE Analytics ADD CONSTRAINT PK_Analytics PRIMARY KEY (analytics_oid);
 ALTER TABLE Analytics ADD CONSTRAINT EK_Analytics UNIQUE KEY (geneticAlgorithm_oid);
 
 ALTER TABLE AnalyticsScore ADD CONSTRAINT PK_AnalyticsScore PRIMARY KEY (analyticsScore_oid);
-ALTER TABLE AnalyticsScore ADD CONSTRAINT EK_AnalyticsScore UNIQUE KEY (method, methodColumn, analytics_oid);
+ALTER TABLE AnalyticsScore ADD CONSTRAINT EK_AnalyticsScore UNIQUE KEY (method, analytics_oid);

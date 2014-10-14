@@ -2,10 +2,14 @@
 include_once 'MyDatabase_TestCase.php';
 class GenerationDAOTest extends MyDatabase_TestCase
 {
+  private static $table = 'Generation';
+  private static $query1 = 'SELECT generation_oid, number, geneticAlgorithm_oid FROM Generation';
+  private static $query2 = 'SELECT number, geneticAlgorithm_oid FROM Generation';
+
   public function testLoadById_generationWithGenerationOidThatExists_mustSetInstanceToGenerationObject()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
 
     // Act
     $generationDAO->loadById('00000000-0000-0000-0000-000000000001');
@@ -20,7 +24,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   public function testLoadById_generationWithGenerationOidThatDoesNotExist_mustSetInstanceToNull()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
 
     // Act
     $generationDAO->loadById('00000000-0000-0000-0000-000000000002');
@@ -29,10 +33,24 @@ class GenerationDAOTest extends MyDatabase_TestCase
     $this->assertNull($generationDAO->instance);
   }
 
-  public function testPersist_generationWithDifferentNumberAndSameGeneticAlgorithmOid_mustSaveGenerationInstance()
+  public function testPersist_generationWithGenerationOidNullWithNumberThatDoesNotExistAndGeneticAlgorithmOidThatDoesNotExist_mustSaveGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
+    $generationDAO->instance = new Generation(null, '1', '00000000-0000-0000-0000-000000000002');
+
+    // Act
+    $result = $generationDAO->persist();
+
+    // Assert
+    $this->assertEquals(1, $result);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
+  }
+
+  public function testPersist_generationWithGenerationOidNullWithNumberThatDoesNotExistAndGeneticAlgorithmOidThatExists_mustSaveGenerationInstance()
+  {
+    // Arrange
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation(null, '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -40,13 +58,13 @@ class GenerationDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('Generation'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_generationWithSameNumberAndOtherGeneticAlgorithmOid_mustSaveGenerationInstance()
+  public function testPersist_generationWithGenerationOidNullWithNumberThatExistsAndGeneticAlgorithmOidThatDoesNotExist_mustSaveGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation(null, '0', '00000000-0000-0000-0000-000000000002');
 
     // Act
@@ -54,13 +72,13 @@ class GenerationDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('Generation'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_generationWithSameNumberAndSameGeneticAlgorithmOid_mustNotSaveGenerationInstance()
+  public function testPersist_generationWithGenerationOidNullWithNumberThatExistsAndGeneticAlgorithmOidThatExists_mustNotSaveGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation(null, '0', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -68,13 +86,13 @@ class GenerationDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Generation'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testPersist_generationWithGenerationOidNotNullThatDoesNotExist_mustNotSaveGenerationInstance()
+  public function testPersist_generationWithGenerationOidNotNull_mustNotSaveGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation('00000000-0000-0000-0000-000000000002', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -82,13 +100,13 @@ class GenerationDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Generation'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_generationWithGenerationOidNull_mustNotSaveGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation(null, '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -96,13 +114,13 @@ class GenerationDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Generation'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
-
+  
   public function testUpdate_generationWithGenerationOidNotNullThatDoesNotExist_mustNotSaveGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation('00000000-0000-0000-0000-000000000002', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -110,29 +128,27 @@ class GenerationDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Generation'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_generationWithGenerationOidNotNullThatExists_mustSaveGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation('00000000-0000-0000-0000-000000000001', '1', '00000000-0000-0000-0000-000000000001');
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('Generation');
 
     // Act
     $result = $generationDAO->update();
 
     // Assert
     $this->assertEquals(1, $result);
-    $queryTable = $this->getConnection()->createQueryTable('Generation', 'SELECT generation_oid, number, geneticAlgorithm_oid FROM Generation');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testSync_generationExists_mustSetGenerationInstanceByNumberAndGeneticAlgorithmOid()
+  public function testSync_generationWithGeneticAlgorithmOidThatExistsAndNumberThatExists_mustSetGenerationInstance()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation(null, '0', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -145,10 +161,23 @@ class GenerationDAOTest extends MyDatabase_TestCase
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $generationDAO->instance->geneticAlgorithm_oid);
   }
 
-  public function testSync_generationDoesNotExist_mustSetGenerationInstanceToNull()
+  public function testSync_generationWithGeneticAlgorithmOidThatDoesNotExist_mustSetGenerationInstanceToNull()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
+    $generationDAO->instance = new Generation(null, '0', '00000000-0000-0000-0000-000000000002');
+
+    // Act
+    $result = $generationDAO->sync();
+
+    // Assert
+    $this->assertNull($generationDAO->instance);
+  }
+
+  public function testSync_generationWithNumberThatDoesNotExist_mustSetGenerationInstanceToNull()
+  {
+    // Arrange
+    $generationDAO = new GenerationDAO();
     $generationDAO->instance = new Generation(null, '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -161,7 +190,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   public function testLoadLastGeneration_geneticAlgorithmHasThreeGenerations_mustSetGenerationInstanceToThirdGeneration()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
 
     // Act
@@ -177,7 +206,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   public function testLoadLastGeneration_geneticAlgorithmHasOneGeneration_mustSetGenerationInstanceToFirstGeneration()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
 
     // Act
@@ -193,7 +222,7 @@ class GenerationDAOTest extends MyDatabase_TestCase
   public function testLoadLastGeneration_geneticAlgorithmHasNoGeneration_mustSetGenerationInstanceNull()
   {
     // Arrange
-    $generationDAO = $this->mockGenerationDAO();
+    $generationDAO = new GenerationDAO();
     $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
 
     // Act
@@ -201,15 +230,6 @@ class GenerationDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertNull($generationDAO->instance);
-  }
-
-  protected function mockGenerationDAO()
-  {
-    $stub = $this->getMockBuilder('GenerationDAO')
-                 ->disableOriginalConstructor()
-                 ->setMethods(NULL)
-                 ->getMock();
-    return $stub;
   }
 }
 ?>

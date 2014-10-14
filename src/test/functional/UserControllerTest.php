@@ -8,14 +8,12 @@ class UserControllerTest extends MyDatabase_TestCase
     $userController = new UserController();
     $name = 'user1';
     $password = '123456';
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('User');
 
     // Act
     $user = $userController->create($name, $password);
 
     // Assert
-    $queryTable = $this->getConnection()->createQueryTable('User', 'SELECT name, password from User');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual('User', 'SELECT name, password from User');
   }
 
   public function testCreate_mustSyncUser()
@@ -39,14 +37,12 @@ class UserControllerTest extends MyDatabase_TestCase
     $userController = new UserController();
     $name = 'user1';
     $password = '123456';
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('User');
 
     // Act
     $user = $userController->create($name, $password);
 
     // Assert
-    $queryTable = $this->getConnection()->createQueryTable('User', 'SELECT password from User');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual('User', 'SELECT password from User');
   }
 
   public function testLogin_userDoesNotExist_mustThrowsException()

@@ -1,0 +1,19 @@
+﻿<dataset>
+  <GeneticAlgorithm code="123456"
+    populationSize="2"
+    genomeSize="2"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"],"h2":["class2"]}'
+    user_oid="00000000-0000-0000-0000-000000000001" />
+
+  <GeneticAlgorithm code="654321"
+    populationSize="2"
+    genomeSize="2"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"],"h2":["class2"]}'
+    user_oid="00000000-0000-0000-0000-000000000002" />
+</dataset>

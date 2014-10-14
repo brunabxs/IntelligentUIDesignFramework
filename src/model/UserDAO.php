@@ -1,37 +1,14 @@
 <?php
 class UserDAO extends AbstractDAO
 {
-  private static $entity = 'User';
-  private static $entityKey = 'user_oid';
-
-  public function __constructor()
+  public function __construct()
   {
-    parent::__constructor();
-  }
-
-  public function loadById($id)
-  {
-    return parent::loadInstance(self::$entity, array(array(self::$entityKey, $id)));
-  }
-
-  public function persist()
-  {
-    return parent::persistInstance(self::$entity, self::$entityKey);
-  }
-
-  public function update()
-  {
-    return parent::updateInstance(self::$entity, self::$entityKey);
-  }
-
-  public function setInstance($instance)
-  {
-    $this->instance = $instance;
+    parent::__construct('User', 'user_oid');
   }
 
   public function sync()
   {
-    return parent::loadInstance(self::$entity, array(array('name', $this->instance->name)));
+    return parent::load(array(array('name', $this->instance->name)));
   }
 }
 ?>

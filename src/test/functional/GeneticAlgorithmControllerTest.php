@@ -7,14 +7,12 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Arrange
     $geneticAlgorithmController = new GeneticAlgorithmController();
     $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('GeneticAlgorithm');
 
     // Act
     $geneticAlgorithmController->create($user, 2, '{"h1":["class1"]}');
 
     // Assert
-    $queryTable = $this->getConnection()->createQueryTable('GeneticAlgorithm', 'SELECT populationSize, genomeSize, methodForSelection, methodForCrossover, methodForMutation, properties, user_oid from GeneticAlgorithm');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual('GeneticAlgorithm', 'SELECT populationSize, genomeSize, methodForSelection, methodForCrossover, methodForMutation, properties, user_oid from GeneticAlgorithm');
   }
 
   public function testCreate_mustSyncGeneticAlgorithm()
@@ -35,14 +33,12 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     // Arrange
     $geneticAlgorithmController = new GeneticAlgorithmController();
     $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('Generation');
 
     // Act
     $geneticAlgorithmController->create($user, 2, '{"h1":["class1"]}');
 
     // Assert
-    $queryTable = $this->getConnection()->createQueryTable('Generation', 'SELECT number from Generation');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual('Generation', 'SELECT number from Generation');
   }
 
   public function testCreate_mustSyncGeneration()

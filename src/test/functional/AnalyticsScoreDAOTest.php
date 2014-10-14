@@ -2,10 +2,14 @@
 include_once 'MyDatabase_TestCase.php';
 class AnalyticsScoreDAOTest extends MyDatabase_TestCase
 {
+  private static $table = 'AnalyticsScore';
+  private static $query1 = 'SELECT analyticsScore_oid, method, columns, weight, analytics_oid FROM AnalyticsScore';
+  private static $query2 = 'SELECT method, columns, weight, analytics_oid FROM AnalyticsScore';
+
   public function testLoadById_analyticsScoreWithAnalyticsScoreOidThatExists_mustSetInstanceToAnalyticsScoreObject()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
 
     // Act
     $analyticsScoreDAO->loadById('00000000-0000-0000-0000-000000000001');
@@ -14,7 +18,7 @@ class AnalyticsScoreDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($analyticsScoreDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsScoreDAO->instance->analyticsScore_oid);
     $this->assertEquals('method1', $analyticsScoreDAO->instance->method);
-    $this->assertEquals('methodColumn1', $analyticsScoreDAO->instance->methodColumn);
+    $this->assertEquals('column', $analyticsScoreDAO->instance->columns);
     $this->assertEquals('1', $analyticsScoreDAO->instance->weight);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsScoreDAO->instance->analytics_oid);
   }
@@ -22,7 +26,7 @@ class AnalyticsScoreDAOTest extends MyDatabase_TestCase
   public function testLoadById_analyticsScoreWithAnalyticsScoreOidThatDoesNotExist_mustSetInstanceToNull()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
 
     // Act
     $analyticsScoreDAO->loadById('00000000-0000-0000-0000-000000000002');
@@ -31,125 +35,123 @@ class AnalyticsScoreDAOTest extends MyDatabase_TestCase
     $this->assertNull($analyticsScoreDAO->instance);
   }
 
-  public function testPersist_analyticsScoreWithDifferentMethod_mustSaveAnalyticsScoreInstance()
+  public function testPersist_analyticsScoreWithAnalyticsScoreOidNullWithMethodThatDoesNotExistAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method2', 'methodColumn1', '1', '00000000-0000-0000-0000-000000000001');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method2', 'column', '1', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsScoreDAO->persist();
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('AnalyticsScore'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_analyticsScoreWithDifferentColumn_mustSaveAnalyticsScoreInstance()
+  public function testPersist_analyticsScoreWithAnalyticsScoreOidNullWithMethodThatDoesNotExistAndAnalyticsOidThatExists_mustSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', 'methodColumn2', '1', '00000000-0000-0000-0000-000000000001');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method2', 'column', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsScoreDAO->persist();
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('AnalyticsScore'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_analyticsScoreWithDifferentAnalyticsOid_mustSaveAnalyticsScoreInstance()
+  public function testPersist_analyticsScoreWithAnalyticsScoreOidNullWithMethodThatExistsAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', 'methodColumn1', '1', '00000000-0000-0000-0000-000000000002');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', 'column', '1', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsScoreDAO->persist();
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('AnalyticsScore'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_analyticsScoreWithSameMethodAndColumnAndAnalyticsOid_mustNotSaveAnalyticsScoreInstance()
+  public function testPersist_analyticsScoreWithAnalyticsScoreOidNullWithMethodThatExistsAndAnalyticsOidThatExists_mustNotSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', 'methodColumn1', '2', '00000000-0000-0000-0000-000000000001');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', 'column', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsScoreDAO->persist();
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('AnalyticsScore'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testPersist_analyticsScoreWithAnalyticsScoreOidNotNullThatDoesNotExist_mustNotSaveAnalyticsScoreInstance()
+  public function testPersist_analyticsScoreWithAnalyticsScoreOidNotNull_mustNotSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore('00000000-0000-0000-0000-000000000002', 'method2', 'methodColumn2', '2', '00000000-0000-0000-0000-000000000001');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore('00000000-0000-0000-0000-000000000002', 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsScoreDAO->persist();
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('AnalyticsScore'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_analyticsScoreWithAnalyticsScoreOidNull_mustNotSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method2', 'methodColumn2', '2', '00000000-0000-0000-0000-000000000001');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsScoreDAO->update();
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('AnalyticsScore'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
-
+  
   public function testUpdate_analyticsScoreWithAnalyticsScoreOidNotNullThatDoesNotExist_mustNotSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore('00000000-0000-0000-0000-000000000002', 'method2', 'methodColumn2', '2', '00000000-0000-0000-0000-000000000001');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore('00000000-0000-0000-0000-000000000002', 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsScoreDAO->update();
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('AnalyticsScore'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_analyticsScoreWithAnalyticsScoreOidNotNullThatExists_mustSaveAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore('00000000-0000-0000-0000-000000000001', 'method2', 'methodColumn2', '2', '00000000-0000-0000-0000-000000000001');
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('AnalyticsScore');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore('00000000-0000-0000-0000-000000000001', 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsScoreDAO->update();
 
     // Assert
     $this->assertEquals(1, $result);
-    $queryTable = $this->getConnection()->createQueryTable('AnalyticsScore', 'SELECT analyticsScore_oid, method, methodColumn, weight, analytics_oid FROM AnalyticsScore');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testSync_analyticsScoreExists_mustSetAnalyticsScoreInstanceByMethodAndColumnAndAnalyticsOid()
+  public function testSync_analyticsScoreWithAnalyticsOidThatExistsAndMethodThatExists_mustSetAnalyticsScoreInstance()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', 'methodColumn1', null, '00000000-0000-0000-0000-000000000001');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', null, null, '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsScoreDAO->sync();
@@ -158,16 +160,16 @@ class AnalyticsScoreDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($analyticsScoreDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsScoreDAO->instance->analyticsScore_oid);
     $this->assertEquals('method1', $analyticsScoreDAO->instance->method);
-    $this->assertEquals('methodColumn1', $analyticsScoreDAO->instance->methodColumn);
+    $this->assertEquals('column', $analyticsScoreDAO->instance->columns);
     $this->assertEquals('1', $analyticsScoreDAO->instance->weight);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsScoreDAO->instance->analytics_oid);
   }
 
-  public function testSync_analyticsScoreDoesNotExist_mustSetAnalyticsScoreInstanceToNull()
+  public function testSync_analyticsScoreWithAnalyticsOidThatDoesNotExist_mustSetAnalyticsScoreInstanceToNull()
   {
     // Arrange
-    $analyticsScoreDAO = $this->mockAnalyticsScoreDAO();
-    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', 'methodColumn1', null, '00000000-0000-0000-0000-000000000002');
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method1', null, null, '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsScoreDAO->sync();
@@ -176,13 +178,17 @@ class AnalyticsScoreDAOTest extends MyDatabase_TestCase
     $this->assertNull($analyticsScoreDAO->instance);
   }
 
-  protected function mockAnalyticsScoreDAO()
+  public function testSync_analyticsScoreWithMethodThatDoesNotExist_mustSetAnalyticsScoreInstanceToNull()
   {
-    $stub = $this->getMockBuilder('AnalyticsScoreDAO')
-                 ->disableOriginalConstructor()
-                 ->setMethods(NULL)
-                 ->getMock();
-    return $stub;
+    // Arrange
+    $analyticsScoreDAO = new AnalyticsScoreDAO();
+    $analyticsScoreDAO->instance = new AnalyticsScore(null, 'method2', null, null, '00000000-0000-0000-0000-000000000001');
+
+    // Act
+    $result = $analyticsScoreDAO->sync();
+
+    // Assert
+    $this->assertNull($analyticsScoreDAO->instance);
   }
 }
 ?>

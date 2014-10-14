@@ -1,43 +1,20 @@
 <?php
 class IndividualDAO extends AbstractDAO
 {
-  private static $entity = 'Individual';
-  private static $entityKey = 'individual_oid';
-
-  public function __constructor()
+  public function __construct()
   {
-    parent::__constructor();
-  }
-
-  public function loadById($id)
-  {
-    return parent::loadInstance(self::$entity, array(array(self::$entityKey, $id)));
-  }
-
-  public function persist()
-  {
-    return parent::persistInstance(self::$entity, self::$entityKey);
-  }
-
-  public function update()
-  {
-    return parent::updateInstance(self::$entity, self::$entityKey);
-  }
-
-  public function setInstance($instance)
-  {
-    $this->instance = $instance;
+    parent::__construct('Individual', 'individual_oid');
   }
 
   public function sync()
   {
-    return parent::loadInstance(self::$entity, array(array('genome', $this->instance->genome),
-                                                     array('generation_oid', $this->instance->generation_oid)));
+    return parent::load(array(array('genome', $this->instance->genome),
+                        array('generation_oid', $this->instance->generation_oid)));
   }
 
   public function loadAllIndividuals($generation)
   {
-    return parent::loadAllInstances(self::$entity, array(array('generation_oid', $generation->generation_oid)), ' ORDER BY genome ');
+    return parent::loadAll(array(array('generation_oid', $generation->generation_oid)), ' ORDER BY genome ');
   }
 
   public static function generateGenome($geneticAlgorithm)

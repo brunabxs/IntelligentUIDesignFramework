@@ -1,0 +1,6 @@
+<dataset>
+  <User user_oid="00000000-0000-0000-0000-000000000001"
+    name="user2"
+    password="password2"
+    email="user2@users.com" />
+</dataset>

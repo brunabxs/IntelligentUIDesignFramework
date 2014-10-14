@@ -11,7 +11,7 @@ class UserController
   public function login($name, $password)
   {
     $user = new User(null, $name, null, null);
-    $this->userDAO->setInstance($user);
+    $this->userDAO->instance = $user;
     $this->userDAO->sync();
 
     if ($this->userDAO->instance !== null)
@@ -22,7 +22,7 @@ class UserController
       }
       else
       {
-        $this->userDAO->setInstance(null);
+        $this->userDAO->instance = null;
         throw new Exception('Password is not correct');
       }
     }
@@ -35,7 +35,7 @@ class UserController
   public function create($name, $password)
   {
     $user = new User(null, $name, self::encrypt($password), null);
-    $this->userDAO->setInstance($user);
+    $this->userDAO->instance = $user;
     $this->userDAO->persist();
     $this->userDAO->sync();
     return $this->userDAO->instance;

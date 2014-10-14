@@ -1,0 +1,11 @@
+<dataset>
+  <Analytics token="123token"
+    siteId="1"
+    type="piwik"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Analytics token="456token"
+    siteId="2"
+    type="piwik"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002" />
+</dataset>

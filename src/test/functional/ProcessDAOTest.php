@@ -2,10 +2,14 @@
 include_once 'MyDatabase_TestCase.php';
 class ProcessDAOTest extends MyDatabase_TestCase
 {
+  private static $table = 'Process';
+  private static $query1 = 'SELECT process_oid, serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid FROM Process';
+  private static $query2 = 'SELECT serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid FROM Process';
+
   public function testLoadById_processWithProcessOidThatExists_mustSetInstanceToProcessObject()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
 
     // Act
     $processDAO->loadById('00000000-0000-0000-0000-000000000001');
@@ -22,7 +26,7 @@ class ProcessDAOTest extends MyDatabase_TestCase
   public function testLoadById_processWithProcessOidThatDoesNotExist_mustSetInstanceToNull()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
 
     // Act
     $processDAO->loadById('00000000-0000-0000-0000-000000000002');
@@ -31,10 +35,10 @@ class ProcessDAOTest extends MyDatabase_TestCase
     $this->assertNull($processDAO->instance);
   }
 
-  public function testPersist_processWithDifferentUserOid_mustSaveProcessInstance()
+  public function testPersist_processWithProcessOidNullWithUserOidThatDoesNotExist_mustSaveProcessInstance()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
     $processDAO->instance = new Process(null, '0', '0', '0', '00000000-0000-0000-0000-000000000002');
 
     // Act
@@ -42,13 +46,13 @@ class ProcessDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('Process'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_processWithSameUserOid_mustNotSaveProcessInstance()
+  public function testPersist_processWithProcessOidNullWithUserOidThatExists_mustNotSaveProcessInstance()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
     $processDAO->instance = new Process(null, '0', '0', '0', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -56,27 +60,27 @@ class ProcessDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Process'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testPersist_processWithProcessOidNotNullThatDoesNotExist_mustNotSaveProcessInstance()
+  public function testPersist_processWithProcessOidNotNull_mustNotSaveProcessInstance()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
-    $processDAO->instance = new Process('00000000-0000-0000-0000-000000000001', '0', '0', '0', '00000000-0000-0000-0000-000000000001');
+    $processDAO = new ProcessDAO();
+    $processDAO->instance = new Process('00000000-0000-0000-0000-000000000002', '0', '0', '0', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $processDAO->persist();
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Process'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_processWithProcessOidNull_mustNotSaveProcessInstance()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
     $processDAO->instance = new Process(null, '0', '0', '0', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -84,13 +88,13 @@ class ProcessDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Process'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
-
+  
   public function testUpdate_processWithProcessOidNotNullThatDoesNotExist_mustNotSaveProcessInstance()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
     $processDAO->instance = new Process('00000000-0000-0000-0000-000000000002', '0', '0', '0', '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -98,29 +102,27 @@ class ProcessDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Process'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_processWithProcessOidNotNullThatExists_mustSaveProcessInstance()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
     $processDAO->instance = new Process('00000000-0000-0000-0000-000000000001', '0', '0', '0', '00000000-0000-0000-0000-000000000001');
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('Process');
 
     // Act
     $result = $processDAO->update();
 
     // Assert
     $this->assertEquals(1, $result);
-    $queryTable = $this->getConnection()->createQueryTable('Process', 'SELECT process_oid, serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid FROM Process');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testSync_processExists_mustSetProcessInstanceByUserOid()
+  public function testSync_processWithUserOidThatExists_mustSetProcessInstance()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
     $processDAO->instance = new Process(null, null, null, null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -135,10 +137,10 @@ class ProcessDAOTest extends MyDatabase_TestCase
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $processDAO->instance->user_oid);
   }
 
-  public function testSync_processDoesNotExist_mustSetProcessInstanceToNull()
+  public function testSync_processWithUserOidThatDoesNotExist_mustSetProcessInstanceToNull()
   {
     // Arrange
-    $processDAO = $this->mockProcessDAO();
+    $processDAO = new ProcessDAO();
     $processDAO->instance = new Process(null, null, null, null, '00000000-0000-0000-0000-000000000002');
 
     // Act
@@ -146,15 +148,6 @@ class ProcessDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertNull($processDAO->instance);
-  }
-
-  protected function mockProcessDAO()
-  {
-    $stub = $this->getMockBuilder('ProcessDAO')
-                 ->disableOriginalConstructor()
-                 ->setMethods(NULL)
-                 ->getMock();
-    return $stub;
   }
 }
 ?>

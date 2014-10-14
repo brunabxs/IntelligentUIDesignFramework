@@ -4,7 +4,7 @@
     geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
 
   <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
-    populationSize="1"
+    populationSize="2"
     genomeSize="1"
     methodForSelection="roulette"
     methodForCrossover="simple"
@@ -16,4 +16,18 @@
     name="user1"
     password="password1"
     email="user1@users.com" />
+
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002"
+    populationSize="2"
+    genomeSize="2"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"],"h2":["class2"]}'
+    user_oid="00000000-0000-0000-0000-000000000002" />
+
+  <User user_oid="00000000-0000-0000-0000-000000000002"
+    name="user2"
+    password="password2"
+    email="user2@users.com" />
 </dataset>

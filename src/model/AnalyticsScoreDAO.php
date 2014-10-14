@@ -1,39 +1,15 @@
 <?php
 class AnalyticsScoreDAO extends AbstractDAO
 {
-  private static $entity = 'AnalyticsScore';
-  private static $entityKey = 'analyticsScore_oid';
-
-  public function __constructor()
+  public function __construct()
   {
-    parent::__constructor();
-  }
-
-  public function loadById($id)
-  {
-    return parent::loadInstance(self::$entity, array(array(self::$entityKey, $id)));
-  }
-
-  public function persist()
-  {
-    return parent::persistInstance(self::$entity, self::$entityKey);
-  }
-
-  public function update()
-  {
-    return parent::updateInstance(self::$entity, self::$entityKey);
-  }
-
-  public function setInstance($instance)
-  {
-    $this->instance = $instance;
+    parent::__construct('AnalyticsScore', 'analyticsScore_oid');
   }
 
   public function sync()
   {
-    return parent::loadInstance(self::$entity, array(array('method', $this->instance->method),
-                                                     array('methodColumn', $this->instance->methodColumn),
-                                                     array('analytics_oid', $this->instance->analytics_oid)));
+    return parent::load(array(array('method', $this->instance->method),
+                        array('analytics_oid', $this->instance->analytics_oid)));
   }
 }
 ?>

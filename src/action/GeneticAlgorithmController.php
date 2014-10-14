@@ -17,13 +17,13 @@ class GeneticAlgorithmController
     // create genetic algorithm
     $genomeSize = GeneticAlgorithmDAO::generateGenomeSize($properties);
     $geneticAlgorithm = new GeneticAlgorithm(null, md5(date('YmdHisu')), $populationSize, $genomeSize, 'roulette', 'simple', 'simple', $properties, $user->user_oid);
-    $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
+    $this->geneticAlgorithmDAO->instance = $geneticAlgorithm;
     $this->geneticAlgorithmDAO->persist();
     $this->geneticAlgorithmDAO->sync();
 
     // create first generation
     $generation = new Generation(null, '0', $this->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
-    $this->generationDAO->setInstance($generation);
+    $this->generationDAO->instance = $generation;
     $this->generationDAO->persist();
     $this->generationDAO->sync();
 
@@ -43,7 +43,7 @@ class GeneticAlgorithmController
       $quantity = $count;
       $properties = IndividualDAO::generateProperties($this->geneticAlgorithmDAO->instance, $genome);
       $individual = new Individual(null, $genome, $properties, $quantity, null, $this->generationDAO->instance->generation_oid);
-      $this->individualDAO->setInstance($individual);
+      $this->individualDAO->instance = $individual;
       $this->individualDAO->persist();
     }
   }
@@ -52,7 +52,7 @@ class GeneticAlgorithmController
   {
     // retrieve genetic algorithm
     $geneticAlgorithm = new GeneticAlgorithm(null, null, null, null, null, null, null, null, $user->user_oid);
-    $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
+    $this->geneticAlgorithmDAO->instance = $geneticAlgorithm;
     $this->geneticAlgorithmDAO->sync();
   }
 
@@ -60,7 +60,7 @@ class GeneticAlgorithmController
   {
     // retrieve genetic algorithm
     $geneticAlgorithm = new GeneticAlgorithm(null, $code, null, null, null, null, null, null, null);
-    $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
+    $this->geneticAlgorithmDAO->instance = $geneticAlgorithm;
     $this->geneticAlgorithmDAO->sync();
 
     // retrieve last generation
@@ -90,7 +90,7 @@ class GeneticAlgorithmController
     foreach ($individuals as &$individual)
     {
       $individual->score = $scores[$individual->genome];
-      $this->individualDAO->setInstance($individual);
+      $this->individualDAO->instance = $individual;
       $this->individualDAO->update();
     }
 
@@ -128,7 +128,7 @@ class GeneticAlgorithmController
       $quantity = $count;
       $properties = IndividualDAO::generateProperties($this->geneticAlgorithmDAO->instance, $genome);
       $individual = new Individual(null, $genome, $properties, $quantity, null, $this->generationDAO->instance->generation_oid);
-      $this->individualDAO->setInstance($individual);
+      $this->individualDAO->instance = $individual;
       $this->individualDAO->persist();
     }
   }
@@ -137,7 +137,7 @@ class GeneticAlgorithmController
   {
     // retrieve genetic algorithm
     $geneticAlgorithm = new GeneticAlgorithm(null, $geneticAlgorithmCode, null, null, null, null, null, null, null);
-    $this->geneticAlgorithmDAO->setInstance($geneticAlgorithm);
+    $this->geneticAlgorithmDAO->instance = $geneticAlgorithm;
     $this->geneticAlgorithmDAO->sync();
 
     if ($this->geneticAlgorithmDAO->instance === null)
@@ -165,20 +165,20 @@ class GeneticAlgorithmController
 
       // retrieve individual
       $individual = $individuals[rand(0, count($individuals) - 1)];
-      $this->individualDAO->setInstance($individual);
+      $this->individualDAO->instance = $individual;
     }
     else
     {
       // retrieve generation
       $generation = new Generation(null, $generation, $this->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
-      $this->generationDAO->setInstance($generation);
+      $this->generationDAO->instance = $generation;
       $this->generationDAO->sync();
 
       if ($this->generationDAO->instance !== null)
       {
         // retrieve individual
         $individual = new Individual(null, $genome, null, null, null, $this->generationDAO->instance->generation_oid);
-        $this->individualDAO->setInstance($individual);
+        $this->individualDAO->instance = $individual;
         $this->individualDAO->sync();
       }
 
@@ -192,7 +192,7 @@ class GeneticAlgorithmController
 
         // retrieve individual
         $individual = $individuals[rand(0, count($individuals) - 1)];
-        $this->individualDAO->setInstance($individual);
+        $this->individualDAO->instance = $individual;
       }
     }
 

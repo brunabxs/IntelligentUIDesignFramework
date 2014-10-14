@@ -1,41 +1,18 @@
 <?php
 class GeneticAlgorithmDAO extends AbstractDAO
 {
-  private static $entity = 'GeneticAlgorithm';
-  private static $entityKey = 'geneticAlgorithm_oid';
-
-  public function __constructor()
+  public function __construct()
   {
-    parent::__constructor();
-  }
-
-  public function loadById($id)
-  {
-    return parent::loadInstance(self::$entity, array(array(self::$entityKey, $id)));
-  }
-
-  public function persist()
-  {
-    return parent::persistInstance(self::$entity, self::$entityKey);
-  }
-
-  public function update()
-  {
-    return parent::updateInstance(self::$entity, self::$entityKey);
-  }
-
-  public function setInstance($instance)
-  {
-    $this->instance = $instance;
+    parent::__construct('GeneticAlgorithm', 'geneticAlgorithm_oid');
   }
 
   public function sync()
   {
     $instance = $this->instance;
-    $userSync = parent::loadInstance(self::$entity, array(array('user_oid', $instance->user_oid)));
+    $userSync = parent::load(array(array('user_oid', $instance->user_oid)));
     if ($this->instance === null)
     {
-      return parent::loadInstance(self::$entity, array(array('code', $instance->code)));
+      return parent::load(array(array('code', $instance->code)));
     }
     return $userSync;
   }

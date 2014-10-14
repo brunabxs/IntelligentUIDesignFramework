@@ -2,10 +2,14 @@
 include_once 'MyDatabase_TestCase.php';
 class IndividualDAOTest extends MyDatabase_TestCase
 {
+  private static $table = 'Individual';
+  private static $query1 = 'SELECT individual_oid, genome, properties, quantity, generation_oid FROM Individual';
+  private static $query2 = 'SELECT genome, properties, quantity, generation_oid FROM Individual';
+
   public function testLoadById_individualWithIndividualOidThatExists_mustSetInstanceToIndividualObject()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
 
     // Act
     $individualDAO->loadById('00000000-0000-0000-0000-000000000001');
@@ -22,7 +26,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   public function testLoadById_individualWithIndividualOidThatDoesNotExist_mustSetInstanceToNull()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
 
     // Act
     $individualDAO->loadById('00000000-0000-0000-0000-000000000002');
@@ -31,10 +35,10 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertNull($individualDAO->instance);
   }
 
-  public function testPersist_individualWithDifferentGenomeAndSameGenerationOid_mustSaveIndividualInstance()
+  public function testPersist_individualWithIndividualOidNullWithGenomeThatDoesNotExistAndGenerationOidThatExists_mustSaveIndividualInstance()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual(null, '1', '{"h1":"class1"}', '1', null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -42,13 +46,13 @@ class IndividualDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(1, $result);
-    $this->assertEquals(2, $this->getConnection()->getRowCount('Individual'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_individualWithSameGenomeAndSameGenerationOid_mustNotSaveIndividualInstance()
+  public function testPersist_individualWithIndividualOidNullWithGenomeThatExistsAndGenerationOidThatExists_mustNotSaveIndividualInstance()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual(null, '0', '{"h1":""}', '1', null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -56,13 +60,13 @@ class IndividualDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Individual'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testPersist_individualWithIndividualOidNotNullThatDoesNotExist_mustNotSaveIndividualInstance()
+  public function testPersist_individualWithIndividualOidNotNull_mustNotSaveIndividualInstance()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000002', '0', '{"h1":""}', '1', null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -70,13 +74,13 @@ class IndividualDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Individual'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_individualWithIndividualOidNull_mustNotSaveIndividualInstance()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual(null, '0', '{"h1":""}', '1', null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -84,13 +88,13 @@ class IndividualDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Individual'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
-
+  
   public function testUpdate_individualWithIndividualOidNotNullThatDoesNotExist_mustNotSaveIndividualInstance()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000002', '0', '{"h1":""}', '1', null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -98,29 +102,27 @@ class IndividualDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertEquals(0, $result);
-    $this->assertEquals(1, $this->getConnection()->getRowCount('Individual'));
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
   public function testUpdate_individualWithIndividualOidNotNullThatExists_mustSaveIndividualInstance()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual('00000000-0000-0000-0000-000000000001', '1', '{"h1":"class1"}', '1', null, '00000000-0000-0000-0000-000000000001');
-    $expectedTable = $this->createFlatXmlDataSet($this->getExpectedDataset('expected.xml'))->getTable('Individual');
 
     // Act
     $result = $individualDAO->update();
 
     // Assert
     $this->assertEquals(1, $result);
-    $queryTable = $this->getConnection()->createQueryTable('Individual', 'SELECT individual_oid, genome, properties, quantity, generation_oid FROM Individual');
-    $this->assertTablesEqual($expectedTable, $queryTable);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testSync_individualExists_mustSetIndividualInstanceByGenomeAndGenerationOid()
+  public function testSync_individualWithGenomeThatExistsAndGenerationOidThatExists_mustSetIndividualInstance()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual(null, '0', null, null, null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -135,10 +137,23 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $individualDAO->instance->generation_oid);
   }
 
-  public function testSync_individualDoesNotExist_mustSetIndividualInstanceToNull()
+  public function testSync_individualWithGenerationOidThatDoesNotExist_mustSetIndividualInstanceToNull()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
+    $individualDAO->instance = new Individual(null, '0', null, null, null, '00000000-0000-0000-0000-000000000002');
+
+    // Act
+    $result = $individualDAO->sync();
+
+    // Assert
+    $this->assertNull($individualDAO->instance);
+  }
+
+  public function testSync_individualWithGenomeThatDoesNotExist_mustSetIndividualInstanceToNull()
+  {
+    // Arrange
+    $individualDAO = new IndividualDAO();
     $individualDAO->instance = new Individual(null, '1', null, null, null, '00000000-0000-0000-0000-000000000001');
 
     // Act
@@ -148,10 +163,10 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertNull($individualDAO->instance);
   }
 
-  public function testLoadAllIndividuals_generationHasTwoIndividuals_mustReturnAllOfThem()
+  public function testLoadAllIndividuals_generationHasTwoIndividuals_mustReturnTwoIndividuals()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $generation = new Generation('00000000-0000-0000-0000-000000000001', null, null);
 
     // Act
@@ -163,10 +178,10 @@ class IndividualDAOTest extends MyDatabase_TestCase
     $this->assertEquals('00000000-0000-0000-0000-000000000002', $individuals[1]->individual_oid);
   }
 
-  public function testLoadAllIndividuals_generationHasNoIndividual_mustReturnEmptyArray()
+  public function testLoadAllIndividuals_generationHasNoIndividual_mustReturnNoIndividual()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $generation = new Generation('00000000-0000-0000-0000-000000000001', null, null);
 
     // Act
@@ -179,7 +194,7 @@ class IndividualDAOTest extends MyDatabase_TestCase
   public function testLoadAllIndividuals_mustSetIndividualInstanceToNull()
   {
     // Arrange
-    $individualDAO = $this->mockIndividualDAO();
+    $individualDAO = new IndividualDAO();
     $generation = new Generation('00000000-0000-0000-0000-000000000001', null, null);
 
     // Act
@@ -187,15 +202,6 @@ class IndividualDAOTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertNull($individualDAO->instance);
-  }
-
-  protected function mockIndividualDAO()
-  {
-    $stub = $this->getMockBuilder('IndividualDAO')
-                 ->disableOriginalConstructor()
-                 ->setMethods(NULL)
-                 ->getMock();
-    return $stub;
   }
 }
 ?>

@@ -1,0 +1,11 @@
+<dataset>
+  <Individual genome="0"
+    properties='{"h1":""}'
+    quantity="1"
+    generation_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Individual genome="1"
+    properties='{"h1":"class1"}'
+    quantity="1"
+    generation_oid="00000000-0000-0000-0000-000000000001" />
+</dataset>

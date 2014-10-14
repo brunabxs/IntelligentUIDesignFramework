@@ -1,0 +1,9 @@
+<dataset>
+  <User name="user1"
+    password="password1"
+    email="user1@users.com" />
+
+  <User name="user2"
+    password="password2"
+    email="user2@users.com" />
+</dataset>

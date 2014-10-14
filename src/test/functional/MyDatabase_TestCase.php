@@ -35,7 +35,7 @@ abstract class MyDatabase_TestCase extends PHPUnit_Extensions_Database_TestCase
 
   final public function getDataSet()
   {
-    $datasetDir = dirname(__FILE__) . '/' . get_class($this) . '/dataset/';
+    $datasetDir = dirname(__FILE__) . '/' . get_class($this) . '/';
     
     $myScenarioFile = $datasetDir . $this->getName() . '.xml';
     if (is_file($myScenarioFile))
@@ -52,9 +52,21 @@ abstract class MyDatabase_TestCase extends PHPUnit_Extensions_Database_TestCase
     return null;
   }
 
-  public function getExpectedDataset($file)
+  public function getExpectedDataset()
   {
-    return dirname(__FILE__) . '/' . get_class($this) . '/' . $this->getName() . '_expected/' . $file;
+    $expected = dirname(__FILE__) . '/' . get_class($this) . '/expected_' . $this->getName() . '.xml';
+    if (is_file($expected))
+    {
+      return $this->createFlatXmlDataSet($expected);
+    }
+    return $this->getDataset();
+  }
+
+  public function assertActualAndExpectedTablesEqual($entity, $query)
+  {
+    $expectedTable = $this->getExpectedDataset()->getTable($entity);
+    $queryTable = $this->getConnection()->createQueryTable($entity, $query);
+    $this->assertTablesEqual($expectedTable, $queryTable);
   }
 }
 

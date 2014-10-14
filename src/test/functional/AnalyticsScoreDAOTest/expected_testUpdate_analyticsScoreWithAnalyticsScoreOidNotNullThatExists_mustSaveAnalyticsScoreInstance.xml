@@ -1,7 +1,7 @@
 <dataset>
   <AnalyticsScore analyticsScore_oid="00000000-0000-0000-0000-000000000001"
     method="method2"
-    methodColumn="methodColumn2"
+    columns="column1;column2"
     weight="2"
-    analytics_oid="00000000-0000-0000-0000-000000000001" />
+    analytics_oid="00000000-0000-0000-0000-000000000002" />
 </dataset>

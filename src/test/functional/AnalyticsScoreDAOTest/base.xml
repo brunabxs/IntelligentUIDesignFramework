@@ -1,7 +1,7 @@
 <dataset>
   <AnalyticsScore analyticsScore_oid="00000000-0000-0000-0000-000000000001"
     method="method1"
-    methodColumn="methodColumn1"
+    columns="column"
     weight="1"
     analytics_oid="00000000-0000-0000-0000-000000000001" />
 
@@ -25,4 +25,25 @@
     name="user1"
     password="password1"
     email="user1@users.com" />
+
+  <Analytics analytics_oid="00000000-0000-0000-0000-000000000002"
+    token="456token"
+    siteId="2"
+    type="piwik"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002" />
+
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002"
+    code="654321"
+    populationSize="2"
+    genomeSize="2"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"],"h2":["class2"]}'
+    user_oid="00000000-0000-0000-0000-000000000002" />
+
+  <User user_oid="00000000-0000-0000-0000-000000000002"
+    name="user2"
+    password="password2"
+    email="user2@users.com" />
 </dataset>
