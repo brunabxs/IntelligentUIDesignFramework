@@ -85,7 +85,7 @@ class GeneticAlgorithmCrossoverTest extends MyAnotherUnit_Framework_TestCase
     $this->assertEquals('000', $newGenomes[0]);
     $this->assertEquals('111', $newGenomes[1]);
   }
-  
+
   public function testSimple_genomesWithDifferentSize_mustThrowsException()
   {
     // Arrange

@@ -38,7 +38,7 @@ class PagesController
     'error' => array('AppContentTitle' => 'Ooopsie! Ocorreu um erro no nosso servidor',
                      'AppContentInfo'  => 'Entre em contado com email@email e relate o ocorrido.'),
   );
-  
+
   private static function build($page, $otherParameters=array())
   {
     $smarty = new Smarty();

@@ -122,7 +122,7 @@ class GeneticAlgorithmDAOTest extends MyDatabase_TestCase
     $this->assertEquals(0, $result);
     $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
-  
+
   public function testUpdate_geneticAlgorithmWithGeneticAlgorithmOidNotNullThatDoesNotExist_mustNotSaveGeneticAlgorithmInstance()
   {
     // Arrange

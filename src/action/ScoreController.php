@@ -76,7 +76,7 @@ class ScoreController
     foreach ($methods as $method)
     {
       $url .= "&urls[$index]=";
-      
+
       $urlIndex = "method=$method";
       $urlIndex .= "&idSite=$analyticsSiteId";
       $urlIndex .= "&period=range";

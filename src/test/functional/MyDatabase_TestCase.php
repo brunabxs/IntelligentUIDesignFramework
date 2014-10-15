@@ -36,7 +36,7 @@ abstract class MyDatabase_TestCase extends PHPUnit_Extensions_Database_TestCase
   final public function getDataSet()
   {
     $datasetDir = dirname(__FILE__) . '/' . get_class($this) . '/';
-    
+
     $myScenarioFile = $datasetDir . $this->getName() . '.xml';
     if (is_file($myScenarioFile))
     {
