@@ -5,8 +5,7 @@ class PagesController
     1 => array('AppContentTitle' => 'Idenfifique-se',
                'AppContentInfo'  => 'Preencha os campos obrigatórios (*) para que possa acessar nossos serviços.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>1),
-               'AppContent'      => 'step1-login.tpl',
-               'Controller'      => 'index.php'),
+               'AppContent'      => 'step1-access.tpl'),
 
     2 => array('AppContentTitle' => 'Indique suas informações para configuração do aplicativo',
                'AppContentInfo'  => 'Preencha os campos obrigatórios (*) para que seus dados possam ser enviados para nossos servidores.',
@@ -58,9 +57,16 @@ class PagesController
     $smarty->display('main.tpl');
   }
 
-  public static function loadUserLoginPage()
+  public static function loadUserAccessPage($user=NULL, $password=NULL, $userErrorMessage=NULL, $passwordErrorMessage=NULL)
   {
-    PagesController::build(1);
+    $otherParameters = array();
+
+    if ($user) $otherParameters['user'] = $user;
+    if ($password) $otherParameters['password'] = $password;
+    if ($userErrorMessage) $otherParameters['message_user'] = $userErrorMessage;
+    if ($passwordErrorMessage) $otherParameters['message_password'] = $passwordErrorMessage;
+
+    PagesController::build(1, $otherParameters);
   }
 
   public static function loadServerConfigurationPage()

@@ -3,18 +3,55 @@
 
   session_start();
 
-  function processUserLoginPage()
+  function processUserLogin()
   {
     try
     {
       $controller = new UserController();
       $controller->login($_POST['txt_user'], $_POST['txt_password']);
       $_SESSION['user'] = $controller->userDAO->instance;
-      return true;
+
+      loadPage();
+      return;
     }
     catch (Exception $e)
     {
-      return false;
+      if ($e->getMessage() === 'User does not exist')
+      {
+        PagesController::loadUserAccessPage($_POST['txt_user'], NULL, 'User does not exist', NULL);
+        return;
+      }
+
+      if ($e->getMessage() === 'Password is not correct')
+      {
+        PagesController::loadUserAccessPage($_POST['txt_user'], $_POST['txt_password'], NULL, 'Password is not correct');
+        return;
+      }
+
+      PagesController::loadErrorPage();
+    }
+  }
+
+  function processUserSignin()
+  {
+    try
+    {
+      $controller = new UserController();
+      $controller->create($_POST['txt_user'], $_POST['txt_password']);
+      $_SESSION['user'] = $controller->userDAO->instance;
+
+      loadPage();
+      return;
+    }
+    catch (Exception $e)
+    {
+      if ($e->getMessage() === 'User already exists')
+      {
+        PagesController::loadUserAccessPage($_POST['txt_user'], NULL, 'User already exists', NULL);
+        return;
+      }
+
+      PagesController::loadErrorPage();
     }
   }
 
@@ -23,7 +60,8 @@
     $json = json_decode($_POST['txt_prop_json']);
     if (!isset($json))
     {
-      return false;
+      PagesController::loadErrorPage();
+      return;
     }
 
     try
@@ -35,11 +73,14 @@
       $controller->load($_SESSION['user']);
       $controller->processDAO->instance->serverConfiguration = '1';
       $controller->update();
-      return true;
+
+      loadPage();
+      return;
     }
     catch (Exception $e)
     {
-      return false;
+      PagesController::loadErrorPage();
+      return;
     }
   }
 
@@ -51,11 +92,14 @@
       $controller->load($_SESSION['user']);
       $controller->processDAO->instance->clientConfiguration = '1';
       $controller->update();
-      return true;
+
+      loadPage();
+      return;
     }
     catch (Exception $e)
     {
-      return false;
+      PagesController::loadErrorPage();
+      return;
     }
   }
 
@@ -74,11 +118,14 @@
       $controller->load($_SESSION['user']);
       $controller->processDAO->instance->scheduleNextGeneration = '1';
       $controller->update();
-      return true;
+
+      loadPage();
+      return;
     }
     catch (Exception $e)
     {
-      return false;
+      PagesController::loadErrorPage();
+      return;
     }
   }
 
@@ -86,7 +133,7 @@
   {
     if (!isset($_SESSION['user']))
     {
-      PagesController::loadUserLoginPage();
+      PagesController::loadUserAccessPage();
     }
     else
     {
@@ -120,25 +167,29 @@
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST')
   {
-    if (isset($_POST['txt_user']) && isset($_POST['txt_password']) && processUserLoginPage())
+    if (isset($_POST['txt_user']) && isset($_POST['txt_password']) && isset($_POST['hidden_type']) && $_POST['hidden_type'] === 'login')
     {
-      loadPage();
+      processUserLogin();
     }
-    else if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop_json']) && processServerConfiguration())
+    else if (isset($_POST['txt_user']) && isset($_POST['txt_password']) && isset($_POST['hidden_type']) && $_POST['hidden_type'] === 'signin')
     {
-      loadPage();
+      processUserSignin();
     }
-    else if (isset($_POST['txt_script']) && processClientConfiguration())
+    else if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop_json']))
     {
-      loadPage();
+      processServerConfiguration();
     }
-    else if (isset($_POST['txt_start']) && processScheduleNextGeneration())
+    else if (isset($_POST['txt_script']))
     {
-      loadPage();
+      processClientConfiguration();
+    }
+    else if (isset($_POST['txt_start']))
+    {
+      processScheduleNextGeneration();
     }
     else
     {
-      header('location:error.php');
+      PagesController::loadErrorPage();
     }
   }
   else
