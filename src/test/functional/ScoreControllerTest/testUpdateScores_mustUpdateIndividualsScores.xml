@@ -1,7 +1,6 @@
 <dataset>
   <AnalyticsData analyticsData_oid="00000000-0000-0000-0000-000000000001"
     method="method1"
-    columns="column"
     weight="1"
     analytics_oid="00000000-0000-0000-0000-000000000001" />
 

@@ -3,8 +3,8 @@ include_once 'MyDatabase_TestCase.php';
 class AnalyticsDataDAOTest extends MyDatabase_TestCase
 {
   private static $table = 'AnalyticsData';
-  private static $query1 = 'SELECT analyticsData_oid, method, columns, weight, analytics_oid FROM AnalyticsData';
-  private static $query2 = 'SELECT method, columns, weight, analytics_oid FROM AnalyticsData';
+  private static $query1 = 'SELECT analyticsData_oid, method, extraParameters, weight, analytics_oid FROM AnalyticsData';
+  private static $query2 = 'SELECT method, extraParameters, weight, analytics_oid FROM AnalyticsData';
 
   public function testLoadById_analyticsDataWithAnalyticsDataOidThatExists_mustSetInstanceToAnalyticsDataObject()
   {
@@ -18,7 +18,7 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($analyticsDataDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsDataDAO->instance->analyticsData_oid);
     $this->assertEquals('method1', $analyticsDataDAO->instance->method);
-    $this->assertEquals('column', $analyticsDataDAO->instance->columns);
+    $this->assertEquals('&columns=column1', $analyticsDataDAO->instance->extraParameters);
     $this->assertEquals('1', $analyticsDataDAO->instance->weight);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsDataDAO->instance->analytics_oid);
   }
@@ -35,11 +35,11 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
     $this->assertNull($analyticsDataDAO->instance);
   }
 
-  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatDoesNotExistAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsDataInstance()
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatDoesNotExistAndExtraParametersThatDoesNotExistAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsDataInstance()
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', 'column', '1', '00000000-0000-0000-0000-000000000002');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', '&columns=column2', '1', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsDataDAO->persist();
@@ -49,11 +49,11 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
     $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatDoesNotExistAndAnalyticsOidThatExists_mustSaveAnalyticsDataInstance()
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatDoesNotExistAndExtraParametersThatDoesNotExistAndAnalyticsOidThatExists_mustSaveAnalyticsDataInstance()
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', 'column', '1', '00000000-0000-0000-0000-000000000001');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', '&columns=column2', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsDataDAO->persist();
@@ -63,11 +63,11 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
     $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatExistsAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsDataInstance()
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatExistsAndExtraParametersThatDoesNotExistAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsDataInstance()
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', 'column', '1', '00000000-0000-0000-0000-000000000002');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', '&columns=column2', '1', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsDataDAO->persist();
@@ -77,11 +77,67 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
     $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
   }
 
-  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatExistsAndAnalyticsOidThatExists_mustNotSaveAnalyticsDataInstance()
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatExistsAndExtraParametersThatDoesNotExistAndAnalyticsOidThatExists_mustSaveAnalyticsDataInstance()
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', 'column', '1', '00000000-0000-0000-0000-000000000001');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', '&columns=column2', '1', '00000000-0000-0000-0000-000000000001');
+
+    // Act
+    $result = $analyticsDataDAO->persist();
+
+    // Assert
+    $this->assertEquals(1, $result);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
+  }
+
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatDoesNotExistAndExtraParametersThatExistsAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsDataInstance()
+  {
+    // Arrange
+    $analyticsDataDAO = new AnalyticsDataDAO();
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', '&columns=column1', '1', '00000000-0000-0000-0000-000000000002');
+
+    // Act
+    $result = $analyticsDataDAO->persist();
+
+    // Assert
+    $this->assertEquals(1, $result);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
+  }
+
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatDoesNotExistAndExtraParametersThatExistsAndAnalyticsOidThatExists_mustSaveAnalyticsDataInstance()
+  {
+    // Arrange
+    $analyticsDataDAO = new AnalyticsDataDAO();
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', '&columns=column1', '1', '00000000-0000-0000-0000-000000000001');
+
+    // Act
+    $result = $analyticsDataDAO->persist();
+
+    // Assert
+    $this->assertEquals(1, $result);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
+  }
+
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatExistsAndExtraParametersThatExistsAndAnalyticsOidThatDoesNotExist_mustSaveAnalyticsDataInstance()
+  {
+    // Arrange
+    $analyticsDataDAO = new AnalyticsDataDAO();
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', '&columns=column1', '1', '00000000-0000-0000-0000-000000000002');
+
+    // Act
+    $result = $analyticsDataDAO->persist();
+
+    // Assert
+    $this->assertEquals(1, $result);
+    $this->assertActualAndExpectedTablesEqual(self::$table, self::$query2);
+  }
+
+  public function testPersist_analyticsDataWithAnalyticsDataOidNullWithMethodThatExistsAndExtraParametersThatExistsAndAnalyticsOidThatExists_mustNotSaveAnalyticsDataInstance()
+  {
+    // Arrange
+    $analyticsDataDAO = new AnalyticsDataDAO();
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', '&columns=column1', '1', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsDataDAO->persist();
@@ -95,7 +151,7 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData('00000000-0000-0000-0000-000000000002', 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000001');
+    $analyticsDataDAO->instance = new AnalyticsData('00000000-0000-0000-0000-000000000002', 'method2', '&columns=column2', '2', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsDataDAO->persist();
@@ -109,7 +165,7 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000001');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', '&columns=column2', '2', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsDataDAO->update();
@@ -123,7 +179,7 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData('00000000-0000-0000-0000-000000000002', 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000001');
+    $analyticsDataDAO->instance = new AnalyticsData('00000000-0000-0000-0000-000000000002', 'method2', '&columns=column2', '2', '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsDataDAO->update();
@@ -137,7 +193,7 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData('00000000-0000-0000-0000-000000000001', 'method2', 'column1;column2', '2', '00000000-0000-0000-0000-000000000002');
+    $analyticsDataDAO->instance = new AnalyticsData('00000000-0000-0000-0000-000000000001', 'method2', '&columns=column2', '2', '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsDataDAO->update();
@@ -147,11 +203,11 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
     $this->assertActualAndExpectedTablesEqual(self::$table, self::$query1);
   }
 
-  public function testSync_analyticsDataWithAnalyticsOidThatExistsAndMethodThatExists_mustSetAnalyticsDataInstance()
+  public function testSync_analyticsDataWithAnalyticsOidThatExistsAndMethodThatExistsAndExtraParametersThatExists_mustSetAnalyticsDataInstance()
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', null, null, '00000000-0000-0000-0000-000000000001');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', '&columns=column1', null, '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsDataDAO->sync();
@@ -160,7 +216,7 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($analyticsDataDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsDataDAO->instance->analyticsData_oid);
     $this->assertEquals('method1', $analyticsDataDAO->instance->method);
-    $this->assertEquals('column', $analyticsDataDAO->instance->columns);
+    $this->assertEquals('&columns=column1', $analyticsDataDAO->instance->extraParameters);
     $this->assertEquals('1', $analyticsDataDAO->instance->weight);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $analyticsDataDAO->instance->analytics_oid);
   }
@@ -169,7 +225,7 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', null, null, '00000000-0000-0000-0000-000000000002');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', '&columns=column1', null, '00000000-0000-0000-0000-000000000002');
 
     // Act
     $result = $analyticsDataDAO->sync();
@@ -182,7 +238,20 @@ class AnalyticsDataDAOTest extends MyDatabase_TestCase
   {
     // Arrange
     $analyticsDataDAO = new AnalyticsDataDAO();
-    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', null, null, '00000000-0000-0000-0000-000000000001');
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method2', '&columns=column1', null, '00000000-0000-0000-0000-000000000001');
+
+    // Act
+    $result = $analyticsDataDAO->sync();
+
+    // Assert
+    $this->assertNull($analyticsDataDAO->instance);
+  }
+
+  public function testSync_analyticsDataWithExtraParametersThatDoesNotExist_mustSetAnalyticsDataInstanceToNull()
+  {
+    // Arrange
+    $analyticsDataDAO = new AnalyticsDataDAO();
+    $analyticsDataDAO->instance = new AnalyticsData(null, 'method1', '&columns=column2', null, '00000000-0000-0000-0000-000000000001');
 
     // Act
     $result = $analyticsDataDAO->sync();

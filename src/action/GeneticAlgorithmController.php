@@ -69,7 +69,7 @@ class GeneticAlgorithmController
     $this->generationDAO->loadLastGeneration($this->geneticAlgorithmDAO->instance);
 
     // update individuals' scores
-    $startDate = date('Y-m-d');
+    $startDate = date('Y-m-d', strtotime('-1 month'));
     $endDate = date('Y-m-d');
     $this->scoreController->updateScores($this->geneticAlgorithmDAO->instance, $this->generationDAO->instance, $startDate, $endDate);
 

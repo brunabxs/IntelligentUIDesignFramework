@@ -18,77 +18,76 @@ class ScoreController
     $this->analyticsDAO->sync();
     $analytics = $this->analyticsDAO->instance;
 
-    $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
-
     $individuals = $this->individualDAO->loadAllIndividuals($generation);
 
+    $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
+
+    $methods = array();
+    $weights = array();
     foreach ($analyticsData as $data)
     {
-      $method = array('name' => $data->method, 'columns' => array($data->columns));
-
-      foreach ($individuals as $individual)
-      {
-        $url = self::getURL($generation->number, $individual->genome, $method, $startDate, $endDate, $analytics->siteId, $analytics->token);
-        $score = $this->getScore($url);
-        $individual->score = $individual->score + $data->weight * $score;
-      }
+      $methods[] = $data->method;
+      $weights[] = $data->weight;
     }
 
     foreach ($individuals as $individual)
     {
+      $url = self::getURL($generation->number, $individual->genome, $methods, $startDate, $endDate, $analytics->siteId, $analytics->token);
+
+      $individual->score = $this->calculateScore($weights, $url);
+
       $this->individualDAO->instance = $individual;
       $this->individualDAO->update();
     }
   }
 
+  private function calculateScore($weights, $url)
+  {
+    $scores = $this->getScore($url);
+    $totalScore = 0;
+
+    if (!is_array($scores))
+    {
+      $totalScore = $scores * $weights[0];
+    }
+    else
+    {
+      foreach ($scores as $index => $score)
+      {
+        $totalScore += $score * $weights[$index];
+      }
+    }
+    return $totalScore;
+  }
+
   public function getScore($url)
   {
-    //$fetched = file_get_contents($url);
-    //$score = unserialize($fetched);
-    $score = 0;
+    $fetched = file_get_contents($url);
+    $score = unserialize($fetched);
     return $score;
   }
 
   private static function getURL($generationNumber, $individualGenome, $methods, $startDate, $endDate, $analyticsSiteId, $analyticsToken)
   {
-    if (count($methods) == 1)
-    {
-      return self::getURLWithOneMethod($generationNumber, $individualGenome, $methods[0], $startDate, $endDate, $analyticsSiteId, $analyticsToken);
-    }
-    return '';
-  }
-
-  private static function getURLWithOneMethod($generationNumber, $individualGenome, $method, $startDate, $endDate, $analyticsSiteId, $analyticsToken)
-  {
     $url = "http://localhost/piwik";
-    $url .= "?module=API";
-    $url .= "&method=" . $method['name'];
-    if (isset($method['columns']))
-    {
-      $url .= self::getColumnsURL($method['columns']);
-    }
-    $url .= "&idSite=$analyticsSiteId";
-    $url .= "&period=range";
-    $url .= "&date=$startDate,$endDate";
-    $url .= "&format=PHP";
-    $url .= "&segment=customVariablePageName1==GA;customVariablePageValue1==$generationNumber.$individualGenome";
-    $url .= "&token_auth=$analyticsToken";
-    return $url;
-  }
+    $url .= "?module=API&method=API.getBulkRequest&format=PHP";
 
-  private static function getColumnsURL($columns)
-  {
-    if (empty($columns))
+    $index = 0;
+    foreach ($methods as $method)
     {
-      return '';
-    }
+      $url .= "&urls[$index]=";
+      
+      $urlIndex = "method=$method";
+      $urlIndex .= "&idSite=$analyticsSiteId";
+      $urlIndex .= "&period=range";
+      $urlIndex .= "&date=$startDate,$endDate";
+      $urlIndex .= "&segment=customVariablePageName1==GA;customVariablePageValue1==$generationNumber.$individualGenome";
+      $urlIndex .= "&token_auth=$analyticsToken";
 
-    $url = '&columns=';
-    foreach ($columns as $column)
-    {
-      $url .= $column . ';';
+      $url .= urlencode($urlIndex);
+
+      $index++;
     }
-    $url = rtrim($url, ';');
     return $url;
   }
 }

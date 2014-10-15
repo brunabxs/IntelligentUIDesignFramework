@@ -59,7 +59,7 @@ CREATE TABLE Analytics (
 CREATE TABLE AnalyticsData (
   analyticsData_oid char(36),
   method char(100),
-  columns char(100),
+  extraParameters char(255),
   weight int,
   analytics_oid char(36)
 );
@@ -84,4 +84,4 @@ ALTER TABLE Analytics ADD CONSTRAINT PK_Analytics PRIMARY KEY (analytics_oid);
 ALTER TABLE Analytics ADD CONSTRAINT EK_Analytics UNIQUE KEY (geneticAlgorithm_oid);
 
 ALTER TABLE AnalyticsData ADD CONSTRAINT PK_AnalyticsData PRIMARY KEY (analyticsData_oid);
-ALTER TABLE AnalyticsData ADD CONSTRAINT EK_AnalyticsData UNIQUE KEY (method, analytics_oid);
+ALTER TABLE AnalyticsData ADD CONSTRAINT EK_AnalyticsData UNIQUE KEY (method, extraParameters, analytics_oid);

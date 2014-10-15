@@ -9,7 +9,8 @@ class AnalyticsDataDAO extends AbstractDAO
   public function sync()
   {
     return parent::load(array(array('method', $this->instance->method),
-                        array('analytics_oid', $this->instance->analytics_oid)));
+                              array('extraParameters', $this->instance->extraParameters),
+                              array('analytics_oid', $this->instance->analytics_oid)));
   }
 
   public function loadAllAnalyticsData($analytics)
