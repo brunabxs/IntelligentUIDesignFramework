@@ -34,8 +34,16 @@ class UserController
 
   public function create($name, $password)
   {
-    $user = new User(null, $name, self::encrypt($password), null);
-    $this->userDAO->instance = $user;
+    $this->userDAO->instance = new User(null, $name, null, null);
+    $this->userDAO->sync();
+
+    if ($this->userDAO->instance !== null)
+    {
+      $this->userDAO->instance = null;
+      throw new Exception('User already exists');
+    }
+
+    $this->userDAO->instance = new User(null, $name, self::encrypt($password), null);    
     $this->userDAO->persist();
     $this->userDAO->sync();
     return $this->userDAO->instance;

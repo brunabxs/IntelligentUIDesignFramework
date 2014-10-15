@@ -45,6 +45,29 @@ class UserControllerTest extends MyDatabase_TestCase
     $this->assertActualAndExpectedTablesEqual('User', 'SELECT password from User');
   }
 
+  public function testCreate_userExists_mustThrowsException()
+  {
+    // Arrange
+    $userController = new UserController();
+    $name = 'user1';
+    $password = '123456';
+
+    // Act & Arrange
+    try
+    {
+      $userController->create($name, $password);
+      $this->fail('Exception expected');
+    }
+    catch (Exception $e)
+    {
+      $this->assertNull($userController->userDAO->instance);
+      $this->assertEquals('User already exists', $e->getMessage());
+      return;
+    }
+
+    $this->fail('Exception expected');
+  }
+
   public function testLogin_userDoesNotExist_mustThrowsException()
   {
     // Arrange
