@@ -1,16 +1,33 @@
 <?php
-class AccessAcceptanceTest extends PHPUnit_Extensions_Selenium2TestCase
+include_once 'MySelenium_TestCase.php';
+class AccessAcceptanceTest extends MySelenium_TestCase
 {
-  protected function setUp()
-  {
-    $this->setBrowser('firefox');
-    $this->setBrowserUrl('http://localhost:8000/');
-  }
-
   public function testTitle()
   {
-    $this->url('http://localhost:8000/index.php');
-    $this->assertEquals('Server App', $this->title());
+    // Arrange
+    $this->access();
+
+    // Act
+
+    // Assert
+    $this->assertEquals('Server App', $this->driver->getTitle());
+  }
+
+  public function testLogin_userThatDoesNotExist_mustShowMessage()
+  {
+    // Arrange
+    $this->access();
+    $user = 'user1';
+    $password = '123456';
+
+    // Act
+    $this->write(WebDriverBy::id('txt_user'), $user);
+    $this->write(WebDriverBy::id('txt_password'), $password);
+    $this->click(WebDriverBy::id('btn_login'));
+    $this->waitPresenceOfElement(WebDriverBy::id('msg_txt_user'));
+
+    // Assert
+    $this->assertEquals('User does not exist', $this->text(WebDriverBy::id('msg_txt_user')));
   }
 }
 ?>
