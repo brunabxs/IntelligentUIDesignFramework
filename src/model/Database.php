@@ -1,9 +1,10 @@
 <?php
+include_once 'configurations.php';
 class Database
 {
-  public static $dsn = 'mysql:host=localhost;dbname=db_dev';
-  public static $user = 'root';
-  public static $password = '';
+  public static $dsn = DB_DSN;
+  public static $user = DB_USER;
+  public static $password = DB_PASSWD;
 
   private static $connection = null;
 

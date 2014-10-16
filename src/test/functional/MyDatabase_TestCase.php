@@ -8,9 +8,6 @@ abstract class MyDatabase_TestCase extends PHPUnit_Extensions_Database_TestCase
   protected function setUp()
   {
     parent::setUp();
-    Database::$dsn = $GLOBALS['DB_DSN'];
-    Database::$user = $GLOBALS['DB_USER'];
-    Database::$password = $GLOBALS['DB_PASSWD'];
   }
 
   final public function getConnection()
