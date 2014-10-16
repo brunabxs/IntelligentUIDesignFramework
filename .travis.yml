@@ -9,6 +9,12 @@ mysql:
   encoding: utf8
 
 before_script:
+  - wget http://selenium-release.storage.googleapis.com/2.43/selenium-server-standalone-2.43.1.jar
+  - "java -jar selenium-server-standalone-2.43.1.jar > /tmp/selenium-log 2> /tmp/selenium.error &"
   - composer install
   - mysql -e 'create database db_test'
   - mysql -u root db_test < script-ddl.sql
+  - php -S localhost:8000 &
+
+script:
+  - phpunit
