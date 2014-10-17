@@ -1,5 +1,8 @@
 <dataset>
-  <Generation />
+  <User user_oid="00000000-0000-0000-0000-000000000001"
+    name="user1"
+    password="password1"
+    email="user1@users.com" />
 
   <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
     populationSize="1"
@@ -10,8 +13,5 @@
     properties='{"h1":["class1"]}'
     user_oid="00000000-0000-0000-0000-000000000001" />
 
-  <User user_oid="00000000-0000-0000-0000-000000000001"
-    name="user1"
-    password="password1"
-    email="user1@users.com" />
+  <Generation />
 </dataset>

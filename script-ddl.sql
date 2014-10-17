@@ -69,19 +69,25 @@ ALTER TABLE User ADD CONSTRAINT EK_User UNIQUE KEY (name);
 
 ALTER TABLE Process ADD CONSTRAINT PK_Process PRIMARY KEY (process_oid);
 ALTER TABLE Process ADD CONSTRAINT EK_Process UNIQUE KEY (user_oid);
+ALTER TABLE Process ADD CONSTRAINT FK_Process_User FOREIGN KEY (user_oid) REFERENCES User (user_oid);
 
 ALTER TABLE GeneticAlgorithm ADD CONSTRAINT PK_GeneticAlgorithm PRIMARY KEY (geneticAlgorithm_oid);
 ALTER TABLE GeneticAlgorithm ADD CONSTRAINT EK1_GeneticAlgorithm UNIQUE KEY (code);
 ALTER TABLE GeneticAlgorithm ADD CONSTRAINT EK2_GeneticAlgorithm UNIQUE KEY (user_oid);
+ALTER TABLE GeneticAlgorithm ADD CONSTRAINT FK_GeneticAlgorithm_User FOREIGN KEY (user_oid) REFERENCES User (user_oid);
 
 ALTER TABLE Generation ADD CONSTRAINT PK_Generation PRIMARY KEY (generation_oid);
 ALTER TABLE Generation ADD CONSTRAINT EK_Generation UNIQUE KEY (number, geneticAlgorithm_oid);
+ALTER TABLE Generation ADD CONSTRAINT FK_Generation_GeneticAlgorithm FOREIGN KEY (geneticAlgorithm_oid) REFERENCES GeneticAlgorithm (geneticAlgorithm_oid);
 
 ALTER TABLE Individual ADD CONSTRAINT PK_Individual PRIMARY KEY (individual_oid);
 ALTER TABLE Individual ADD CONSTRAINT EK_Individual UNIQUE KEY (genome, generation_oid);
+ALTER TABLE Individual ADD CONSTRAINT FK_Individual_Generation FOREIGN KEY (generation_oid) REFERENCES Generation (generation_oid);
 
 ALTER TABLE Analytics ADD CONSTRAINT PK_Analytics PRIMARY KEY (analytics_oid);
 ALTER TABLE Analytics ADD CONSTRAINT EK_Analytics UNIQUE KEY (geneticAlgorithm_oid);
+ALTER TABLE Analytics ADD CONSTRAINT FK_Analytics_GeneticAlgorithm FOREIGN KEY (geneticAlgorithm_oid) REFERENCES GeneticAlgorithm (geneticAlgorithm_oid);
 
 ALTER TABLE AnalyticsData ADD CONSTRAINT PK_AnalyticsData PRIMARY KEY (analyticsData_oid);
 ALTER TABLE AnalyticsData ADD CONSTRAINT EK_AnalyticsData UNIQUE KEY (method, extraParameters, analytics_oid);
+ALTER TABLE AnalyticsData ADD CONSTRAINT FK_AnalyticsData_Analytics FOREIGN KEY (analytics_oid) REFERENCES Analytics (analytics_oid);

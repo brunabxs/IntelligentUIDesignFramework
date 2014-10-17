@@ -1,10 +1,4 @@
 <dataset>
-  <Process process_oid="00000000-0000-0000-0000-000000000001"
-    serverConfiguration="1"
-    clientConfiguration="0"
-    scheduleNextGeneration="0"
-    user_oid="00000000-0000-0000-0000-000000000001" />
-
   <User user_oid="00000000-0000-0000-0000-000000000001"
     name="user1"
     password="password1"
@@ -14,4 +8,10 @@
     name="user2"
     password="password2"
     email="user2@users.com" />
+
+  <Process process_oid="00000000-0000-0000-0000-000000000001"
+    serverConfiguration="1"
+    clientConfiguration="0"
+    scheduleNextGeneration="0"
+    user_oid="00000000-0000-0000-0000-000000000001" />
 </dataset>

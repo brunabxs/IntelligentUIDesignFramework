@@ -1,8 +1,8 @@
 <dataset>
-  <AnalyticsData />
-  <Analytics />
-  <Individual />
-  <Generation />
-  <GeneticAlgorithm />
   <User />
+  <GeneticAlgorithm />
+  <Generation />
+  <Individual />
+  <Analytics />
+  <AnalyticsData />
 </dataset>
