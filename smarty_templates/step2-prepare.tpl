@@ -5,8 +5,8 @@
   <label for="txt_token" class="required">Token de acesso da Piwik</label>
   <input id="txt_token" name="txt_token" type="text" title="" required autofocus />
 
-  <label for="txt_versions" class="required">Número de versões</label>
-  <input id="txt_versions" name="txt_versions" type="number" min="1" step="1" title="" required />
+  <label for="txt_versions" class="required">Número de versões (apenas pares)</label>
+  <input id="txt_versions" name="txt_versions" type="text" pattern="[0-9]*[2468]" title="" required />
 
   <label>Número máximo de experimentos</label>
   <span id="txt_exp">-</span>
