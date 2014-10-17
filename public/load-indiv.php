@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require '../vendor/autoload.php';
 
 $geneticAlgorithmCode = isset($_GET['code']) ? $_GET['code'] : null;
 $generationAndIndividualCode = isset($_GET['indiv']) ? $_GET['indiv'] : null;
