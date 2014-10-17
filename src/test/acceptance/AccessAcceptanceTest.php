@@ -60,7 +60,7 @@ class AccessAcceptanceTest extends MySelenium_TestCase
     $this->assertEquals('Passo 4', $this->text(WebDriverBy::id('appMenuSelected')));
   }
 
-  public function testAccess_userLoggedInAllStepsCompleted_mustViewStep()
+  public function testAccess_userLoggedInAllStepsCompleted_mustShowVisualizationStep()
   {
     // Arrange
     $user = 'user1';
