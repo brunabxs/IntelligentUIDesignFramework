@@ -16,7 +16,7 @@ before_script:
   - composer install
   - mysql -e 'create database db_test'
   - mysql -u root db_test < script-ddl.sql
-  - php -S localhost:8000 &
+  - php -S localhost:8000 -t public/ &
 
 script:
   - phpunit
