@@ -3,7 +3,7 @@ class CronController
 {
   private static $command = 'wget';
 
-  private static $page = 'localhost/newGeneration.php?code=';
+  private static $page = '/newGeneration.php?code=';
 
   private static $tempFile = '/tmp/crontab.txt';
 
@@ -37,7 +37,7 @@ class CronController
 
   private static function createJob($code)
   {
-    return '* * * * * ' . self::$command . ' ' . self::$page . $code . PHP_EOL;
+    return '* * * * * ' . self::$command . ' ' . SERVER . ':' . PORT . self::$page . $code . PHP_EOL;
   }
 }
 ?>
