@@ -1,5 +1,4 @@
 <?php
-include_once 'MySelenium_TestCase.php';
 class SigninAcceptanceTest extends MySelenium_TestCase
 {
   public function testSignin_userThatDoesNotExist_mustGoToServerConfiguration()

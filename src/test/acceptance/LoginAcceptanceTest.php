@@ -1,5 +1,4 @@
 <?php
-include_once 'MySelenium_TestCase.php';
 class LoginAcceptanceTest extends MySelenium_TestCase
 {
   public function testLogin_userThatExists_mustGoToServerConfigurationStep()

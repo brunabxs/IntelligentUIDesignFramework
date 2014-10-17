@@ -1,5 +1,4 @@
 <?php
-include_once 'MyDatabase_TestCase.php';
 class UserControllerTest extends MyDatabase_TestCase
 {
   public function testCreate_mustPersistUser()

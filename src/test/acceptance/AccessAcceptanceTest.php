@@ -1,5 +1,4 @@
 <?php
-include_once 'MySelenium_TestCase.php';
 class AccessAcceptanceTest extends MySelenium_TestCase
 {
   public function testAccess_userNotLoggedIn_mustShowUserLoginStep()

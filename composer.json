@@ -10,16 +10,21 @@
   "authors": [ {"name": "Bruna Xavier", "email": "brunabxsantos@gmail.com"} ],
 
   "require": {
-    "php" : ">=5.5"
+    "php" : ">=5.5",
+    "smarty/smarty": "3.1.17"
   },
 
   "require-dev": {
     "phpunit/phpunit": "4.2.*",
-    "smarty/smarty": "3.1.17",
     "facebook/webdriver": "dev-master"
   },
 
   "autoload": {
+    "files":    ["configurations.php"],
     "classmap": ["src/model", "src/action"]
+  },
+
+  "autoload-dev": {
+    "classmap": ["src/test"]
   }
 }

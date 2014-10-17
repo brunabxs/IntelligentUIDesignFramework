@@ -1,5 +1,4 @@
 <?php
-include_once 'MyDatabase_TestCase.php';
 class ScoreControllerTest extends MyDatabase_TestCase
 {
   public function testUpdateScores_mustUpdateIndividualsScores()

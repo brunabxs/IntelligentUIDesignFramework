@@ -1,5 +1,4 @@
 <?php
-include_once 'MySelenium_TestCase.php';
 class ServerConfigurationAcceptanceTest extends MySelenium_TestCase
 {
   public function testServerConfiguration_afterComplete_mustGoToClientConfigurationStep()

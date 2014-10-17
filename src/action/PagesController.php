@@ -41,8 +41,8 @@ class PagesController
   private static function build($page, $otherParameters=array())
   {
     $smarty = new Smarty();
-    $smarty->setTemplateDir('./smarty_templates/');
-    $smarty->setCompileDir('./smarty_templates_c/');
+    $smarty->setTemplateDir(SMARTY_TEMPLATES);
+    $smarty->setCompileDir(SMARTY_COMPILED_TEMPLATES);
 
     foreach (self::$pages[$page] as $key => $value)
     {

@@ -1,5 +1,4 @@
 <?php
-include_once 'MySelenium_TestCase.php';
 class ClientConfigurationAcceptanceTest extends MySelenium_TestCase
 {
   public function testClientConfiguration_afterComplete_mustGoToScheduleNextGenerationStep()

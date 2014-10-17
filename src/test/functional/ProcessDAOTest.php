@@ -1,5 +1,4 @@
 <?php
-include_once 'MyDatabase_TestCase.php';
 class ProcessDAOTest extends MyDatabase_TestCase
 {
   private static $table = 'Process';

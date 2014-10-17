@@ -16,9 +16,9 @@ abstract class MyDatabase_TestCase extends PHPUnit_Extensions_Database_TestCase
     {
       if (self::$pdo == null)
       {
-        self::$pdo = new PDO( $GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD'] );
+        self::$pdo = new PDO(DB_DSN, DB_USER, DB_PASSWD);
       }
-      $this->connection = $this->createDefaultDBConnection(self::$pdo, $GLOBALS['DB_DBNAME']);
+      $this->connection = $this->createDefaultDBConnection(self::$pdo, DB_DBNAME);
     }
     return $this->connection;
   }

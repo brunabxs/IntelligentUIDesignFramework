@@ -1,18 +1,13 @@
 <?php
-include_once 'configurations.php';
 class Database
 {
-  public static $dsn = DB_DSN;
-  public static $user = DB_USER;
-  public static $password = DB_PASSWD;
-
   private static $connection = null;
 
   public static function getConnection()
   {
     if (self::$connection == null)
     {
-      self::$connection = new PDO(self::$dsn, self::$user, self::$password);
+      self::$connection = new PDO(DB_DSN, DB_USER, DB_PASSWD);
     }
     return self::$connection;
   }

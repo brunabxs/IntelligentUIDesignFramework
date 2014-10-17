@@ -1,5 +1,4 @@
 <?php
-include_once 'MyDatabase_TestCase.php';
 class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
 {
   public function testCreate_mustPersistGeneticAlgorithm()
