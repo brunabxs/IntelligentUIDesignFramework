@@ -15,9 +15,9 @@ CREATE TABLE User (
 
 CREATE TABLE Process (
   process_oid char(36),
+  analyticsConfiguration tinyint(1),
   serverConfiguration tinyint(1),
   clientConfiguration tinyint(1),
-  scheduleNextGeneration tinyint(1),
   user_oid char(36)
 );
 

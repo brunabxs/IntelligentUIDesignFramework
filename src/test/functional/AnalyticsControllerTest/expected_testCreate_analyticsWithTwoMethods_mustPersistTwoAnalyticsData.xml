@@ -1,0 +1,9 @@
+<dataset>
+  <AnalyticsData method="method1"
+    extraParameters="extra"
+    weight="1" />
+
+  <AnalyticsData method="method2"
+    extraParameters="extra"
+    weight="2" />
+</dataset>

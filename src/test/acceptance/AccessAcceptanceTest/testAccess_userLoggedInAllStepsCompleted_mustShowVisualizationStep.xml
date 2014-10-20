@@ -5,9 +5,9 @@
     email="user1@users.com" />
 
   <Process process_oid="00000000-0000-0000-0000-000000000001"
+    analyticsConfiguration="1"
     serverConfiguration="1"
     clientConfiguration="1"
-    scheduleNextGeneration="1"
     user_oid="00000000-0000-0000-0000-000000000001" />
 
   <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
@@ -34,4 +34,15 @@
     properties='{"h1":"class1"}'
     quantity="1"
     generation_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Analytics analytics_oid="00000000-0000-0000-0000-000000000001"
+    token="123token"
+    siteId="1"
+    type="piwik"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
+
+  <AnalyticsData analyticsData_oid="00000000-0000-0000-0000-000000000001"
+    method="method"
+    weight="1"
+    analytics_oid="00000000-0000-0000-0000-000000000001" />
 </dataset>

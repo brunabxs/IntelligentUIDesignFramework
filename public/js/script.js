@@ -64,7 +64,7 @@ function convertToJSON(jsonString) {
 
 function validate() {
   try {
-    jQuery('#txt_prop_json').val(JSON.stringify(convertToJSON(jQuery('#txt_prop').val())));
+    jQuery('#txt_generationProperties_json').val(JSON.stringify(convertToJSON(jQuery('#txt_generationProperties').val())));
     return true;
   }
   catch (error) {

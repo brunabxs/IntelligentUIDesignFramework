@@ -6,8 +6,8 @@
 
   <Process process_oid="00000000-0000-0000-0000-000000000001"
     serverConfiguration="1"
-    clientConfiguration="1"
-    scheduleNextGeneration="1"
+    analyticsConfiguration="0"
+    clientConfiguration="0"
     user_oid="00000000-0000-0000-0000-000000000001" />
 
   <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"

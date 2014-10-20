@@ -2,8 +2,8 @@
 class ProcessDAOTest extends MyDatabase_TestCase
 {
   private static $table = 'Process';
-  private static $query1 = 'SELECT process_oid, serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid FROM Process';
-  private static $query2 = 'SELECT serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid FROM Process';
+  private static $query1 = 'SELECT process_oid, serverConfiguration, analyticsConfiguration, clientConfiguration, user_oid FROM Process';
+  private static $query2 = 'SELECT serverConfiguration, analyticsConfiguration, clientConfiguration, user_oid FROM Process';
 
   public function testLoadById_processWithProcessOidThatExists_mustSetInstanceToProcessObject()
   {
@@ -17,8 +17,8 @@ class ProcessDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($processDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $processDAO->instance->process_oid);
     $this->assertEquals('1', $processDAO->instance->serverConfiguration);
+    $this->assertEquals('1', $processDAO->instance->analyticsConfiguration);
     $this->assertEquals('0', $processDAO->instance->clientConfiguration);
-    $this->assertEquals('0', $processDAO->instance->scheduleNextGeneration);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $processDAO->instance->user_oid);
   }
 
@@ -131,8 +131,8 @@ class ProcessDAOTest extends MyDatabase_TestCase
     $this->assertNotNull($processDAO->instance);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $processDAO->instance->process_oid);
     $this->assertEquals('1', $processDAO->instance->serverConfiguration);
+    $this->assertEquals('1', $processDAO->instance->analyticsConfiguration);
     $this->assertEquals('0', $processDAO->instance->clientConfiguration);
-    $this->assertEquals('0', $processDAO->instance->scheduleNextGeneration);
     $this->assertEquals('00000000-0000-0000-0000-000000000001', $processDAO->instance->user_oid);
   }
 

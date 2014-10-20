@@ -36,7 +36,9 @@
         </header>
 
         {if isset($AppContent)}
-          {include file={$AppContent}}
+          <div class="appContentData">
+            {include file={$AppContent}}
+          </div>
         {/if}
 
         <footer>Designed by Bruna Xavier</footer>

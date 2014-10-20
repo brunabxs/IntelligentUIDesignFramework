@@ -57,7 +57,7 @@
 
   function processServerConfiguration()
   {
-    $json = json_decode($_POST['txt_prop_json']);
+    $json = json_decode($_POST['txt_generationProperties_json']);
     if (!isset($json))
     {
       PagesController::loadErrorPage();
@@ -67,11 +67,36 @@
     try
     {
       $controller = new GeneticAlgorithmController();
-      $controller->create($_SESSION['user'], $_POST['txt_versions'], json_encode($json));
+      $controller->create($_SESSION['user'], $_POST['txt_generationSize'], json_encode($json));
+
+      $code = $controller->geneticAlgorithmDAO->instance->code;
+      CronController::addJob($code);
 
       $controller = new ProcessController();
       $controller->load($_SESSION['user']);
       $controller->processDAO->instance->serverConfiguration = '1';
+      $controller->update();
+
+      loadPage();
+      return;
+    }
+    catch (Exception $e)
+    {
+      PagesController::loadErrorPage();
+      return;
+    }
+  }
+
+  function processAnalyticsConfiguration()
+  {
+    try
+    {
+      $controller = new AnalyticsController();
+      $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsToken'], $_POST['txt_analyticsSiteId'], array());
+
+      $controller = new ProcessController();
+      $controller->load($_SESSION['user']);
+      $controller->processDAO->instance->analyticsConfiguration = '1';
       $controller->update();
 
       loadPage();
@@ -103,32 +128,6 @@
     }
   }
 
-  function processScheduleNextGeneration()
-  {
-    try
-    {
-      $controller = new GeneticAlgorithmController();
-      $controller->load($_SESSION['user']);
-      $code = $controller->geneticAlgorithmDAO->instance->code;
-
-      CronController::removeAllJobs();
-      CronController::addJob($code);
-
-      $controller = new ProcessController();
-      $controller->load($_SESSION['user']);
-      $controller->processDAO->instance->scheduleNextGeneration = '1';
-      $controller->update();
-
-      loadPage();
-      return;
-    }
-    catch (Exception $e)
-    {
-      PagesController::loadErrorPage();
-      return;
-    }
-  }
-
   function loadPage()
   {
     if (!isset($_SESSION['user']))
@@ -144,16 +143,16 @@
       {
         PagesController::loadServerConfigurationPage();
       }
+      else if (!$processController->processDAO->instance->analyticsConfiguration)
+      {
+        PagesController::loadAnalyticsConfigurationPage();
+      }
       else if (!$processController->processDAO->instance->clientConfiguration)
       {
         $controller = new GeneticAlgorithmController();
         $controller->load($_SESSION['user']);
 
         PagesController::loadClientConfigurationPage($controller->geneticAlgorithmDAO->instance);
-      }
-      else if (!$processController->processDAO->instance->scheduleNextGeneration)
-      {
-        PagesController::loadScheduleNextGenerationPage();
       }
       else
       {
@@ -175,17 +174,17 @@
     {
       processUserSignin();
     }
-    else if (isset($_POST['txt_token']) && isset($_POST['txt_versions']) && isset($_POST['txt_prop_json']))
+    else if (isset($_POST['txt_generationSize']) && isset($_POST['txt_generationProperties_json']))
     {
       processServerConfiguration();
     }
-    else if (isset($_POST['txt_script']))
+    else if (isset($_POST['txt_analyticsTool']) && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']))
+    {
+      processAnalyticsConfiguration();
+    }
+    else if (isset($_POST['txt_ready']))
     {
       processClientConfiguration();
-    }
-    else if (isset($_POST['txt_start']))
-    {
-      processScheduleNextGeneration();
     }
     else
     {

@@ -1,15 +1,12 @@
-<form id="form_redirect" name="form_redirect" method="post" action="index.php" class="appContentData">
-  <label for="txt_user" class="required">Usuário</label>
-  <input id="txt_user" name="txt_user" type="text" title="" required autofocus />
-  {if isset($message_user)}
-    <span id="msg_txt_user" class="appContentMessage">{$message_user}</span>
-  {/if}
+<form id="form_access" name="form_access" method="post" action="index.php" class="appContentDataGroup">
 
-  <label for="txt_password" class="required">Senha</label>
-  <input id="txt_password" name="txt_password" type="password" title="" required />
-  {if isset($message_password)}
-    <span id="msg_txt_password" class="appContentMessage">{$message_password}</span>
-  {/if}
+  {include file="component-input.tpl" label="Usuário" name="user"
+    type="text" required="true" focus="true"
+    message=((isset($message_user)) ? $message_user : null)}
+
+  {include file="component-input.tpl" label="Senha" name="password"
+    type="password" required="true" focus="true"
+    message=((isset($message_password)) ? $message_password : null)}
 
   <input id="hidden_type" name="hidden_type" type="hidden" value="" />
   <input id="btn_login" name="btn_login" type="submit" value="Entrar" class="appContentButton" onclick="jQuery('#hidden_type').val('login');" />

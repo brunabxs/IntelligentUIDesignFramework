@@ -123,35 +123,31 @@ section#appContent .appContentData {
 }
 
 section#appContent .appContentData label {
-  display: block;
-  margin-bottom: 5px;
   font-weight: bold;
-  position: relative;
-}
-
-section#appContent .appContentData label.required:after {
-  content: "*";
-  position: absolute;
-  color: #CF0000;
-  font-weight: bold;
-}
-
-section#appContent .appContentData span {
-  display: block;
-  margin-bottom: 15px;
 }
 
 section#appContent .appContentData input,
 section#appContent .appContentData select,
 section#appContent .appContentData textarea {
-  display: block;
-  margin-bottom: 15px;
   padding: 3px 5px;
 }
 
 section#appContent .appContentData textarea {
-  width: 98%;
   min-height: 200px;
+}
+
+section#appContent .appContentData input,
+section#appContent .appContentData select,
+section#appContent .appContentData textarea {
+  border: 1px solid #999999;
+  background: #FFFFFF;
+}
+
+section#appContent .appContentData input:focus,
+section#appContent .appContentData select:focus,
+section#appContent .appContentData textarea:focus {
+  border: 1px solid #4285f4;
+  background: #e9f1fe;
 }
 
 section#appContent .appContentData pre {
@@ -160,13 +156,9 @@ section#appContent .appContentData pre {
   border: 1px solid #999;
 }
 
-section#appContent .appContentData .appContentMessage {
-  margin-top: -10px;
-  color: #CF0000;
-}
-
 section#appContent .appContentData .appContentButton {
   display: inline-block;
+  padding: 3px 5px;
   border: solid 1px #004F72;
   font-weight: bold;
   color: #E5FFFF;
@@ -199,4 +191,28 @@ section#appContent .appContentData .appContentButton:active {
   background-image: -ms-linear-gradient(bottom, #3BA4C7 0% ,#1982A5 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(endColorstr='#1982A5', startColorstr='#1982A5',GradientType=0);
   background-image: linear-gradient(bottom, #3BA4C7 0% ,#1982A5 100%);
+}
+
+section#appContent .appContentData .appContentDataItem label,
+section#appContent .appContentData .appContentDataItem input,
+section#appContent .appContentData .appContentDataItem select,
+section#appContent .appContentData .appContentDataItem textarea,
+section#appContent .appContentData .appContentDataItem span {
+  display: block;
+  margin: 10px 0;
+  vertical-align: middle;
+}
+
+section#appContent .appContentData .appContentDataItem label {
+}
+
+section#appContent .appContentData .appContentDataItem.required label:after {
+  content: "*";
+  color: #CF0000;
+  font-weight: bold;
+}
+
+section#appContent .appContentData .appContentDataItem .appContentMessage {
+  display: block;
+  color: #CF0000;
 }

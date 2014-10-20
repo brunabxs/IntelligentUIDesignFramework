@@ -1,7 +1,7 @@
 ﻿<dataset>
   <Process process_oid="00000000-0000-0000-0000-000000000001"
     serverConfiguration="0"
+    analyticsConfiguration="0"
     clientConfiguration="0"
-    scheduleNextGeneration="0"
     user_oid="00000000-0000-0000-0000-000000000001" />
 </dataset>

@@ -30,7 +30,7 @@ class AccessAcceptanceTest extends MySelenium_TestCase
     $this->assertEquals('Passo 2', $this->text(WebDriverBy::id('appMenuSelected')));
   }
 
-  public function testAccess_userLoggedInClientConfigurationStepNotCompleted_mustShowClientConfigurationStep()
+  public function testAccess_userLoggedInAnalyticsConfigurationStepNotCompleted_mustShowAnalyticsConfigurationStep()
   {
     // Arrange
     $user = 'user1';
@@ -45,7 +45,7 @@ class AccessAcceptanceTest extends MySelenium_TestCase
     $this->assertEquals('Passo 3', $this->text(WebDriverBy::id('appMenuSelected')));
   }
 
-  public function testAccess_userLoggedInScheduleNextGenerationStepNotCompleted_mustShowScheduleNextGenerationStep()
+  public function testAccess_userLoggedInClientConfigurationStepNotCompleted_mustShowClientConfigurationStep()
   {
     // Arrange
     $user = 'user1';
@@ -78,8 +78,6 @@ class AccessAcceptanceTest extends MySelenium_TestCase
   private function login($user, $password)
   {
     $this->access();
-    $user = 'user1';
-    $password = '123456';
     $this->write(WebDriverBy::id('txt_user'), $user);
     $this->write(WebDriverBy::id('txt_password'), $password);
 

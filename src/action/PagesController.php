@@ -7,29 +7,25 @@ class PagesController
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>1),
                'AppContent'      => 'step1-access.tpl'),
 
-    2 => array('AppContentTitle' => 'Indique suas informações para configuração do aplicativo',
+    2 => array('AppContentTitle' => 'Indique informações para configuração do aplicativo',
                'AppContentInfo'  => 'Preencha os campos obrigatórios (*) para que seus dados possam ser enviados para nossos servidores.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>2),
-               'AppContent'      => 'step2-prepare.tpl',
-               'Controller'      => 'index.php'),
+               'AppContent'      => 'step2-serverConfiguration.tpl'),
 
-    3 => array('AppContentTitle' => 'Suas configurações foram geradas com sucesso!',
-               'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
+    3 => array('AppContentTitle' => 'Indique informações da sua ferramenta de Web Analytics para análise de resultados',
+               'AppContentInfo'  => 'Preencha os campos obrigatórios (*) para que seus dados possam ser enviados para nossos servidores.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>3),
-               'AppContent'      => 'step3-script.tpl',
-               'Controller'      => 'index.php',
-               'gaCode'          => '1234555'),
+               'AppContent'      => 'step3-analyticsConfiguration.tpl'),
 
-    4 => array('AppContentTitle' => 'Está quase tudo pronto',
-               'AppContentInfo'  => 'Confirme o início dos experimentos',
+    4 => array('AppContentTitle' => 'Suas configurações foram geradas com sucesso!',
+               'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>4),
-               'AppContent'      => 'step4-start.tpl',
-               'Controller'      => 'index.php'),
+               'AppContent'      => 'step4-clientConfiguration.tpl'),
 
     5 => array('AppContentTitle' => 'Veja as informações de configuração do aplicativo',
                'AppContentInfo'  => 'Veja os dados enviados enviados para nossos servidores.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>5),
-               'AppContent'      => 'step5-result.tpl'),
+               'AppContent'      => 'step5-visualization.tpl'),
 
     'logout' => array('AppContentTitle' => 'Você foi deslogado!',
                       'AppContentInfo'  => 'Entre em contado com email@email e dê seu feedback do serviço.'),
@@ -74,14 +70,14 @@ class PagesController
     PagesController::build(2);
   }
 
-  public static function loadClientConfigurationPage($geneticAlgorithm)
+  public static function loadAnalyticsConfigurationPage()
   {
-    PagesController::build(3, array('code'=>$geneticAlgorithm->code));
+    PagesController::build(3);
   }
 
-  public static function loadScheduleNextGenerationPage()
+  public static function loadClientConfigurationPage($geneticAlgorithm)
   {
-    PagesController::build(4);
+    PagesController::build(4, array('code'=>$geneticAlgorithm->code));
   }
 
   public static function loadVisualizationPage($geneticAlgorithm)

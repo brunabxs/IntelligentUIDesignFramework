@@ -11,7 +11,7 @@ class ProcessControllerTest extends MyDatabase_TestCase
     $processController->create($user);
 
     // Assert
-    $this->assertActualAndExpectedTablesEqual('Process', 'SELECT serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid from Process');
+    $this->assertActualAndExpectedTablesEqual('Process', 'SELECT serverConfiguration, analyticsConfiguration, clientConfiguration, user_oid from Process');
   }
 
   public function testCreate_mustSyncProcess()
@@ -37,11 +37,11 @@ class ProcessControllerTest extends MyDatabase_TestCase
     $processController->load($user);
 
     // Assert
-    $this->assertActualAndExpectedTablesEqual('Process', 'SELECT serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid from Process');
+    $this->assertActualAndExpectedTablesEqual('Process', 'SELECT serverConfiguration, analyticsConfiguration, clientConfiguration, user_oid from Process');
     $this->assertNotNull($processController->processDAO->instance);
     $this->assertEquals('0', $processController->processDAO->instance->serverConfiguration);
+    $this->assertEquals('0', $processController->processDAO->instance->analyticsConfiguration);
     $this->assertEquals('0', $processController->processDAO->instance->clientConfiguration);
-    $this->assertEquals('0', $processController->processDAO->instance->scheduleNextGeneration);
   }
 
   public function testLoad_processExists_mustLoadProcessInstance()
@@ -56,8 +56,8 @@ class ProcessControllerTest extends MyDatabase_TestCase
     // Assert
     $this->assertNotNull($processController->processDAO->instance);
     $this->assertEquals('1', $processController->processDAO->instance->serverConfiguration);
+    $this->assertEquals('1', $processController->processDAO->instance->analyticsConfiguration);
     $this->assertEquals('0', $processController->processDAO->instance->clientConfiguration);
-    $this->assertEquals('0', $processController->processDAO->instance->scheduleNextGeneration);
   }
 
   public function testUpdate()
@@ -71,7 +71,7 @@ class ProcessControllerTest extends MyDatabase_TestCase
     $processController->update();
 
     // Assert
-    $this->assertActualAndExpectedTablesEqual('Process', 'SELECT process_oid, serverConfiguration, clientConfiguration, scheduleNextGeneration, user_oid from Process');
+    $this->assertActualAndExpectedTablesEqual('Process', 'SELECT process_oid, serverConfiguration, analyticsConfiguration, clientConfiguration, user_oid from Process');
   }
 }
 ?>

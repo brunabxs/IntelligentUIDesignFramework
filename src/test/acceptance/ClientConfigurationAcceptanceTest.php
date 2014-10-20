@@ -1,7 +1,7 @@
 <?php
 class ClientConfigurationAcceptanceTest extends MySelenium_TestCase
 {
-  public function testClientConfiguration_afterComplete_mustGoToScheduleNextGenerationStep()
+  public function testClientConfiguration_afterComplete_mustGoToVisualizationStep()
   {
     // Arrange
     $this->login('user1', '123456');
@@ -11,14 +11,12 @@ class ClientConfigurationAcceptanceTest extends MySelenium_TestCase
     $this->waitPresenceOfElement(WebDriverBy::id('appMenuSelected'));
 
     // Assert
-    $this->assertEquals('Passo 4', $this->text(WebDriverBy::id('appMenuSelected')));
+    $this->assertEquals('Passo 5', $this->text(WebDriverBy::id('appMenuSelected')));
   }
 
   private function login($user, $password)
   {
     $this->access();
-    $user = 'user1';
-    $password = '123456';
     $this->write(WebDriverBy::id('txt_user'), $user);
     $this->write(WebDriverBy::id('txt_password'), $password);
 

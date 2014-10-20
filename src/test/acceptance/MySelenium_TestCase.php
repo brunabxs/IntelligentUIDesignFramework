@@ -25,6 +25,9 @@ abstract class MySelenium_TestCase extends PHPUnit_Extensions_Database_TestCase
   protected function tearDown()
   {
     parent::tearDown();
+
+    exec('crontab -r');
+
     $this->driver->quit();
   }
 
