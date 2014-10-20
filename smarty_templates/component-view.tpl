@@ -5,6 +5,6 @@
     {$label}
   </label>
 
-  <span id="txt_{$name}">{$value}</span>
+  <span id="txt_{$name}">{(isset($value) == true) ? $value : '-'}</span>
 
 </div>
