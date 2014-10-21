@@ -36,8 +36,7 @@
       name="txt_{$name}"
       title=""
       {(isset($required) == true) ? 'required' : ''}
-      {(isset($focus) == true) ? 'autofocus' : ''}>
-    </textarea>
+      {(isset($focus) == true) ? 'autofocus' : ''}></textarea>
   {/if}
 
   {if isset($message)}
