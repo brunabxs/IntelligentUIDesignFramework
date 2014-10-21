@@ -43,7 +43,7 @@ class UserController
       throw new Exception('User already exists');
     }
 
-    $this->userDAO->instance = new User(null, $name, self::encrypt($password), null);    
+    $this->userDAO->instance = new User(null, $name, self::encrypt($password), null);
     $this->userDAO->persist();
     $this->userDAO->sync();
     return $this->userDAO->instance;
