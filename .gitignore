@@ -40,5 +40,6 @@ Icon
 # =========================
 *.bat
 *.sh
+smarty_templates_c/*.php
 vendor/
 composer.lock
