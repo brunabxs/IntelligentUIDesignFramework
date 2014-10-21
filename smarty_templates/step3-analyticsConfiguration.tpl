@@ -1,4 +1,4 @@
-<form id="form_analyticsConfiguration" name="form_analyticsConfiguration" method="post" action="index.php" class="appContentDataGroup">
+<form id="form_analyticsConfiguration" name="form_analyticsConfiguration" method="post" action="index.php" class="appContentDataGroup" onsubmit="join();">
 
   {include file="component-input.tpl" label="Ferramenta utilizada" name="analyticsTool"
     type="select" required="true" focus="true" values=['piwik', 'google'] labels=['Piwik', 'Google Analytics']}
@@ -9,11 +9,27 @@
   {include file="component-input.tpl" label="Identificador do site" name="analyticsSiteId"
     type="number" required="true"}
 
-  {include file="component-input.tpl" label="Peso" name="metricsWeight"
-    type="number" required="true"}
-
-  {include file="component-input.tpl" label="Name" name="metricsName"
-    type="text" required="true"}
+  <h4>Métricas utilizadas para avaliação</h4>
+  <table>
+    <tr>
+      <td></td>
+      <td>Peso</td>
+      <td>Nome</td>
+      <td>Parâmetros extras</td>
+    </tr>
+  {for $index=1 to 3}
+    <tr>
+      <td>{$index}.</td>
+      <td><input id="txt_metricsWeight{$index}" name="txt_metricsWeight{$index}"
+            type="number" title="" {if $index == 1}required="true"{/if} /></td>
+      <td><input id="txt_metricsName{$index}" name="txt_metricsName{$index}"
+            type="text" title="" {if $index == 1}required="true"{/if} /></td>
+      <td><input id="txt_metricsExtra{$index}" name="txt_metricsExtra{$index}"
+            type="text" title="" /></td>
+    </tr>
+  {/for}
+  </table>
+  <input id="txt_metrics_json" name="txt_metrics_json" type="hidden" />
 
   <input id="btn_submit" name="btn_submit" type="submit" value="Enviar" class="appContentButton" />
 </form>

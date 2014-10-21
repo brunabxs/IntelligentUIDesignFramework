@@ -82,3 +82,19 @@ function validate() {
     return false;
   }
 }
+
+function join() {
+  var metrics = [];
+
+  for (var i = 1; i <= 3; i++) {
+    var weight = jQuery('#txt_metricsWeight' + i).val();
+    var name = jQuery('#txt_metricsName' + i).val();
+    var extra = jQuery('#txt_metricsExtra' + i).val();
+
+    if (name && weight) {
+      metrics.push({'method':name, 'weight':weight, 'extraParameters':extra});
+    }
+  }
+
+  jQuery('#txt_metrics_json').val(JSON.stringify(metrics));
+}

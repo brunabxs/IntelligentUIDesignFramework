@@ -91,8 +91,10 @@
   {
     try
     {
+      $json = json_decode($_POST['txt_metrics_json'], true);
+
       $controller = new AnalyticsController();
-      $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsToken'], $_POST['txt_analyticsSiteId'], array());
+      $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsToken'], $_POST['txt_analyticsSiteId'], $json);
 
       $controller = new ProcessController();
       $controller->load($_SESSION['user']);
@@ -178,7 +180,7 @@
     {
       processServerConfiguration();
     }
-    else if (isset($_POST['txt_analyticsTool']) && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']))
+    else if (isset($_POST['txt_analyticsTool']) && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfiguration();
     }

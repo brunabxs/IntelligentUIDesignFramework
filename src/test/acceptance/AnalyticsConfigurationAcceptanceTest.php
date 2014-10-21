@@ -13,8 +13,8 @@ class AnalyticsConfigurationAcceptanceTest extends MySelenium_TestCase
     // Act
     $this->write(WebDriverBy::id('txt_analyticsToken'), $token);
     $this->write(WebDriverBy::id('txt_analyticsSiteId'), $siteId);
-    $this->write(WebDriverBy::id('txt_metricsWeight'), $weight);
-    $this->write(WebDriverBy::id('txt_metricsName'), $name);
+    $this->write(WebDriverBy::id('txt_metricsWeight1'), $weight);
+    $this->write(WebDriverBy::id('txt_metricsName1'), $name);
     $this->click(WebDriverBy::id('btn_submit'));
     $this->waitPresenceOfElement(WebDriverBy::id('appMenuSelected'));
 

@@ -197,10 +197,12 @@ section#appContent .appContentData .appContentDataItem label,
 section#appContent .appContentData .appContentDataItem input,
 section#appContent .appContentData .appContentDataItem select,
 section#appContent .appContentData .appContentDataItem textarea,
+section#appContent .appContentData table,
 section#appContent .appContentData .appContentDataItem span {
   display: block;
   margin: 10px 0;
   vertical-align: middle;
+  font-size: 1em;
 }
 
 section#appContent .appContentData .appContentDataItem label {
