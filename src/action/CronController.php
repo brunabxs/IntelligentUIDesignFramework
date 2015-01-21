@@ -37,7 +37,7 @@ class CronController
 
   private static function createJob($code)
   {
-    return '* * * * * ' . self::$command . ' "' . SERVER . ':' . PORT . self::$page . $code . '" -O /tmp/' . $code . PHP_EOL;
+    return '* * * * * ' . self::$command . ' "' . SERVER . ':' . PORT . self::$page . $code . '" -O "/tmp/' . $code . '"'. PHP_EOL;
   }
 }
 ?>
