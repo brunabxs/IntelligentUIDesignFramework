@@ -1,6 +1,6 @@
 <?php
 include_once 'MyAnotherUnit_Framework_TestCase.php';
-class ScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
+class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
 {
   public function testGetURL_oneMethod_mustReturnURLWithBulk()
   {
@@ -14,7 +14,7 @@ class ScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('ScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('PiwikScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API&method=API.getBulkRequest&format=PHP'.
@@ -38,7 +38,7 @@ class ScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('ScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('PiwikScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API&method=API.getBulkRequest&format=PHP'.
