@@ -1,7 +1,7 @@
 <?php
 class CronController
 {
-  private static $command = 'curl';
+  private static $command = 'wget';
 
   private static $page = '/newGeneration.php?code=';
 
@@ -37,7 +37,7 @@ class CronController
 
   private static function createJob($code)
   {
-    return '* * * * * ' . self::$command . ' ' . SERVER . ':' . PORT . self::$page . $code . ' -o /tmp/' . $code . PHP_EOL;
+    return '* * * * * ' . self::$command . ' "' . SERVER . ':' . PORT . self::$page . $code . '" -O /tmp/' . $code . PHP_EOL;
   }
 }
 ?>
