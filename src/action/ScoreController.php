@@ -37,6 +37,10 @@ class ScoreController
     {
       return new PiwikScoreController($geneticAlgorithm);
     }
+    else if ($type == 'google')
+    {
+      return new GoogleScoreController($geneticAlgorithm);
+    }
     else
     {
       return null;
