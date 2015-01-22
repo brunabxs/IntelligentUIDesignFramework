@@ -14,7 +14,7 @@
     (function($) {
       $.holdReady(true);
 
-      var url = (('https:' == document.location.protocol) ? 'https' : 'http') + '://localhost/';
+      var url = (('https:' == document.location.protocol) ? 'https' : 'http') + '://" . SERVER . ":" . PORT . "/;
 
       var setCookie = function(newValue, currentValue)
       {
