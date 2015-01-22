@@ -1,4 +1,5 @@
 <?php
+  require '../vendor/autoload.php';
   header('Content-Type: text/javascript; charset=UTF-8');
 
   $geneticAlgorithmCode = $_GET['code'];
