@@ -5,6 +5,16 @@ class PiwikScoreController extends SpecificScoreController
   {
     $analytics = $this->analyticsDAO->instance;
 
+    $data = $this->getAnalyticsData();
+
+    $url = self::getURL($generationNumber, $individualGenome, $data['methods'], $startDate, $endDate, $analytics->siteId, $analytics->token);
+
+    return $this->calculateTotalScore($data['weights'], $url);
+  }
+
+  public function getAnalyticsData()
+  {
+    $analytics = $this->analyticsDAO->instance;
     $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
 
     $methods = array();
@@ -15,9 +25,7 @@ class PiwikScoreController extends SpecificScoreController
       $weights[] = $data->weight;
     }
 
-    $url = self::getURL($generationNumber, $individualGenome, $methods, $startDate, $endDate, $analytics->siteId, $analytics->token);
-
-    return $this->calculateTotalScore($weights, $url);
+    return array('methods'=>$methods, 'weights'=>$weights);
   }
 
   private function calculateTotalScore($weights, $url)

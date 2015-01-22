@@ -7,6 +7,16 @@ class GoogleScoreController extends SpecificScoreController
 
     $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
 
+    $data = $this->getAnalyticsData();
+
+    return $this->calculateTotalScore($generationNumber, $individualGenome, $data['methods'], $data['filter'], $startDate, $endDate, $analytics->token, $data['weights']);
+  }
+
+  public function getAnalyticsData()
+  {
+    $analytics = $this->analyticsDAO->instance;
+    $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
+
     $methods = array();
     $weights = array();
     $filter = null;
@@ -23,7 +33,7 @@ class GoogleScoreController extends SpecificScoreController
       }
     }
 
-    return $this->calculateTotalScore($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analytics->token, $weights);
+    return array('methods'=>$methods, 'weights'=>$weights, 'filter'=>$filter);
   }
 
   private function calculateTotalScore($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken, $weights)

@@ -85,6 +85,20 @@ class AnalyticsControllerTest extends MyDatabase_TestCase
     $this->assertEquals(0, $this->getConnection()->getRowCount('AnalyticsData'));
   }
 
+  public function testLoad()
+  {
+    // Arrange
+    $analyticsController = $this->mockAnalyticsController();
+    $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
+
+    // Act
+    $analyticsController->load($user);
+
+    // Assert
+    $this->assertNotNull($analyticsController->geneticAlgorithmDAO->instance);
+    $this->assertNotNull($analyticsController->analyticsDAO->instance);
+  }
+
   public function testGetType_mustReturnAnalyticsType()
   {
     // Arrange

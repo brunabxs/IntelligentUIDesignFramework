@@ -1,0 +1,47 @@
+<dataset>
+  <User user_oid="00000000-0000-0000-0000-000000000001"
+    name="user1"
+    password="e10adc3949ba59abbe56e057f20f883e"
+    email="user1@users.com" />
+
+  <Process process_oid="00000000-0000-0000-0000-000000000001"
+    serverConfiguration="1"
+    analyticsConfiguration="1"
+    clientConfiguration="1"
+    user_oid="00000000-0000-0000-0000-000000000001" />
+
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
+    populationSize="2"
+    genomeSize="1"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"]}'
+    user_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Generation generation_oid="00000000-0000-0000-0000-000000000001"
+    number="0"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Individual individual_oid="00000000-0000-0000-0000-000000000001"
+    genome="0"
+    properties='{"h1":""}'
+    quantity="1"
+    generation_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Individual individual_oid="00000000-0000-0000-0000-000000000002"
+    genome="1"
+    properties='{"h1":"class1"}'
+    quantity="1"
+    generation_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Analytics analytics_oid="00000000-0000-0000-0000-000000000001"
+    token="123token"
+    type="google"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
+
+  <AnalyticsData analyticsData_oid="00000000-0000-0000-0000-000000000001"
+    method="method1"
+    weight="1"
+    analytics_oid="00000000-0000-0000-0000-000000000001" />
+</dataset>

@@ -10,7 +10,6 @@
     <td></td>
     <td>Peso</td>
     <td>Nome</td>
-    <td>Parâmetros extras</td>
   </tr>
 {for $index=1 to 3}
   <tr>
@@ -19,8 +18,6 @@
           type="number" title="" {if $index == 1}required="true"{/if} /></td>
     <td><input id="txt_metricsName{$index}" name="txt_metricsName{$index}"
           type="text" title="" {if $index == 1}required="true"{/if} /></td>
-    <td><input id="txt_metricsExtra{$index}" name="txt_metricsExtra{$index}"
-          type="text" title="" /></td>
   </tr>
 {/for}
 </table>

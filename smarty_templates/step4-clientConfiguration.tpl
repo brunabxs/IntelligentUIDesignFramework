@@ -4,7 +4,7 @@
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
-<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"&gt;&lt;/script&gt;</span><span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="http://localhost/load-ga.php?code={$code}"&gt;&lt;/script&gt;</span>  &lt;/head&gt;
+<span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="{$jquery}"&gt;&lt;/script&gt;</span><span style="font-weight:bold;margin:0;display:block;">    &lt;script type="text/javascript" src="{$app}"&gt;&lt;/script&gt;</span>  &lt;/head&gt;
   &lt;body&gt;
     ...
   &lt;/body&gt;

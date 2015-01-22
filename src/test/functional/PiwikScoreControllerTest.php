@@ -1,6 +1,42 @@
 <?php
 class PiwikScoreControllerTest extends MyDatabase_TestCase
 {
+  public function getAnalyticsData_noMethod_mustReturnEmptyArray()
+  {
+    // Arrange
+    $piwikScoreController = $this->mockPiwikScoreController();
+
+    // Act
+    $analyticsData = $piwikScoreController->getAnalyticsData();
+
+    // Assert
+    $this->assertEquals($analyticsData, array());
+  }
+
+  public function getAnalyticsData_oneMethod_mustReturnArrayWithMethodAndWeight()
+  {
+    // Arrange
+    $piwikScoreController = $this->mockPiwikScoreController();
+
+    // Act
+    $analyticsData = $piwikScoreController->getAnalyticsData();
+
+    // Assert
+    $this->assertEquals($analyticsData, array('methods'=>array('method1'), 'weight'=>array('2')));
+  }
+
+  public function getAnalyticsData_twoMethods_mustReturnArrayWithMethodAndWeight()
+  {
+    // Arrange
+    $piwikScoreController = $this->mockPiwikScoreController();
+
+    // Act
+    $analyticsData = $piwikScoreController->getAnalyticsData();
+
+    // Assert
+    $this->assertEquals($analyticsData, array('methods'=>array('method1', 'method2'), 'weight'=>array('2', '3')));
+  }
+
   public function testCalculateScore_mustMultiplyCollectedAnalyticsDataPerWeight()
   {
     // Arrange

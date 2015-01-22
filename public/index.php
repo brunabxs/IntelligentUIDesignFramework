@@ -198,8 +198,28 @@
       {
         $controller = new GeneticAlgorithmController();
         $controller->load($_SESSION['user']);
+        $geneticAlgorithm = $controller->geneticAlgorithmDAO->instance;
 
-        PagesController::loadVisualizationPage($controller->geneticAlgorithmDAO->instance);
+        $controller = new AnalyticsController();
+        $controller->load($_SESSION['user']);
+        $analytics = $controller->analyticsDAO->instance;
+
+        if ($analytics->type == 'piwik')
+        {
+          $controller = new PiwikScoreController($geneticAlgorithm);
+          $analyticsData = $controller->getAnalyticsData();
+          PagesController::loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $analyticsData);
+        }
+        else if ($analytics->type == 'google')
+        {
+          $controller = new GoogleScoreController($geneticAlgorithm);
+          $analyticsData = $controller->getAnalyticsData();
+          PagesController::loadVisualizationGooglePage($geneticAlgorithm, $analytics, $analyticsData);
+        }
+        else
+        {
+          PagesController::loadErrorPage();
+        }
       }
     }
   }

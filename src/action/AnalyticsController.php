@@ -31,6 +31,17 @@ class AnalyticsController
     }
   }
 
+  public function load($user)
+  {
+    // retrieve genetic algorithm
+    $this->geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, null, $user->user_oid);
+    $this->geneticAlgorithmDAO->sync();
+
+    // retrieve analytics
+    $this->analyticsDAO->instance = new Analytics(null, null, null, null, $this->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->analyticsDAO->sync();
+  }
+
   public function getType($geneticAlgorithmCode)
   {
     // retrieve genetic algorithm
