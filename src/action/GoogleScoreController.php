@@ -1,18 +1,6 @@
 ﻿<?php
-class GoogleScoreController
+class GoogleScoreController extends SpecificScoreController
 {
-  public $analyticsDAO;
-  public $analyticsDataDAO;
-
-  public function __construct($geneticAlgorithm)
-  {
-    $this->analyticsDAO = new AnalyticsDAO();
-    $this->analyticsDataDAO = new AnalyticsDataDAO();
-
-    $this->analyticsDAO->instance = new Analytics(null, null, null, null, $geneticAlgorithm->geneticAlgorithm_oid);
-    $this->analyticsDAO->sync();
-  }
-
   public function calculateScore($generationNumber, $individualGenome, $startDate, $endDate)
   {
     $analytics = $this->analyticsDAO->instance;
