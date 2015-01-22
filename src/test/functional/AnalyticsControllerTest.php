@@ -85,6 +85,19 @@ class AnalyticsControllerTest extends MyDatabase_TestCase
     $this->assertEquals(0, $this->getConnection()->getRowCount('AnalyticsData'));
   }
 
+  public function testGetType_mustReturnAnalyticsType()
+  {
+    // Arrange
+    $analyticsController = $this->mockAnalyticsController();
+    $geneticAlgorithmCode = '123456';
+
+    // Act
+    $type = $analyticsController->getType($geneticAlgorithmCode);
+
+    // Assert
+    $this->assertEquals('google', $type);
+  }
+
   private function mockAnalyticsController($methods=NULL)
   {
     $mock = $this->getMockBuilder('AnalyticsController')

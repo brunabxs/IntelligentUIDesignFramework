@@ -2,21 +2,11 @@
   header('Content-Type: text/javascript; charset=UTF-8');
 
   $geneticAlgorithmCode = $_GET['code'];
-  $siteId = 1;
   $cookieName = 'gaCode';
   $cookieExpirationTime = 24 * 60 * 60 * 1000; //ms
 
-  echo
-  "
-    var _paq = _paq || [];
-    (function() {
-      var u=(('https:' == document.location.protocol) ? 'https' : 'http') + '://localhost/piwik/';
-      _paq.push(['setTrackerUrl', u+'piwik.php']);
-      _paq.push(['setSiteId', " . $siteId . "]);
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
-      g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-    })();
-  ";
+  $controller = new AnalyticsController();
+  $type = $controller->getType($geneticAlgorithmCode);
 
   echo
   "
@@ -46,16 +36,45 @@
         }
         return '';
       };
+    ";
 
-      var pushToWebAnalyticsTool = function()
-      {
-        _paq.push(['setCustomVariable', 1, 'GA', getCookie(), 'page']);
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-      };
+    if ($type == 'piwik')
+    {
+      echo
+      "
+        var pushToWebAnalyticsTool = function()
+        {
+          _paq.push(['setCustomVariable', 1, 'GA', getCookie(), 'page']);
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+        };
+      ";
+    }
+    else if ($type == 'google')
+    {
+      echo
+      "
+        var pushToWebAnalyticsTool = function()
+        {
+          _gaq.push(['setCustomVar', 1, 'GA', getCookie(), 3]);
+          _gaq.push(['trackPageView']);
+          _gaq.push(['enableLinkTracking']);
+        };
+      ";
+    }
+    else
+    {
+      echo
+      "
+        var pushToWebAnalyticsTool = function()
+        {
+        };
+      ";
 
-      console.log(url);
+    }
 
+    echo
+    "
       var gaProperties;
       var gaCode = getCookie();
       $.ajax({
