@@ -97,7 +97,7 @@ function join() {
   }
 
   if (jQuery('#txt_analyticsFilter').size() == 1) {
-    metrics.push({'method':undefined, 'weight':weight, 'extraParameters':jQuery('#txt_analyticsFilter').val()});
+    metrics.push({'method':undefined, 'weight':undefined, 'extraParameters':jQuery('#txt_analyticsFilter').val()});
   }
 
   jQuery('#txt_metrics_json').val(JSON.stringify(metrics));
