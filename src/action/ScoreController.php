@@ -37,6 +37,10 @@ class ScoreController
     {
       return new PiwikScoreController($geneticAlgorithm);
     }
+    else if ($type == 'google')
+    {
+      return new GoogleScoreController($geneticAlgorithm);
+    }
     else
     {
       return null;
@@ -45,7 +49,7 @@ class ScoreController
 
   public function calculateScore($specificScoreController, $geneticAlgorithm, $generation, $individual, $startDate, $endDate)
   {
-    return $specificScoreController->calculateScore($geneticAlgorithm, $generation->number, $individual->genome, $startDate, $endDate);
+    return $specificScoreController->calculateScore($generation->number, $individual->genome, $startDate, $endDate);
   }
 }
 ?>

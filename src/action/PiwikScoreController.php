@@ -1,22 +1,20 @@
 ﻿<?php
-class PiwikScoreController
+class PiwikScoreController extends SpecificScoreController
 {
-  public $analyticsDAO;
-  public $analyticsDataDAO;
-
-  public function __construct($geneticAlgorithm)
-  {
-    $this->analyticsDAO = new AnalyticsDAO();
-    $this->analyticsDataDAO = new AnalyticsDataDAO();
-
-    $this->analyticsDAO->instance = new Analytics(null, null, null, null, $geneticAlgorithm->geneticAlgorithm_oid);
-    $this->analyticsDAO->sync();
-  }
-
   public function calculateScore($generationNumber, $individualGenome, $startDate, $endDate)
   {
     $analytics = $this->analyticsDAO->instance;
 
+    $data = $this->getAnalyticsData();
+
+    $url = self::getURL($generationNumber, $individualGenome, $data['methods'], $startDate, $endDate, $analytics->siteId, $analytics->token);
+
+    return $this->calculateTotalScore($data['weights'], $url);
+  }
+
+  public function getAnalyticsData()
+  {
+    $analytics = $this->analyticsDAO->instance;
     $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
 
     $methods = array();
@@ -27,9 +25,7 @@ class PiwikScoreController
       $weights[] = $data->weight;
     }
 
-    $url = self::getURL($generationNumber, $individualGenome, $methods, $startDate, $endDate, $analytics->siteId, $analytics->token);
-
-    return $this->calculateTotalScore($weights, $url);
+    return array('methods'=>$methods, 'weights'=>$weights);
   }
 
   private function calculateTotalScore($weights, $url)

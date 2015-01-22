@@ -87,7 +87,21 @@
     }
   }
 
-  function processAnalyticsConfiguration()
+  function processAnalyticsConfigurationType()
+  {
+    if ($_POST['analyticsType'] == 'piwik')
+    {
+      PagesController::loadAnalyticsConfigurationPiwikContent();
+      return;
+    }
+    else if ($_POST['analyticsType'] == 'google')
+    {
+      PagesController::loadAnalyticsConfigurationGoogleContent();
+      return;
+    }
+  }
+
+  function processAnalyticsConfigurationPiwik()
   {
     try
     {
@@ -95,6 +109,30 @@
 
       $controller = new AnalyticsController();
       $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsToken'], $_POST['txt_analyticsSiteId'], $json);
+
+      $controller = new ProcessController();
+      $controller->load($_SESSION['user']);
+      $controller->processDAO->instance->analyticsConfiguration = '1';
+      $controller->update();
+
+      loadPage();
+      return;
+    }
+    catch (Exception $e)
+    {
+      PagesController::loadErrorPage();
+      return;
+    }
+  }
+
+  function processAnalyticsConfigurationGoogle()
+  {
+    try
+    {
+      $json = json_decode($_POST['txt_metrics_json'], true);
+
+      $controller = new AnalyticsController();
+      $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsId'], null, $json);
 
       $controller = new ProcessController();
       $controller->load($_SESSION['user']);
@@ -160,8 +198,28 @@
       {
         $controller = new GeneticAlgorithmController();
         $controller->load($_SESSION['user']);
+        $geneticAlgorithm = $controller->geneticAlgorithmDAO->instance;
 
-        PagesController::loadVisualizationPage($controller->geneticAlgorithmDAO->instance);
+        $controller = new AnalyticsController();
+        $controller->load($_SESSION['user']);
+        $analytics = $controller->analyticsDAO->instance;
+
+        if ($analytics->type == 'piwik')
+        {
+          $controller = new PiwikScoreController($geneticAlgorithm);
+          $analyticsData = $controller->getAnalyticsData();
+          PagesController::loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $analyticsData);
+        }
+        else if ($analytics->type == 'google')
+        {
+          $controller = new GoogleScoreController($geneticAlgorithm);
+          $analyticsData = $controller->getAnalyticsData();
+          PagesController::loadVisualizationGooglePage($geneticAlgorithm, $analytics, $analyticsData);
+        }
+        else
+        {
+          PagesController::loadErrorPage();
+        }
       }
     }
   }
@@ -180,9 +238,17 @@
     {
       processServerConfiguration();
     }
-    else if (isset($_POST['txt_analyticsTool']) && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
+    else if (isset($_POST['analyticsType']))
     {
-      processAnalyticsConfiguration();
+      processAnalyticsConfigurationType();
+    }
+    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'piwik' && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
+    {
+      processAnalyticsConfigurationPiwik();
+    }
+    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_metrics_json']))
+    {
+      processAnalyticsConfigurationGoogle();
     }
     else if (isset($_POST['txt_ready']))
     {

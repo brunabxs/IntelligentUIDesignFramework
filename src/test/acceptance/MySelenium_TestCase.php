@@ -90,6 +90,11 @@ abstract class MySelenium_TestCase extends PHPUnit_Extensions_Database_TestCase
     $this->getElement($by)->clear()->sendKeys($text);
   }
 
+  final protected function select($by, $label)
+  {
+    (new WebDriverSelect($this->getElement($by)))->selectByVisibleText($label);
+  }
+
   final protected function click($by)
   {
     $this->getElement($by)->click();

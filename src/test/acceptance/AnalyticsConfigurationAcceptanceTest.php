@@ -1,6 +1,44 @@
 <?php
 class AnalyticsConfigurationAcceptanceTest extends MySelenium_TestCase
 {
+  public function testAnalyticsConfiguration_selectAnalyticsToolAsPiwik_mustShowPiwiksFields()
+  {
+    // Arrange
+    $this->login('user1', '123456');
+
+    // Act
+    $this->select(WebDriverBy::id('txt_analyticsTool'), 'Piwik');
+
+    // Assert
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_analyticsToken'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_analyticsSiteId'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight1'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight2'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight3'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName1'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName2'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName3'));
+  }
+
+  public function testAnalyticsConfiguration_selectAnalyticsToolAsGoogle_mustShowGooglesFields()
+  {
+    // Arrange
+    $this->login('user1', '123456');
+
+    // Act
+    $this->select(WebDriverBy::id('txt_analyticsTool'), 'Google Analytics');
+
+    // Assert
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_analyticsId'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight1'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight2'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight3'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName1'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName2'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName3'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_analyticsFilter'));
+  }
+
   public function testAnalyticsConfiguration_afterComplete_mustGoToClientConfigurationStep()
   {
     // Arrange
@@ -11,6 +49,9 @@ class AnalyticsConfigurationAcceptanceTest extends MySelenium_TestCase
     $name = 'VisitsSummary.getVisits';
 
     // Act
+    $this->select(WebDriverBy::id('txt_analyticsTool'), 'Piwik');
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_analyticsToken'));
+
     $this->write(WebDriverBy::id('txt_analyticsToken'), $token);
     $this->write(WebDriverBy::id('txt_analyticsSiteId'), $siteId);
     $this->write(WebDriverBy::id('txt_metricsWeight1'), $weight);

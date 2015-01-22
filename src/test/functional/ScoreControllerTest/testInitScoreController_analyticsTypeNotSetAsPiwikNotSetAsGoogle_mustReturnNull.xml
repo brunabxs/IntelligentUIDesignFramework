@@ -1,0 +1,22 @@
+<dataset>
+  <User user_oid="00000000-0000-0000-0000-000000000001"
+    name="user1"
+    password="password1"
+    email="user1@users.com" />
+
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
+    code="123456"
+    populationSize="2"
+    genomeSize="2"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"],"h2":["class2"]}'
+    user_oid="00000000-0000-0000-0000-000000000001" />
+
+  <Analytics analytics_oid="00000000-0000-0000-0000-000000000001"
+    token="123token"
+    siteId="1"
+    type="anothertool"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
+</dataset>

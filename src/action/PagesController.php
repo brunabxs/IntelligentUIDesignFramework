@@ -17,6 +17,9 @@ class PagesController
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>3),
                'AppContent'      => 'step3-analyticsConfiguration.tpl'),
 
+    '3a' => 'analyticsConfiguration-piwik.tpl',
+    '3b' => 'analyticsConfiguration-google.tpl',
+
     4 => array('AppContentTitle' => 'Suas configurações foram geradas com sucesso!',
                'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>4),
@@ -53,6 +56,15 @@ class PagesController
     $smarty->display('main.tpl');
   }
 
+  private static function load($page)
+  {
+    $smarty = new Smarty();
+    $smarty->setTemplateDir(SMARTY_TEMPLATES);
+    $smarty->setCompileDir(SMARTY_COMPILED_TEMPLATES);
+
+    $smarty->display(self::$pages[$page]);
+  }
+
   public static function loadUserAccessPage($user=NULL, $password=NULL, $userErrorMessage=NULL, $passwordErrorMessage=NULL)
   {
     $otherParameters = array();
@@ -75,14 +87,44 @@ class PagesController
     PagesController::build(3);
   }
 
-  public static function loadClientConfigurationPage($geneticAlgorithm)
+  public static function loadAnalyticsConfigurationPiwikContent()
   {
-    PagesController::build(4, array('code'=>$geneticAlgorithm->code));
+    PagesController::load('3a');
   }
 
-  public static function loadVisualizationPage($geneticAlgorithm)
+  public static function loadAnalyticsConfigurationGoogleContent()
   {
-    PagesController::build(5, array('populationSize'=>$geneticAlgorithm->populationSize,
+    PagesController::load('3b');
+  }
+
+  public static function loadClientConfigurationPage($geneticAlgorithm)
+  {
+    $jquery = 'http://code.jquery.com/jquery-1.11.1.min.js';
+    $app = 'http://' . SERVER . ':' . PORT . '/load-ga.php?code='.$geneticAlgorithm->code;
+    PagesController::build(4, array('jquery'=>$jquery, 'app'=>$app));
+  }
+
+  public static function loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $array)
+  {
+    PagesController::build(5, array('analyticsTpl'=>'visualization-piwik.tpl',
+                                    'analyticsType'=>'Piwik',
+                                    'analyticsToken'=>$analytics->token,
+                                    'analyticsSiteId'=>$analytics->siteId,
+                                    'analyticsMethods'=>$array['methods'],
+                                    'analyticsWeights'=>$array['weights'],
+                                    'populationSize'=>$geneticAlgorithm->populationSize,
+                                    'properties'=>$geneticAlgorithm->properties));
+  }
+
+  public static function loadVisualizationGooglePage($geneticAlgorithm, $analytics, $array)
+  {
+    PagesController::build(5, array('analyticsTpl'=>'visualization-google.tpl',
+                                    'analyticsType'=>'Google Analytics',
+                                    'analyticsId'=>'ga:'.$analytics->token,
+                                    'analyticsMethods'=>$array['methods'],
+                                    'analyticsWeights'=>$array['weights'],
+                                    'analyticsFilter'=>$array['filter'],
+                                    'populationSize'=>$geneticAlgorithm->populationSize,
                                     'properties'=>$geneticAlgorithm->properties));
   }
 

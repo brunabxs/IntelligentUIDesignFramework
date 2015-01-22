@@ -19,7 +19,7 @@ class ScoreControllerTest extends MyDatabase_TestCase
     $this->assertActualAndExpectedTablesEqual('Individual', 'SELECT individual_oid, score from Individual');
   }
 
-  public function testInitScoreController_AnalyticsTypeSetAsPiwik_mustReturnPiwikScoreControllerInstance()
+  public function testInitScoreController_analyticsTypeSetAsPiwik_mustReturnPiwikScoreControllerInstance()
   {
     // Arrange
     $scoreController = $this->mockScoreController();
@@ -32,7 +32,20 @@ class ScoreControllerTest extends MyDatabase_TestCase
     $this->assertInstanceOf('PiwikScoreController', $specificScoreController);
   }
 
-  public function testInitScoreController_AnalyticsTypeNotSetAsPiwik_mustReturnNull()
+  public function testInitScoreController_analyticsTypeSetAsGoogle_mustReturnGoogleScoreControllerInstance()
+  {
+    // Arrange
+    $scoreController = $this->mockScoreController();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
+
+    // Act
+    $specificScoreController = $scoreController->initScoreController($geneticAlgorithm);
+
+    // Assert
+    $this->assertInstanceOf('GoogleScoreController', $specificScoreController);
+  }
+
+  public function testInitScoreController_analyticsTypeNotSetAsPiwikNotSetAsGoogle_mustReturnNull()
   {
     // Arrange
     $scoreController = $this->mockScoreController();

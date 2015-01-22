@@ -26,9 +26,37 @@ class AnalyticsController
     // create analytics data
     foreach ($data as $analyticsData)
     {
-      $this->analyticsDataDAO->instance = new AnalyticsData(null, $analyticsData['method'], (isset($analyticsData['extraParameters']) ? $analyticsData['extraParameters'] : null), $analyticsData['weight'], $this->analyticsDAO->instance->analytics_oid);
+      $this->analyticsDataDAO->instance = new AnalyticsData(null, (isset($analyticsData['method']) ? $analyticsData['method'] : null), (isset($analyticsData['extraParameters']) ? $analyticsData['extraParameters'] : null), (isset($analyticsData['weight']) ? $analyticsData['weight'] : null), $this->analyticsDAO->instance->analytics_oid);
       $this->analyticsDataDAO->persist();
     }
+  }
+
+  public function load($user)
+  {
+    // retrieve genetic algorithm
+    $this->geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, null, null, null, null, null, null, null, $user->user_oid);
+    $this->geneticAlgorithmDAO->sync();
+
+    // retrieve analytics
+    $this->analyticsDAO->instance = new Analytics(null, null, null, null, $this->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->analyticsDAO->sync();
+  }
+
+  public function getType($geneticAlgorithmCode)
+  {
+    // retrieve genetic algorithm
+    $this->geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, $geneticAlgorithmCode, null, null, null, null, null, null, null);
+    $this->geneticAlgorithmDAO->sync();
+
+    if ($this->geneticAlgorithmDAO->instance === null)
+    {
+      return null;
+    }
+
+    $this->analyticsDAO->instance = new Analytics(null, null, null, null, $this->geneticAlgorithmDAO->instance->geneticAlgorithm_oid);
+    $this->analyticsDAO->sync();
+
+    return $this->analyticsDAO->instance->type;
   }
 }
 ?>
