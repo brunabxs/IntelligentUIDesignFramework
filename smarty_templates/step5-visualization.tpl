@@ -7,7 +7,7 @@
     value="{$populationSize}"}
 
   {include file="component-view.tpl" label="Tempo de duração da geração (em minutos)" name="generationTime"
-    vaue="1"}
+    value="30"}
 
   {include file="component-view.tpl" label="Número máximo de gerações" name="generationLimit"
     value="∞"}
