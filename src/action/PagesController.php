@@ -17,6 +17,8 @@ class PagesController
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>3),
                'AppContent'      => 'step3-analyticsConfiguration.tpl'),
 
+    '3a' => 'analyticsConfiguration-piwik.tpl',
+
     4 => array('AppContentTitle' => 'Suas configurações foram geradas com sucesso!',
                'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
                'AppMenu'         => array('from'=>1, 'to'=>5, 'current'=>4),
@@ -53,6 +55,15 @@ class PagesController
     $smarty->display('main.tpl');
   }
 
+  private static function load($page)
+  {
+    $smarty = new Smarty();
+    $smarty->setTemplateDir(SMARTY_TEMPLATES);
+    $smarty->setCompileDir(SMARTY_COMPILED_TEMPLATES);
+
+    $smarty->display(self::$pages[$page]);
+  }
+
   public static function loadUserAccessPage($user=NULL, $password=NULL, $userErrorMessage=NULL, $passwordErrorMessage=NULL)
   {
     $otherParameters = array();
@@ -73,6 +84,11 @@ class PagesController
   public static function loadAnalyticsConfigurationPage()
   {
     PagesController::build(3);
+  }
+
+  public static function loadAnalyticsConfigurationPiwikContent()
+  {
+    PagesController::load('3a');
   }
 
   public static function loadClientConfigurationPage($geneticAlgorithm)

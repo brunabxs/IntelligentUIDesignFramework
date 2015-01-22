@@ -87,6 +87,15 @@
     }
   }
 
+  function processAnalyticsConfigurationType()
+  {
+    if ($_POST['analyticsType'] == 'piwik')
+    {
+      PagesController::loadAnalyticsConfigurationPiwikContent();
+      return;
+    }
+  }
+
   function processAnalyticsConfiguration()
   {
     try
@@ -180,7 +189,11 @@
     {
       processServerConfiguration();
     }
-    else if (isset($_POST['txt_analyticsTool']) && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
+    else if (isset($_POST['analyticsType']))
+    {
+      processAnalyticsConfigurationType();
+    }
+    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'piwik' && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfiguration();
     }
