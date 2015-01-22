@@ -20,6 +20,25 @@ class AnalyticsConfigurationAcceptanceTest extends MySelenium_TestCase
     $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName3'));
   }
 
+  public function testAnalyticsConfiguration_selectAnalyticsToolAsGoogle_mustShowGooglesFields()
+  {
+    // Arrange
+    $this->login('user1', '123456');
+
+    // Act
+    $this->select(WebDriverBy::id('txt_analyticsTool'), 'Google Analytics');
+
+    // Assert
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_analyticsId'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight1'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight2'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsWeight3'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName1'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName2'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_metricsName3'));
+    $this->waitPresenceOfElement(WebDriverBy::id('txt_analyticsFilter'));
+  }
+
   public function testAnalyticsConfiguration_afterComplete_mustGoToClientConfigurationStep()
   {
     // Arrange

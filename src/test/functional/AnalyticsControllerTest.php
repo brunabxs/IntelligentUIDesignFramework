@@ -1,7 +1,6 @@
 <?php
 class AnalyticsControllerTest extends MyDatabase_TestCase
 {
-    //analytics_oid, token, siteId, type, geneticAlgorithm_oid
   public function testCreate_mustPersistAnalytics()
   {
     // Arrange
@@ -55,6 +54,22 @@ class AnalyticsControllerTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertActualAndExpectedTablesEqual('AnalyticsData', 'SELECT method, extraParameters, weight from AnalyticsData');
+  }
+
+  public function testCreate_analyticsWithOneMethodAndOneExtraParameterWithoutMethod_mustPersistTwoAnalyticsData()
+  {
+    // Arrange
+    $analyticsController = $this->mockAnalyticsController();
+    $user = new User('00000000-0000-0000-0000-000000000001', null, null, null);
+    $method1 = array('method' => 'method1', 'weight' => 1);
+    $filter = array('extraParameters' => 'filter');
+
+
+    // Act
+    $analyticsController->create($user, 'google', 'ga:123', null, array($method1, $filter));
+
+    // Assert
+    $this->assertActualAndExpectedTablesEqual('AnalyticsData', 'SELECT method, weight, extraParameters from AnalyticsData');
   }
 
   public function testCreate_analyticsWithNoMethods_mustPersistNoAnalyticsData()

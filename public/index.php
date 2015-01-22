@@ -94,9 +94,14 @@
       PagesController::loadAnalyticsConfigurationPiwikContent();
       return;
     }
+    else if ($_POST['analyticsType'] == 'google')
+    {
+      PagesController::loadAnalyticsConfigurationGoogleContent();
+      return;
+    }
   }
 
-  function processAnalyticsConfiguration()
+  function processAnalyticsConfigurationPiwik()
   {
     try
     {
@@ -104,6 +109,30 @@
 
       $controller = new AnalyticsController();
       $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsToken'], $_POST['txt_analyticsSiteId'], $json);
+
+      $controller = new ProcessController();
+      $controller->load($_SESSION['user']);
+      $controller->processDAO->instance->analyticsConfiguration = '1';
+      $controller->update();
+
+      loadPage();
+      return;
+    }
+    catch (Exception $e)
+    {
+      PagesController::loadErrorPage();
+      return;
+    }
+  }
+
+  function processAnalyticsConfigurationGoogle()
+  {
+    try
+    {
+      $json = json_decode($_POST['txt_metrics_json'], true);
+
+      $controller = new AnalyticsController();
+      $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsId'], null, $json);
 
       $controller = new ProcessController();
       $controller->load($_SESSION['user']);
@@ -195,7 +224,11 @@
     }
     else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'piwik' && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
     {
-      processAnalyticsConfiguration();
+      processAnalyticsConfigurationPiwik();
+    }
+    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_metrics_json']))
+    {
+      processAnalyticsConfigurationGoogle();
     }
     else if (isset($_POST['txt_ready']))
     {

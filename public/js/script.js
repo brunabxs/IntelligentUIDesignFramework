@@ -96,9 +96,12 @@ function join() {
     }
   }
 
+  if (jQuery('#txt_analyticsFilter').size() == 1) {
+    metrics.push({'method':undefined, 'weight':weight, 'extraParameters':jQuery('#txt_analyticsFilter').val()});
+  }
+
   jQuery('#txt_metrics_json').val(JSON.stringify(metrics));
 }
-
 jQuery(document).ready(function() {
   jQuery('#txt_analyticsTool').change(function() {
     jQuery('#analyticsInfo').hide();

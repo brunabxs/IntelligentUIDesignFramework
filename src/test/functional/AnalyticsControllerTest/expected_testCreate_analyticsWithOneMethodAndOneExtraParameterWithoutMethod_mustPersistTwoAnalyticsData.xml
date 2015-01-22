@@ -1,0 +1,6 @@
+<dataset>
+  <AnalyticsData method="method1"
+    weight="1" />
+
+  <AnalyticsData extraParameters="filter" />
+</dataset>

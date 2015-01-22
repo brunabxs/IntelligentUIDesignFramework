@@ -26,7 +26,7 @@ class AnalyticsController
     // create analytics data
     foreach ($data as $analyticsData)
     {
-      $this->analyticsDataDAO->instance = new AnalyticsData(null, $analyticsData['method'], (isset($analyticsData['extraParameters']) ? $analyticsData['extraParameters'] : null), $analyticsData['weight'], $this->analyticsDAO->instance->analytics_oid);
+      $this->analyticsDataDAO->instance = new AnalyticsData(null, (isset($analyticsData['method']) ? $analyticsData['method'] : null), (isset($analyticsData['extraParameters']) ? $analyticsData['extraParameters'] : null), (isset($analyticsData['weight']) ? $analyticsData['weight'] : null), $this->analyticsDAO->instance->analytics_oid);
       $this->analyticsDataDAO->persist();
     }
   }

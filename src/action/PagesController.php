@@ -18,6 +18,7 @@ class PagesController
                'AppContent'      => 'step3-analyticsConfiguration.tpl'),
 
     '3a' => 'analyticsConfiguration-piwik.tpl',
+    '3b' => 'analyticsConfiguration-google.tpl',
 
     4 => array('AppContentTitle' => 'Suas configurações foram geradas com sucesso!',
                'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
@@ -89,6 +90,11 @@ class PagesController
   public static function loadAnalyticsConfigurationPiwikContent()
   {
     PagesController::load('3a');
+  }
+
+  public static function loadAnalyticsConfigurationGoogleContent()
+  {
+    PagesController::load('3b');
   }
 
   public static function loadClientConfigurationPage($geneticAlgorithm)
