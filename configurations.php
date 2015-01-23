@@ -4,7 +4,8 @@
   define ('DB_PASSWD', '');
   define ('DB_DBNAME', 'db_test');
 
-  define ('SERVER', 'localhost');
+  define ('SERVER_WO_PROTOCOL', 'localhost');
+  define ('SERVER', 'http://localhost');
   define ('PORT', '8000');
 
   define ('SMARTY_TEMPLATES', '../smarty_templates');
