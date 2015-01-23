@@ -83,6 +83,7 @@
       })
       .done(function(config, textStatus)
       {
+        config = JSON.parse(config.trim());
         setCookie(config.generation + '.' + config.genome);
         gaProperties = config.properties;
         pushToWebAnalyticsTool();
