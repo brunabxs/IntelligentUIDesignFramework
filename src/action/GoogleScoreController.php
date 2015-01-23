@@ -92,7 +92,7 @@ class GoogleScoreController extends SpecificScoreController
       $filters = '';
     }
 
-    return $filters . 'customVarName1==GA,customVarValue1==' . $generationNumber . '.' . $individualGenome;
+    return $filters . 'ga:dimension1==' . $generationNumber . '.' . $individualGenome;
   }
 }
 ?>

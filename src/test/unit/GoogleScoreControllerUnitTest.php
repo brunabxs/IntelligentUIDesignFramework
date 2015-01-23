@@ -13,7 +13,7 @@ class GoogleScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $result = self::callMethod('GoogleScoreController', 'prepareFilters', array($filter, $generationNumber, $individualGenome));
 
     // Assert
-    $this->assertEquals('customVarName1==GA,customVarValue1==0.10', $result);
+    $this->assertEquals('ga:dimension1==0.10', $result);
   }
 
   public function testPrepareFilters_AFilterIsSet_mustReturnOnlyCustomVariableFilter()
@@ -27,7 +27,7 @@ class GoogleScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $result = self::callMethod('GoogleScoreController', 'prepareFilters', array($filter, $generationNumber, $individualGenome));
 
     // Assert
-    $this->assertEquals('ga:country==United States,customVarName1==GA,customVarValue1==0.10', $result);
+    $this->assertEquals('ga:country==United States,ga:dimension1==0.10', $result);
   }
 }
 ?>

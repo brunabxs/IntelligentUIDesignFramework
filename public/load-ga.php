@@ -57,9 +57,7 @@
       "
         var pushToWebAnalyticsTool = function()
         {
-          _gaq.push(['setCustomVar', 1, 'GA', getCookie(), 3]);
-          _gaq.push(['trackPageView']);
-          _gaq.push(['enableLinkTracking']);
+          ga('set', 'dimension1', getCookie());
         };
       ";
     }
