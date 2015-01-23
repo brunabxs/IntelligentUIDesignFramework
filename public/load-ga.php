@@ -79,8 +79,7 @@
       $.ajax({
         url: url + 'load-indiv.php?code=" . $geneticAlgorithmCode . "' + (gaCode ? '&indiv=' + gaCode : ''),
         type: 'get',
-        crossDomain: true,
-        dataType:'json'
+        crossDomain: true
       })
       .done(function(config, textStatus)
       {
