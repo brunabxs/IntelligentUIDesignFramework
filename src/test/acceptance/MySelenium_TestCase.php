@@ -15,7 +15,7 @@ abstract class MySelenium_TestCase extends PHPUnit_Extensions_Database_TestCase
   {
     parent::setUp();
 
-    self::$defaultURL = 'http://' . SERVER . ':' . PORT . '/';
+    self::$defaultURL = SERVER . ':' . PORT . '/';
 
     $host = 'http://localhost:4444/wd/hub';
     $capabilities = DesiredCapabilities::firefox();
