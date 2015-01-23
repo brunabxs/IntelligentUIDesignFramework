@@ -105,7 +105,7 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     $json = $geneticAlgorithmController->exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode);
 
     // Assert
-    $this->assertEquals('{"generation":0,"genome":"10","properties":{"h1":"class1","h2":""}}', $json);
+    $this->assertEquals('{"generation":"0","genome":"10","properties":{"h1":"class1","h2":""}}', $json);
   }
 
   public function testExportIndividualJSON_generationAndIndividualCodeWithGenomeThatDoesNotExist_mustReturnRandomIndividualPropertiesFromLastGeneration()

@@ -178,10 +178,10 @@ class GeneticAlgorithmController
 
   private static function generateJSON($generation, $individual)
   {
-    $part1 = '"generation":' . $generation->number;
-    $part2 = '"genome":"' . $individual->genome . '"';
-    $part3 = '"properties":' . $individual->properties;
-    return '{' . $part1 . ',' . $part2 . ',' . $part3 . '}';
+    $array = array('generation'=>$generation->number,
+          'genome'=>$individual->genome,
+          'properties'=>json_decode($individual->properties, true));
+    return json_encode($array);
   }
 
   private static function countGenomes($genomesArray)
