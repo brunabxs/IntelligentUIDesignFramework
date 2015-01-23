@@ -12,8 +12,6 @@
   echo
   "
     (function($) {
-      $.holdReady(true);
-
       var url = (('https:' == document.location.protocol) ? 'https' : 'http') + '://" . SERVER_WO_PROTOCOL . ":" . PORT . "/';
 
       var setCookie = function(newValue, currentValue)
@@ -94,7 +92,7 @@
       })
       .always(function()
       {
-        $.holdReady(false);
+        $(document).executeGA();
       });
 
       $.fn.executeGA = function()
