@@ -230,26 +230,20 @@
         $controller->load($_SESSION['user']);
         $geneticAlgorithm = $controller->geneticAlgorithmDAO->instance;
 
-        $controller = new AnalyticsController();
-        $controller->load($_SESSION['user']);
-        $analytics = $controller->analyticsDAO->instance;
+        $controller = WebAnalyticsFactory::init($geneticAlgorithm);
+        $analytics = $controller->analytics;
+        $analyticsData = $controller->extractAnalyticsData();
 
         if ($analytics->type == 'piwik')
         {
-          $controller = new PiwikScoreController($geneticAlgorithm);
-          $analyticsData = $controller->getAnalyticsData();
           PagesController::loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $analyticsData);
         }
         else if ($analytics->type == 'google-old')
         {
-          $controller = new GoogleOldScoreController($geneticAlgorithm);
-          $analyticsData = $controller->getAnalyticsData();
           PagesController::loadVisualizationGoogleOldPage($geneticAlgorithm, $analytics, $analyticsData);
         }
         else if ($analytics->type == 'google')
         {
-          $controller = new GoogleScoreController($geneticAlgorithm);
-          $analyticsData = $controller->getAnalyticsData();
           PagesController::loadVisualizationGooglePage($geneticAlgorithm, $analytics, $analyticsData);
         }
         else

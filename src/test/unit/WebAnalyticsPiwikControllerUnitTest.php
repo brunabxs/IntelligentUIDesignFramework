@@ -1,7 +1,38 @@
 <?php
 include_once 'MyAnotherUnit_Framework_TestCase.php';
-class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
+class WebAnalyticsPiwikControllerUnitTest extends MyAnotherUnit_Framework_TestCase
 {
+  public function testExtractAnalyticsData_oneMethod_mustReturnArrayWithMethodAndWeight()
+  {
+    // Arrange
+    $analytics = null;
+    $method1 = new AnalyticsData(null, 'method1', null, 2, null);
+    $analyticsData = array($method1);
+    $webAnalyticsPiwikController = new WebAnalyticsPiwikController($analytics, $analyticsData);
+
+    // Act
+    $analyticsData = $webAnalyticsPiwikController->extractAnalyticsData();
+
+    // Assert
+    $this->assertEquals($analyticsData, array('methods'=>array('method1'), 'weights'=>array('2')));
+  }
+
+  public function testExtractAnalyticsData_twoMethods_mustReturnArrayWithMethodAndWeight()
+  {
+    // Arrange
+    $analytics = null;
+    $method1 = new AnalyticsData(null, 'method1', null, 2, null);
+    $method2 = new AnalyticsData(null, 'method2', null, 3, null);
+    $analyticsData = array($method1, $method2);
+    $webAnalyticsPiwikController = new WebAnalyticsPiwikController($analytics, $analyticsData);
+
+    // Act
+    $analyticsData = $webAnalyticsPiwikController->extractAnalyticsData();
+
+    // Assert
+    $this->assertEquals($analyticsData, array('methods'=>array('method1', 'method2'), 'weights'=>array('2', '3')));
+  }
+
   public function testGetURL_oneMethod_mustReturnURLWithBulk()
   {
     // Arrange
@@ -14,7 +45,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('WebAnalyticsPiwikController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API&method=API.getBulkRequest&format=PHP'.
@@ -38,7 +69,7 @@ class PiwikScoreControllerUnitTest extends MyAnotherUnit_Framework_TestCase
     $token = 'abc123';
 
     // Act
-    $url = self::callMethod('PiwikScoreController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
+    $url = self::callMethod('WebAnalyticsPiwikController', 'getURL', array($generation, $genome, $methods, $startDate, $endDate, $siteId, $token));
 
     // Assert
     $this->assertEquals('http://localhost/piwik?module=API&method=API.getBulkRequest&format=PHP'.

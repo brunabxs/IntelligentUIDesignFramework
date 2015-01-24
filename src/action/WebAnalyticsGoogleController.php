@@ -1,26 +1,19 @@
 ﻿<?php
-class GoogleScoreController extends SpecificScoreController
+class WebAnalyticsGoogleController extends WebAnalyticsController
 {
-  public function calculateScore($generationNumber, $individualGenome, $startDate, $endDate)
+  public function getValue($generationNumber, $individualGenome, $startDate, $endDate)
   {
-    $analytics = $this->analyticsDAO->instance;
+    $data = $this->extractAnalyticsData();
 
-    $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
-
-    $data = $this->getAnalyticsData();
-
-    return $this->calculateTotalScore($generationNumber, $individualGenome, $data['methods'], $data['filter'], $startDate, $endDate, $analytics->token, $data['weights']);
+    return $this->calculateTotalValue($generationNumber, $individualGenome, $data['methods'], $data['filter'], $startDate, $endDate, $this->analytics->token, $data['weights']);
   }
 
-  public function getAnalyticsData()
+  public function extractAnalyticsData()
   {
-    $analytics = $this->analyticsDAO->instance;
-    $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
-
     $methods = array();
     $weights = array();
     $filter = null;
-    foreach ($analyticsData as $data)
+    foreach ($this->analyticsData as $data)
     {
       if (isset($data->method) && isset($data->weight))
       {
@@ -36,21 +29,21 @@ class GoogleScoreController extends SpecificScoreController
     return array('methods'=>$methods, 'weights'=>$weights, 'filter'=>$filter);
   }
 
-  private function calculateTotalScore($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken, $weights)
+  private function calculateTotalValue($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken, $weights)
   {
-    $scores = $this->getScore($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken);
+    $data = $this->retrieveDataFromTool($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken);
     $totalScore = 0;
 
     $i = 0;
-    foreach ($scores as $index => $score)
+    foreach ($data as $index => $value)
     {
-      $totalScore += $score * $weights[$i];
+      $totalScore += $value * $weights[$i];
       $i++;
     }
     return $totalScore;
   }
 
-  public function getScore($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken)
+  public function retrieveDataFromTool($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken)
   {
     $client = new Google_Client();
     $client->setApplicationName(GOOGLE_ANALYTICS_APP_NAME);

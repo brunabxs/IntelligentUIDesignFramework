@@ -1,25 +1,20 @@
 ﻿<?php
-class PiwikScoreController extends SpecificScoreController
+class WebAnalyticsPiwikController extends WebAnalyticsController
 {
-  public function calculateScore($generationNumber, $individualGenome, $startDate, $endDate)
+  public function getValue($generationNumber, $individualGenome, $startDate, $endDate)
   {
-    $analytics = $this->analyticsDAO->instance;
+    $data = $this->extractAnalyticsData();
 
-    $data = $this->getAnalyticsData();
+    $url = self::getURL($generationNumber, $individualGenome, $data['methods'], $startDate, $endDate, $this->analytics->siteId, $this->analytics->token);
 
-    $url = self::getURL($generationNumber, $individualGenome, $data['methods'], $startDate, $endDate, $analytics->siteId, $analytics->token);
-
-    return $this->calculateTotalScore($data['weights'], $url);
+    return $this->calculateTotalValue($data['weights'], $url);
   }
 
-  public function getAnalyticsData()
+  public function extractAnalyticsData()
   {
-    $analytics = $this->analyticsDAO->instance;
-    $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
-
     $methods = array();
     $weights = array();
-    foreach ($analyticsData as $data)
+    foreach ($this->analyticsData as $data)
     {
       $methods[] = $data->method;
       $weights[] = $data->weight;
@@ -28,26 +23,26 @@ class PiwikScoreController extends SpecificScoreController
     return array('methods'=>$methods, 'weights'=>$weights);
   }
 
-  private function calculateTotalScore($weights, $url)
+  private function calculateTotalValue($weights, $url)
   {
-    $scores = $this->getScore($url);
+    $data = $this->retrieveDataFromTool($url);
     $totalScore = 0;
 
-    if (!is_array($scores))
+    if (!is_array($data))
     {
-      $totalScore = $scores * $weights[0];
+      $totalScore = $data * $weights[0];
     }
     else
     {
-      foreach ($scores as $index => $score)
+      foreach ($data as $index => $value)
       {
-        $totalScore += $score * $weights[$index];
+        $totalScore += $value * $weights[$index];
       }
     }
     return $totalScore;
   }
 
-  public function getScore($url)
+  public function retrieveDataFromTool($url)
   {
     $fetched = file_get_contents($url);
     $score = unserialize($fetched);

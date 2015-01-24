@@ -177,9 +177,8 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
   private function mockScoreController()
   {
     $mock = $this->getMockBuilder('ScoreController')
-                 ->setMethods(array('initScoreController', 'calculateScore'))
+                 ->setMethods(array('calculateScore'))
                  ->getMock();
-    $mock->method('initScoreController')->will($this->returnValue(null));
     $mock->method('calculateScore')->will($this->onConsecutiveCalls(2, 3, 5, 8));
 
     return $mock;

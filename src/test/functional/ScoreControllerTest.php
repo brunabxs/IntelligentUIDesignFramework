@@ -4,8 +4,7 @@ class ScoreControllerTest extends MyDatabase_TestCase
   public function testUpdateScores_mustUpdateIndividualsScores()
   {
     // Arrange
-    $scoreController = $this->mockScoreController(array('initScoreController', 'calculateScore'));
-    $scoreController->method('initScoreController')->will($this->returnValue(null));
+    $scoreController = $this->mockScoreController(array('calculateScore'));
     $scoreController->method('calculateScore')->will($this->onConsecutiveCalls(2, 3));
     $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
     $generation = new Generation('00000000-0000-0000-0000-000000000001', null, null);
@@ -17,58 +16,6 @@ class ScoreControllerTest extends MyDatabase_TestCase
 
     // Assert
     $this->assertActualAndExpectedTablesEqual('Individual', 'SELECT individual_oid, score from Individual');
-  }
-
-  public function testInitScoreController_analyticsTypeSetAsPiwik_mustReturnPiwikScoreControllerInstance()
-  {
-    // Arrange
-    $scoreController = $this->mockScoreController();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
-
-    // Act
-    $specificScoreController = $scoreController->initScoreController($geneticAlgorithm);
-
-    // Assert
-    $this->assertInstanceOf('PiwikScoreController', $specificScoreController);
-  }
-
-  public function testInitScoreController_analyticsTypeSetAsGoogle_mustReturnGoogleScoreControllerInstance()
-  {
-    // Arrange
-    $scoreController = $this->mockScoreController();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
-
-    // Act
-    $specificScoreController = $scoreController->initScoreController($geneticAlgorithm);
-
-    // Assert
-    $this->assertInstanceOf('GoogleScoreController', $specificScoreController);
-  }
-
-  public function testInitScoreController_analyticsTypeSetAsGoogleOld_mustReturnGoogleOldScoreControllerInstance()
-  {
-    // Arrange
-    $scoreController = $this->mockScoreController();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
-
-    // Act
-    $specificScoreController = $scoreController->initScoreController($geneticAlgorithm);
-
-    // Assert
-    $this->assertInstanceOf('GoogleOldScoreController', $specificScoreController);
-  }
-
-  public function testInitScoreController_analyticsTypeNotSetAsPiwikNotSetAsGoogleOldNotSetAsGoogle_mustReturnNull()
-  {
-    // Arrange
-    $scoreController = $this->mockScoreController();
-    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
-
-    // Act
-    $specificScoreController = $scoreController->initScoreController($geneticAlgorithm);
-
-    // Assert
-    $this->assertNull($specificScoreController);
   }
 
   private function mockScoreController($methods=NULL)
