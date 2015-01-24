@@ -17,13 +17,18 @@
         value="∞"}
 
       {include file="component-view.tpl" label="Elementos e classes (JSON)" name="generationProperties"
-        value="{$properties}"}
+        value="{$properties}" prettify="true"}
     </div>
   </div>
 
   <h3>Melhores indivíduos por experimento</h3>
-  {foreach from=$bestIndividualsPerGeneration key=generation item=individual}
-    {include file="component-view.tpl" label="Melhor solução experimento {$generation+1}" name="bestSolution{$generation}"
-      value="{$individual}"}
+  {foreach from=$bestIndividualsPerGeneration|@array_reverse key=generation item=individual}
+    {if isset($individual)}
+      {include file="component-view.tpl" label="Melhor solução experimento {$generation+1}" name="bestSolution{$generation}"
+        value="{$individual}" prettify="true"}
+    {else}
+      {include file="component-view.tpl" label="Melhor solução experimento {$generation+1}" name="bestSolution{$generation}NotFound"
+        value="Ainda não foi encontrada" prettify="true"}
+    {/if}
   {/foreach}
 </div>

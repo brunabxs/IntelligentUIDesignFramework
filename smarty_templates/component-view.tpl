@@ -5,6 +5,12 @@
     {$label}
   </label>
 
-  <span id="txt_{$name}">{(isset($value) == true) ? $value : '-'}</span>
+  {if isset($prettify)}
+<pre>
+{$value}
+</pre>
+  {else}
+    <span id="txt_{$name}">{(isset($value) == true) ? $value : '-'}</span>
+  {/if}
 
 </div>
