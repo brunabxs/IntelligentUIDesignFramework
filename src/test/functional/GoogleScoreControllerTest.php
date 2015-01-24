@@ -4,10 +4,10 @@ class GoogleScoreControllerTest extends MyDatabase_TestCase
   public function getAnalyticsData_noMethodAndNoFilter_mustReturnEmptyArray()
   {
     // Arrange
-    $piwikScoreController = $this->mockPiwikScoreController();
+    $googleScoreController = $this->mockGoogleScoreController();
 
     // Act
-    $analyticsData = $piwikScoreController->getAnalyticsData();
+    $analyticsData = $googleScoreController->getAnalyticsData();
 
     // Assert
     $this->assertEquals($analyticsData, array());
@@ -16,10 +16,10 @@ class GoogleScoreControllerTest extends MyDatabase_TestCase
   public function getAnalyticsData_oneMethodAndNoFilter_mustReturnArrayWithMethodAndWeight()
   {
     // Arrange
-    $piwikScoreController = $this->mockPiwikScoreController();
+    $googleScoreController = $this->mockGoogleScoreController();
 
     // Act
-    $analyticsData = $piwikScoreController->getAnalyticsData();
+    $analyticsData = $googleScoreController->getAnalyticsData();
 
     // Assert
     $this->assertEquals($analyticsData, array('methods'=>array('method1'), 'weight'=>array('2')));
@@ -28,10 +28,10 @@ class GoogleScoreControllerTest extends MyDatabase_TestCase
   public function getAnalyticsData_twoMethodsAndNoFilter_mustReturnArrayWithMethodAndWeight()
   {
     // Arrange
-    $piwikScoreController = $this->mockPiwikScoreController();
+    $googleScoreController = $this->mockGoogleScoreController();
 
     // Act
-    $analyticsData = $piwikScoreController->getAnalyticsData();
+    $analyticsData = $googleScoreController->getAnalyticsData();
 
     // Assert
     $this->assertEquals($analyticsData, array('methods'=>array('method1', 'method2'), 'weight'=>array('2', '3')));
@@ -40,10 +40,10 @@ class GoogleScoreControllerTest extends MyDatabase_TestCase
   public function getAnalyticsData_twoMethodsAndFilter_mustReturnArrayWithMethodAndWeightAndFilter()
   {
     // Arrange
-    $piwikScoreController = $this->mockPiwikScoreController();
+    $googleScoreController = $this->mockGoogleScoreController();
 
     // Act
-    $analyticsData = $piwikScoreController->getAnalyticsData();
+    $analyticsData = $googleScoreController->getAnalyticsData();
 
     // Assert
     $this->assertEquals($analyticsData, array('methods'=>array('method1', 'method2'), 'weight'=>array('2', '3'), 'filter'=>'filter'));
