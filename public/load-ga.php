@@ -49,6 +49,16 @@
         };
       ";
     }
+    else if ($type == 'google-old')
+    {
+      echo
+      "
+        var pushToWebAnalyticsTool = function()
+        {
+          _gaq.push(['setCustomVariable', 1, 'GA', getCookie(), 'page']);
+        };
+      ";
+    }
     else if ($type == 'google')
     {
       echo

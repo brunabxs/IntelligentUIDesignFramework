@@ -94,6 +94,11 @@
       PagesController::loadAnalyticsConfigurationPiwikContent();
       return;
     }
+    else if ($_POST['analyticsType'] == 'google-old')
+    {
+      PagesController::loadAnalyticsConfigurationGoogleOldContent();
+      return;
+    }
     else if ($_POST['analyticsType'] == 'google')
     {
       PagesController::loadAnalyticsConfigurationGoogleContent();
@@ -124,6 +129,31 @@
       return;
     }
   }
+
+  function processAnalyticsConfigurationGoogleOld()
+  {
+    try
+    {
+      $json = json_decode($_POST['txt_metrics_json'], true);
+
+      $controller = new AnalyticsController();
+      $controller->create($_SESSION['user'], $_POST['txt_analyticsTool'], $_POST['txt_analyticsId'], null, $json);
+
+      $controller = new ProcessController();
+      $controller->load($_SESSION['user']);
+      $controller->processDAO->instance->analyticsConfiguration = '1';
+      $controller->update();
+
+      loadPage();
+      return;
+    }
+    catch (Exception $e)
+    {
+      PagesController::loadErrorPage();
+      return;
+    }
+  }
+
 
   function processAnalyticsConfigurationGoogle()
   {
@@ -210,6 +240,12 @@
           $analyticsData = $controller->getAnalyticsData();
           PagesController::loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $analyticsData);
         }
+        else if ($analytics->type == 'google-old')
+        {
+          $controller = new GoogleOldScoreController($geneticAlgorithm);
+          $analyticsData = $controller->getAnalyticsData();
+          PagesController::loadVisualizationGoogleOldPage($geneticAlgorithm, $analytics, $analyticsData);
+        }
         else if ($analytics->type == 'google')
         {
           $controller = new GoogleScoreController($geneticAlgorithm);
@@ -245,6 +281,10 @@
     else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'piwik' && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfigurationPiwik();
+    }
+    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google-old' && isset($_POST['txt_metrics_json']))
+    {
+      processAnalyticsConfigurationGoogleOld();
     }
     else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_metrics_json']))
     {

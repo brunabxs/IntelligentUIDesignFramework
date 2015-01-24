@@ -30,6 +30,34 @@ class VisualizationAcceptanceTest extends MySelenium_TestCase
     $this->text(WebDriverBy::id('txt_analyticsMetric2'), 'method2 (peso: 2)');
   }
 
+  public function testVisualization_googleOldAsAnalyticsToolWithNoFilter()
+  {
+    // Arrange
+    $this->login('user1', '123456');
+
+    // Act
+
+    // Assert
+    $this->text(WebDriverBy::id('txt_analyticsTool'), 'Google Analytics (ga.js)');
+    $this->text(WebDriverBy::id('txt_analyticsId'), 'ga:123token');
+    $this->text(WebDriverBy::id('txt_analyticsMetric1'), 'method1 (peso: 1)');
+  }
+
+  public function testVisualization_googleOldAsAnalyticsToolWithFilter()
+  {
+    // Arrange
+    $this->login('user1', '123456');
+
+    // Act
+
+    // Assert
+    $this->text(WebDriverBy::id('txt_analyticsTool'), 'Google Analytics (ga.js)');
+    $this->text(WebDriverBy::id('txt_analyticsId'), 'ga:123token');
+    $this->text(WebDriverBy::id('txt_analyticsMetric1'), 'method1 (peso: 1)');
+    $this->text(WebDriverBy::id('txt_analyticsMetric2'), 'method2 (peso: 2)');
+    $this->text(WebDriverBy::id('txt_analyticsFilter'), 'filter');
+  }
+
   public function testVisualization_googleAsAnalyticsToolWithNoFilter()
   {
     // Arrange
@@ -38,7 +66,7 @@ class VisualizationAcceptanceTest extends MySelenium_TestCase
     // Act
 
     // Assert
-    $this->text(WebDriverBy::id('txt_analyticsTool'), 'Google Analytics');
+    $this->text(WebDriverBy::id('txt_analyticsTool'), 'Google Analytics (analytics.js)');
     $this->text(WebDriverBy::id('txt_analyticsId'), 'ga:123token');
     $this->text(WebDriverBy::id('txt_analyticsMetric1'), 'method1 (peso: 1)');
   }
@@ -51,7 +79,7 @@ class VisualizationAcceptanceTest extends MySelenium_TestCase
     // Act
 
     // Assert
-    $this->text(WebDriverBy::id('txt_analyticsTool'), 'Piwik');
+    $this->text(WebDriverBy::id('txt_analyticsTool'), 'Google Analytics (analytics.js)');
     $this->text(WebDriverBy::id('txt_analyticsId'), 'ga:123token');
     $this->text(WebDriverBy::id('txt_analyticsMetric1'), 'method1 (peso: 1)');
     $this->text(WebDriverBy::id('txt_analyticsMetric2'), 'method2 (peso: 2)');

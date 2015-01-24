@@ -18,7 +18,8 @@ class PagesController
                'AppContent'      => 'step3-analyticsConfiguration.tpl'),
 
     '3a' => 'analyticsConfiguration-piwik.tpl',
-    '3b' => 'analyticsConfiguration-google.tpl',
+    '3b' => 'analyticsConfiguration-google-old.tpl',
+    '3c' => 'analyticsConfiguration-google.tpl',
 
     4 => array('AppContentTitle' => 'Suas configurações foram geradas com sucesso!',
                'AppContentInfo'  => 'Siga as instruções indicadas para iniciar os experimentos.',
@@ -92,9 +93,14 @@ class PagesController
     PagesController::load('3a');
   }
 
-  public static function loadAnalyticsConfigurationGoogleContent()
+  public static function loadAnalyticsConfigurationGoogleOldContent()
   {
     PagesController::load('3b');
+  }
+
+  public static function loadAnalyticsConfigurationGoogleContent()
+  {
+    PagesController::load('3c');
   }
 
   public static function loadClientConfigurationPage($geneticAlgorithm)
@@ -112,6 +118,18 @@ class PagesController
                                     'analyticsSiteId'=>$analytics->siteId,
                                     'analyticsMethods'=>$array['methods'],
                                     'analyticsWeights'=>$array['weights'],
+                                    'populationSize'=>$geneticAlgorithm->populationSize,
+                                    'properties'=>$geneticAlgorithm->properties));
+  }
+
+  public static function loadVisualizationGoogleOldPage($geneticAlgorithm, $analytics, $array)
+  {
+    PagesController::build(5, array('analyticsTpl'=>'visualization-google-old.tpl',
+                                    'analyticsType'=>'Google Analytics',
+                                    'analyticsId'=>'ga:'.$analytics->token,
+                                    'analyticsMethods'=>$array['methods'],
+                                    'analyticsWeights'=>$array['weights'],
+                                    'analyticsFilter'=>$array['filter'],
                                     'populationSize'=>$geneticAlgorithm->populationSize,
                                     'properties'=>$geneticAlgorithm->properties));
   }

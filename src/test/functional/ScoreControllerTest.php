@@ -45,7 +45,20 @@ class ScoreControllerTest extends MyDatabase_TestCase
     $this->assertInstanceOf('GoogleScoreController', $specificScoreController);
   }
 
-  public function testInitScoreController_analyticsTypeNotSetAsPiwikNotSetAsGoogle_mustReturnNull()
+  public function testInitScoreController_analyticsTypeSetAsGoogleOld_mustReturnGoogleOldScoreControllerInstance()
+  {
+    // Arrange
+    $scoreController = $this->mockScoreController();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
+
+    // Act
+    $specificScoreController = $scoreController->initScoreController($geneticAlgorithm);
+
+    // Assert
+    $this->assertInstanceOf('GoogleOldScoreController', $specificScoreController);
+  }
+
+  public function testInitScoreController_analyticsTypeNotSetAsPiwikNotSetAsGoogleOldNotSetAsGoogle_mustReturnNull()
   {
     // Arrange
     $scoreController = $this->mockScoreController();
