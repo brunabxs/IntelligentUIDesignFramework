@@ -126,7 +126,7 @@ class PagesController
   {
     PagesController::build(5, array('analyticsTpl'=>'visualization-google-old.tpl',
                                     'analyticsType'=>'Google Analytics',
-                                    'analyticsId'=>'ga:'.$analytics->token,
+                                    'analyticsId'=>$analytics->token,
                                     'analyticsMethods'=>$array['methods'],
                                     'analyticsWeights'=>$array['weights'],
                                     'analyticsFilter'=>$array['filter'],
@@ -138,7 +138,7 @@ class PagesController
   {
     PagesController::build(5, array('analyticsTpl'=>'visualization-google.tpl',
                                     'analyticsType'=>'Google Analytics',
-                                    'analyticsId'=>'ga:'.$analytics->token,
+                                    'analyticsId'=>$analytics->token,
                                     'analyticsMethods'=>$array['methods'],
                                     'analyticsWeights'=>$array['weights'],
                                     'analyticsFilter'=>$array['filter'],

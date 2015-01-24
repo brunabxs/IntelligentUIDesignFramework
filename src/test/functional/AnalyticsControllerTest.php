@@ -66,7 +66,7 @@ class AnalyticsControllerTest extends MyDatabase_TestCase
 
 
     // Act
-    $analyticsController->create($user, 'google', 'ga:123', null, array($method1, $filter));
+    $analyticsController->create($user, 'google', 'ga:123token', null, array($method1, $filter));
 
     // Assert
     $this->assertActualAndExpectedTablesEqual('AnalyticsData', 'SELECT method, weight, extraParameters from AnalyticsData');

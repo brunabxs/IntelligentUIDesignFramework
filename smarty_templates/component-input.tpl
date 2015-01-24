@@ -14,6 +14,9 @@
       {if isset($pattern)}
         pattern="{$pattern}"
       {/if}
+      {if isset($placeholder)}
+        placeholder="{$placeholder}"
+      {/if}
       {(isset($required) == true) ? 'required' : ''}
       {(isset($focus) == true) ? 'autofocus' : ''}
     />

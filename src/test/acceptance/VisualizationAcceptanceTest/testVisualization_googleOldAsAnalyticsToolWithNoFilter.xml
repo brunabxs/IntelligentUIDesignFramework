@@ -36,7 +36,7 @@
     generation_oid="00000000-0000-0000-0000-000000000001" />
 
   <Analytics analytics_oid="00000000-0000-0000-0000-000000000001"
-    token="123token"
+    token="ga:123token"
     type="google-old"
     geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001" />
 
