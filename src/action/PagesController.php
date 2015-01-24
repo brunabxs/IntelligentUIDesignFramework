@@ -107,7 +107,8 @@ class PagesController
   {
     $jquery = 'http://code.jquery.com/jquery-1.11.1.min.js';
     $app = SERVER . ':' . PORT . '/load-ga.php?code='.$geneticAlgorithm->code;
-    PagesController::build(4, array('jquery'=>$jquery, 'app'=>$app));
+    $user = '46756727074-h57fqdnom7g7tmfnadi8g7239hhs4pje@developer.gserviceaccount.com';
+    PagesController::build(4, array('jquery'=>$jquery, 'app'=>$app, 'user'=>$user));
   }
 
   public static function loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $array)

@@ -122,6 +122,33 @@ section#appContent .appContentData {
   border-radius: 10px;
 }
 
+section#appContent .appContentData h3 {
+  font-size: 1.3em;
+  margin-top: 40px;
+  letter-spacing: 2px;
+  font-weight: normal;
+}
+
+section#appContent .appContentData h3:first-child {
+  margin-top: 0px;
+}
+
+section#appContent .appContentData a {
+  color: #333;
+  font-size: 0.8em;
+  text-transform: uppercase;
+}
+
+section#appContent .appContentData p {
+  margin: 5px 0 10px 0;
+}
+section#appContent .appContentData p:before {
+  content: "-";
+  padding-right: 5px;
+  width: 10px;
+  height: 10px;
+}
+
 section#appContent .appContentData label {
   font-weight: bold;
 }
@@ -193,16 +220,26 @@ section#appContent .appContentData .appContentButton:active {
   background-image: linear-gradient(bottom, #3BA4C7 0% ,#1982A5 100%);
 }
 
+section#appContent .appContentData .appContentGroup > * {
+  display: inline-block;
+  width: 45%;
+  vertical-align: top;
+}
+
+section#appContent .appContentData .appContentDataItemGroup .appContentDataItem {
+  display: inline-block;
+}
+
+section#appContent .appContentData h4,
 section#appContent .appContentData .appContentDataItem label,
 section#appContent .appContentData .appContentDataItem input,
 section#appContent .appContentData .appContentDataItem select,
 section#appContent .appContentData .appContentDataItem textarea,
-section#appContent .appContentData table,
 section#appContent .appContentData .appContentDataItem span {
   display: block;
   margin: 10px 0;
   vertical-align: middle;
-  font-size: 1em;
+  font-size: 1.2em;
 }
 
 section#appContent .appContentData .appContentDataItem label {

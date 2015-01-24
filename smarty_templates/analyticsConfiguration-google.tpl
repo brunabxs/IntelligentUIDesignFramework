@@ -1,25 +1,25 @@
 {include file="component-input.tpl" label="ID do profile do Google Analytics" name="analyticsId"
-  type="text" required="true" placeholder="exemplo: ga:12345" pattern="ga:[0-9]+"}
+  type="text" required="true" placeholder="ex.: ga:12345" pattern="ga:[0-9]+"}
 
-<h4>Métricas utilizadas para avaliação</h4>
-<table>
-  <tr>
-    <td></td>
-    <td>Peso</td>
-    <td>Nome</td>
-  </tr>
-{for $index=1 to 3}
-  <tr>
-    <td>{$index}.</td>
-    <td><input id="txt_metricsWeight{$index}" name="txt_metricsWeight{$index}"
-          type="number" title="" {if $index == 1}required="true"{/if} pattern="ga:[a-zA-Z0-9]+" /></td>
-    <td><input id="txt_metricsName{$index}" name="txt_metricsName{$index}"
-          type="text" title="" {if $index == 1}required="true"{/if} pattern="ga:[a-zA-Z0-9]+" /></td>
-  </tr>
+<div class="appContentDataItemGroup">
+  {include file="component-input.tpl" label="Métrica 1" name="txt_metricsName1"
+    type="text" required="true" placeholder="ex.: ga:sessions" pattern="ga:[a-zA-Z0-9]+"}
+
+  {include file="component-input.tpl" label="Peso para métrica 1" name="txt_metricsWeight1"
+    type="number" required="true"}
+</div>
+
+{for $index=2 to 3}
+  <div class="appContentDataItemGroup">
+    {include file="component-input.tpl" label="Métrica {$index}" name="txt_metricsName{$index}"
+      type="text" placeholder="ex.: ga:sessions" pattern="ga:[a-zA-Z0-9]+"}
+
+    {include file="component-input.tpl" label="Peso para métrica {$index}" name="txt_metricsWeight{$index}"
+      type="number"}
+  </div>
 {/for}
-</table>
 
 {include file="component-input.tpl" label="Filtro" name="analyticsFilter"
-  type="text"}
+  type="text" placeholder="ex.: ga:county==Brazil"}
 
 <input id="txt_metrics_json" name="txt_metrics_json" type="hidden" />
