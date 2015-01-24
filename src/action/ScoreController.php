@@ -18,16 +18,16 @@ class ScoreController
 
     foreach ($individuals as $individual)
     {
-      $individual->score = $this->calculateScore($geneticAlgorithm, $generation, $individual, $startDate, $endDate);
+      $individual->score = $this->calculateScore($generation, $individual, $startDate, $endDate);
 
       $this->individualDAO->instance = $individual;
       $this->individualDAO->update();
     }
   }
 
-  public function calculateScore($geneticAlgorithm, $generation, $individual, $startDate, $endDate)
+  public function calculateScore($generation, $individual, $startDate, $endDate)
   {
-    return WebAnalyticsFactory::init($geneticAlgorithm);
+    return WebAnalyticsFactory::init($geneticAlgorithm)->getValue($generation->number, $individual->genome, $startDate, $endDate);
   }
 }
 ?>
