@@ -70,8 +70,9 @@ class GoogleScoreController extends SpecificScoreController
     {
       $optParams = array();
       $optParams['filters'] = self::prepareFilters($filter, $generationNumber, $individualGenome);
+      $optParams['dimensions'] = 'ga:dimension1';
 
-      $result = $service->data_ga->get($analyticsToken, $startDate, $endDate, $methods, $optParams);
+      $result = $service->data_ga->get($analyticsToken, $startDate, $endDate, self::prepareMetrics($methods), $optParams);
 
       return $result['totalsForAllResults'];
     }
@@ -85,7 +86,7 @@ class GoogleScoreController extends SpecificScoreController
   {
     if (isset($filter))
     {
-      $filters = $filter . ',';
+      $filters = $filter . ';';
     }
     else
     {
@@ -93,6 +94,11 @@ class GoogleScoreController extends SpecificScoreController
     }
 
     return $filters . 'ga:dimension1==' . $generationNumber . '.' . $individualGenome;
+  }
+
+  public static function prepareMetrics($metrics)
+  {
+    return implode(',', $metrics);
   }
 }
 ?>
