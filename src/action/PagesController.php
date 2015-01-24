@@ -111,7 +111,7 @@ class PagesController
     PagesController::build(4, array('jquery'=>$jquery, 'app'=>$app, 'user'=>$user));
   }
 
-  public static function loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $array)
+  public static function loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $array, $bestIndividuals)
   {
     PagesController::build(5, array('analyticsTpl'=>'visualization-piwik.tpl',
                                     'analyticsType'=>'Piwik',
@@ -119,11 +119,12 @@ class PagesController
                                     'analyticsSiteId'=>$analytics->siteId,
                                     'analyticsMethods'=>$array['methods'],
                                     'analyticsWeights'=>$array['weights'],
+                                    'bestIndividualsPerGeneration'=>$bestIndividuals,
                                     'populationSize'=>$geneticAlgorithm->populationSize,
                                     'properties'=>$geneticAlgorithm->properties));
   }
 
-  public static function loadVisualizationGoogleOldPage($geneticAlgorithm, $analytics, $array)
+  public static function loadVisualizationGoogleOldPage($geneticAlgorithm, $analytics, $array, $bestIndividuals)
   {
     PagesController::build(5, array('analyticsTpl'=>'visualization-google-old.tpl',
                                     'analyticsType'=>'Google Analytics',
@@ -131,11 +132,12 @@ class PagesController
                                     'analyticsMethods'=>$array['methods'],
                                     'analyticsWeights'=>$array['weights'],
                                     'analyticsFilter'=>$array['filter'],
+                                    'bestIndividualsPerGeneration'=>$bestIndividuals,
                                     'populationSize'=>$geneticAlgorithm->populationSize,
                                     'properties'=>$geneticAlgorithm->properties));
   }
 
-  public static function loadVisualizationGooglePage($geneticAlgorithm, $analytics, $array)
+  public static function loadVisualizationGooglePage($geneticAlgorithm, $analytics, $array, $bestIndividuals)
   {
     PagesController::build(5, array('analyticsTpl'=>'visualization-google.tpl',
                                     'analyticsType'=>'Google Analytics',
@@ -143,6 +145,7 @@ class PagesController
                                     'analyticsMethods'=>$array['methods'],
                                     'analyticsWeights'=>$array['weights'],
                                     'analyticsFilter'=>$array['filter'],
+                                    'bestIndividualsPerGeneration'=>$bestIndividuals,
                                     'populationSize'=>$geneticAlgorithm->populationSize,
                                     'properties'=>$geneticAlgorithm->properties));
   }

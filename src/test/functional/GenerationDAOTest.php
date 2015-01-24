@@ -230,5 +230,46 @@ class GenerationDAOTest extends MyDatabase_TestCase
     // Assert
     $this->assertNull($generationDAO->instance);
   }
+
+  public function testLoadAllGenerations_geneticAlgorithmHasTwoGenerations_mustReturnTwoGenerations()
+  {
+    // Arrange
+    $generationDAO = new GenerationDAO();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
+
+    // Act
+    $generations = $generationDAO->loadAllGenerations($geneticAlgorithm);
+
+    // Assert
+    $this->assertEquals(2, count($generations));
+    $this->assertEquals('00000000-0000-0000-0000-000000000001', $generations[0]->generation_oid);
+    $this->assertEquals('00000000-0000-0000-0000-000000000002', $generations[1]->generation_oid);
+  }
+
+  public function testLoadAllGenerations_geneticAlgorithmHasNoGeneration_mustReturnNoGeneration()
+  {
+    // Arrange
+    $generationDAO = new GenerationDAO();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
+
+    // Act
+    $generations = $generationDAO->loadAllGenerations($geneticAlgorithm);
+
+    // Assert
+    $this->assertEquals(0, count($generations));
+  }
+
+  public function testLoadAllGenerations_mustSetGenerationInstanceToNull()
+  {
+    // Arrange
+    $generationDAO = new GenerationDAO();
+    $geneticAlgorithm = new GeneticAlgorithm('00000000-0000-0000-0000-000000000001', null, null, null, null, null, null, null, null);
+
+    // Act
+    $generations = $generationDAO->loadAllGenerations($geneticAlgorithm);
+
+    // Assert
+    $this->assertNull($generationDAO->instance);
+  }
 }
 ?>

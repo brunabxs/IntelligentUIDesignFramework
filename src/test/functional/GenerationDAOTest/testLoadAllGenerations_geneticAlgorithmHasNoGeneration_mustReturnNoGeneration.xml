@@ -1,0 +1,45 @@
+<dataset>
+  <User user_oid="00000000-0000-0000-0000-000000000001"
+    name="user1"
+    password="password1"
+    email="user1@users.com" />
+
+  <User user_oid="00000000-0000-0000-0000-000000000002"
+    name="user2"
+    password="password2"
+    email="user2@users.com" />
+
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000001"
+    populationSize="1"
+    genomeSize="1"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"]}'
+    user_oid="00000000-0000-0000-0000-000000000001" />
+
+  <GeneticAlgorithm geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002"
+    populationSize="1"
+    genomeSize="1"
+    methodForSelection="roulette"
+    methodForCrossover="simple"
+    methodForMutation="simple"
+    properties='{"h1":["class1"]}'
+    user_oid="00000000-0000-0000-0000-000000000002" />
+
+  <Generation generation_oid="00000000-0000-0000-0000-000000000001"
+    number="0"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002" />
+
+  <Generation generation_oid="00000000-0000-0000-0000-000000000002"
+    number="1"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002" />
+
+  <Generation generation_oid="00000000-0000-0000-0000-000000000003"
+    number="2"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002" />
+
+  <Generation generation_oid="00000000-0000-0000-0000-000000000004"
+    number="3"
+    geneticAlgorithm_oid="00000000-0000-0000-0000-000000000002" />
+</dataset>

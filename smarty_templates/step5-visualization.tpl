@@ -20,4 +20,10 @@
         value="{$properties}"}
     </div>
   </div>
+
+  <h3>Melhores indivíduos por experimento</h3>
+  {foreach from=$bestIndividualsPerGeneration key=generation item=individual}
+    {include file="component-view.tpl" label="Melhor solução experimento {$generation+1}" name="bestSolution{$generation}"
+      value="{$individual}"}
+  {/foreach}
 </div>

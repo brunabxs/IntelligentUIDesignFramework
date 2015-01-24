@@ -115,6 +115,55 @@ class GeneticAlgorithmController
     }
   }
 
+  public function getBestIndividuals($geneticAlgorithmCode)
+  {
+    // retrieve genetic algorithm
+    $this->geneticAlgorithmDAO->instance = new GeneticAlgorithm(null, $geneticAlgorithmCode, null, null, null, null, null, null, null);
+    $this->geneticAlgorithmDAO->sync();
+
+    // retrieve generations
+    $generations = $this->generationDAO->loadAllGenerations($this->geneticAlgorithmDAO->instance);
+
+    $result = array();
+    foreach ($generations as $generation)
+    {
+      $result[$generation->number] = $this->getBestIndividual($generation);
+    }
+    return $result;
+  }
+
+  private function getBestIndividual($generation)
+  {
+    // retrieve last generation's individuals
+    $individuals = $this->individualDAO->loadAllIndividuals($generation);
+
+    $i = 0;
+    $bestIndividual = $individuals[$i];
+    for (; $i < count($individuals) && $bestIndividual->score == null; $i++)
+    {
+      if ($individuals[$i]->score != null)
+      {
+        $bestIndividual = $individuals[$i];
+        break;
+      }
+    }
+
+    for (; $i < count($individuals); $i++)
+    {
+      if ($individuals[$i]->score != null && $bestIndividual->score < $individuals[$i]->score)
+      {
+        $bestIndividual = $individuals[$i];
+        break;
+      }
+    }
+
+    if ($bestIndividual->score == null)
+    {
+      return null;
+    }
+    return $bestIndividual->properties;
+  }
+
   public function exportIndividualJSON($geneticAlgorithmCode, $generationAndIndividualCode)
   {
     // retrieve genetic algorithm

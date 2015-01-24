@@ -12,6 +12,11 @@ class GenerationDAO extends AbstractDAO
                         array('geneticAlgorithm_oid', $this->instance->geneticAlgorithm_oid)));
   }
 
+  public function loadAllGenerations($geneticAlgorithm)
+  {
+    return parent::loadAll(array(array('geneticAlgorithm_oid', $geneticAlgorithm->geneticAlgorithm_oid)), ' ORDER BY number ');
+  }
+
   public function loadLastGeneration($geneticAlgorithm)
   {
     return parent::load(array(array('geneticAlgorithm_oid', $geneticAlgorithm->geneticAlgorithm_oid)), ' ORDER BY number DESC LIMIT 1');

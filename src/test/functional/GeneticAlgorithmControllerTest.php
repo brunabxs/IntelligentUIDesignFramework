@@ -163,6 +163,58 @@ class GeneticAlgorithmControllerTest extends MyDatabase_TestCase
     $this->assertNotNull($geneticAlgorithmController->geneticAlgorithmDAO->instance);
   }
 
+  public function testGetBestIndividuals_oneGenerationWithTwoIndividualsBothWithScore_mustReturnArrayWithOneEntryWithIndividualWithHighestScoreForGeneration()
+  {
+    // Arrange
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
+    $code = '123456';
+
+    // Act
+    $bestIndividuals = $geneticAlgorithmController->getBestIndividuals($code);
+
+    // Assert
+    $this->assertEquals(array(0=>'{"h1":"class1","h2":"class2"}'), $bestIndividuals);
+  }
+
+  public function testGetBestIndividuals_oneGenerationWithTwoIndividualsJustOneWithScore_mustReturnArrayWithOneEntryWithIndividualWithScoreForGeneration()
+  {
+    // Arrange
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
+    $code = '123456';
+
+    // Act
+    $bestIndividuals = $geneticAlgorithmController->getBestIndividuals($code);
+
+    // Assert
+    $this->assertEquals(array(0=>'{"h1":"class1","h2":"class2"}'), $bestIndividuals);
+  }
+
+  public function testGetBestIndividuals_oneGenerationWithTwoIndividualsNoneWithScore_mustReturnArrayWithNullEntryForGeneration()
+  {
+    // Arrange
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
+    $code = '123456';
+
+    // Act
+    $bestIndividuals = $geneticAlgorithmController->getBestIndividuals($code);
+
+    // Assert
+    $this->assertEquals(array(0=>null), $bestIndividuals);
+  }
+
+  public function testGetBestIndividuals_twoGenerations_mustReturnArrayWithTwoEntriesWithIndividualWithHighestScoreForGeneration()
+  {
+    // Arrange
+    $geneticAlgorithmController = $this->mockGeneticAlgorithmController();
+    $code = '123456';
+
+    // Act
+    $bestIndividuals = $geneticAlgorithmController->getBestIndividuals($code);
+
+    // Assert
+    $this->assertEquals(array(0=>'{"h1":""}', 1=>null), $bestIndividuals);
+  }
+
   private function mockGeneticAlgorithmController($methods=NULL)
   {
     $mock = $this->getMockBuilder('GeneticAlgorithmController')

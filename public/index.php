@@ -229,6 +229,7 @@
         $controller = new GeneticAlgorithmController();
         $controller->load($_SESSION['user']);
         $geneticAlgorithm = $controller->geneticAlgorithmDAO->instance;
+        $bestIndividuals = $controller->getBestIndividuals($geneticAlgorithm->code);
 
         $controller = WebAnalyticsFactory::init($geneticAlgorithm);
         $analytics = $controller->analytics;
@@ -236,15 +237,15 @@
 
         if ($analytics->type == 'piwik')
         {
-          PagesController::loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $analyticsData);
+          PagesController::loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $analyticsData, $bestIndividuals);
         }
         else if ($analytics->type == 'google-old')
         {
-          PagesController::loadVisualizationGoogleOldPage($geneticAlgorithm, $analytics, $analyticsData);
+          PagesController::loadVisualizationGoogleOldPage($geneticAlgorithm, $analytics, $analyticsData, $bestIndividuals);
         }
         else if ($analytics->type == 'google')
         {
-          PagesController::loadVisualizationGooglePage($geneticAlgorithm, $analytics, $analyticsData);
+          PagesController::loadVisualizationGooglePage($geneticAlgorithm, $analytics, $analyticsData, $bestIndividuals);
         }
         else
         {
