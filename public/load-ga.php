@@ -78,7 +78,6 @@
         {
         };
       ";
-
     }
 
     echo
@@ -92,10 +91,16 @@
       })
       .done(function(config, textStatus)
       {
-        config = JSON.parse(config.trim());
-        setCookie(config.generation + '.' + config.genome);
-        gaProperties = config.properties;
-        pushToWebAnalyticsTool();
+        try
+        {
+          config = JSON.parse(config.trim());
+          setCookie(config.generation + '.' + config.genome);
+          gaProperties = config.properties;
+          pushToWebAnalyticsTool();
+        }
+        catch (e)
+        {
+        }
       })
       .fail(function(jqxhr, settings, exception)
       {
@@ -108,13 +113,15 @@
 
       $.fn.executeGA = function()
       {
-        for (var element in gaProperties)
+        if (gaProperties)
         {
-          this.find(element).addClass(gaProperties[element]);
+          for (var element in gaProperties)
+          {
+            this.find(element).addClass(gaProperties[element]);
+          }
         }
         return this;
       }
     }( jQuery ));
   ";
 ?>
-
