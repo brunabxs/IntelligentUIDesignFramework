@@ -84,6 +84,7 @@
     "
       var gaProperties;
       var gaCode = getCookie();
+      var newGaCode = '';
       $.ajax({
         url: url + 'load-indiv.php?code=" . $geneticAlgorithmCode . "' + (gaCode ? '&indiv=' + gaCode : ''),
         type: 'get',
@@ -94,7 +95,11 @@
         try
         {
           config = JSON.parse(config.trim());
-          setCookie(config.generation + '.' + config.genome);
+          newGaCode = config.generation + '.' + config.genome;
+          if (config != newGaCode)
+          {
+            setCookie(newGaCode);
+          }
           gaProperties = config.properties;
           pushToWebAnalyticsTool();
         }
