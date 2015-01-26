@@ -55,7 +55,7 @@
       "
         var pushToWebAnalyticsTool = function()
         {
-          _gaq.push(['setCustomVariable', 1, 'GA', getCookie(), 'page']);
+          _gaq.push(['setCustomVar', 1, 'GA', getCookie(), 'page']);
         };
       ";
     }
