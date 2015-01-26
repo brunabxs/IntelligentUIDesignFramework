@@ -55,7 +55,8 @@
       "
         var pushToWebAnalyticsTool = function()
         {
-          _gaq.push(['setCustomVar', 1, 'GA', getCookie(), 'page']);
+          _gaq.push(['_setCustomVar', 1, 'GA', getCookie(), 'page']);
+          _gaq.push(['_trackPageview']);
         };
       ";
     }
