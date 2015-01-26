@@ -51,7 +51,7 @@ class WebAnalyticsPiwikController extends WebAnalyticsController
 
   private static function getURL($generationNumber, $individualGenome, $methods, $startDate, $endDate, $analyticsSiteId, $analyticsToken)
   {
-    $url = "http://localhost/piwik";
+    $url = PIWIK_SERVER;
     $url .= "?module=API&method=API.getBulkRequest&format=PHP";
 
     $index = 0;

@@ -11,6 +11,8 @@
   define ('SMARTY_TEMPLATES', '../smarty_templates');
   define ('SMARTY_COMPILED_TEMPLATES', '../smarty_templates_c');
 
+  define ('PIWIK_SERVER', 'http://localhost/piwik');
+
   define ('GOOGLE_ANALYTICS_APP_NAME', 'IntelligentUIDesignFramework');
   define ('GOOGLE_ANALYTICS_CLIENT_ID', 'XXX');
   define ('GOOGLE_ANALYTICS_EMAIL', 'XXX@XXX');
