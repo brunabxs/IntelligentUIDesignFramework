@@ -277,11 +277,11 @@
     {
       processAnalyticsConfigurationPiwik();
     }
-    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google-old' && isset($_POST['txt_metrics_json']))
+    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google-old' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfigurationGoogleOld();
     }
-    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_metrics_json']))
+    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfigurationGoogle();
     }
