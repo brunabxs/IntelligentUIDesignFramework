@@ -96,8 +96,8 @@ function join() {
     }
   }
 
-  if (jQuery('#txt_analyticsFilter').size() == 1) {
-    metrics.push({'method':undefined, 'weight':undefined, 'extraParameters':jQuery('#txt_analyticsFilter').val()});
+  if (jQuery('#txt_analyticsFilter').size() == 1 && jQuery('#txt_analyticsFilter').val().trim() !== '') {
+    metrics.push({'method':undefined, 'weight':undefined, 'extraParameters':jQuery('#txt_analyticsFilter').val().trim()});
   }
 
   jQuery('#txt_metrics_json').val(JSON.stringify(metrics));
