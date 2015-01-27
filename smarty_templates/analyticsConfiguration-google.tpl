@@ -1,6 +1,10 @@
 {include file="component-input.tpl" label="ID do profile do Google Analytics" name="analyticsId"
   type="text" required="true" placeholder="ex.: ga:12345" pattern="ga:[0-9]+"}
 
+<h4>Atenção!</h4>
+<p>Cadastre o usuário "{$user}" com permissão de "Ler e analisar" no seu Google Analytics. <a href="https://support.google.com/analytics/answer/1009702?hl=pt-BR" target="_blank">Veja como fazer clicando aqui.</a>.</p>
+<p>Cadastre a dimensão personalizada 1 no seu Google Analytics. <a href="https://support.google.com/analytics/answer/2709829?hl=pt-BR" target="_blank">Veja como fazer clicando aqui.</a>.</p>
+
 <div class="appContentDataItemGroup">
   {include file="component-input.tpl" label="Métrica 1" name="metricsName1"
     type="text" required="true" placeholder="ex.: ga:sessions" pattern="ga:[a-zA-Z0-9]+"}

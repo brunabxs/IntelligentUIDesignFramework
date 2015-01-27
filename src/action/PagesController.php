@@ -57,11 +57,16 @@ class PagesController
     $smarty->display('main.tpl');
   }
 
-  private static function load($page)
+  private static function load($page, $otherParameters=array())
   {
     $smarty = new Smarty();
     $smarty->setTemplateDir(SMARTY_TEMPLATES);
     $smarty->setCompileDir(SMARTY_COMPILED_TEMPLATES);
+
+    foreach ($otherParameters as $key => $value)
+    {
+      $smarty->assign($key, $value);
+    }
 
     $smarty->display(self::$pages[$page]);
   }
@@ -95,20 +100,19 @@ class PagesController
 
   public static function loadAnalyticsConfigurationGoogleOldContent()
   {
-    PagesController::load('3b');
+    PagesController::load('3b', array('user'=>GOOGLE_ANALYTICS_EMAIL));
   }
 
   public static function loadAnalyticsConfigurationGoogleContent()
   {
-    PagesController::load('3c');
+    PagesController::load('3c', array('user'=>GOOGLE_ANALYTICS_EMAIL));
   }
 
   public static function loadClientConfigurationPage($geneticAlgorithm)
   {
     $jquery = 'http://code.jquery.com/jquery-1.11.1.min.js';
     $app = SERVER . ':' . PORT . '/load-ga.php?code='.$geneticAlgorithm->code;
-    $user = '46756727074-h57fqdnom7g7tmfnadi8g7239hhs4pje@developer.gserviceaccount.com';
-    PagesController::build(4, array('jquery'=>$jquery, 'app'=>$app, 'user'=>$user));
+    PagesController::build(4, array('jquery'=>$jquery, 'app'=>$app));
   }
 
   public static function loadVisualizationPiwikPage($geneticAlgorithm, $analytics, $array, $bestIndividuals)
