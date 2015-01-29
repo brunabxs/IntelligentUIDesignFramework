@@ -44,13 +44,53 @@ class WebAnalyticsGoogleOldControllerTest extends MyDatabase_TestCase
     $this->assertEquals($score, 2 * 2 + 5 * (-1));
   }
 
-  private function mockWebAnalyticsGoogleOldController($methods=NULL)
+  public function testValidate_validData_mustReturnArrayWithSuccess()
   {
-    $this->analyticsDAO->instance = new Analytics(null, null, null, null, '00000000-0000-0000-0000-000000000001');
-    $this->analyticsDAO->sync();
-    $analytics = $this->analyticsDAO->instance;
+    // Arrange
+    $analytics = new Analytics(null, 'ga:123', null, 'google-old', null);
+    $analyticsData = array();
+    $analyticsData[] = new AnalyticsData(null, 'method1', null, 1, null);
+    $analyticsData[] = new AnalyticsData(null, 'method2', null, 1, null);
+    $webAnalyticsGoogleController = $this->mockWebAnalyticsGoogleOldController(array('retrieveDataFromTool'), $analytics, $analyticsData);
+    $webAnalyticsGoogleController->method('retrieveDataFromTool')->will($this->returnValue(array('method1' => 2, 'method2' => 5)));
 
-    $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
+    // Act
+    $result = $webAnalyticsGoogleController->validate();
+
+    // Assert
+    $this->assertEquals($result, array('type'=>'success'));
+  }
+
+  public function testValidate_invalidData_mustReturnArrayWithError()
+  {
+    // Arrange
+    $analytics = new Analytics(null, 'ga:123', null, 'google-old', null);
+    $analyticsData = array();
+    $analyticsData[] = new AnalyticsData(null, 'method1', null, 1, null);
+    $analyticsData[] = new AnalyticsData(null, 'method2', null, 1, null);
+    $webAnalyticsGoogleController = $this->mockWebAnalyticsGoogleOldController(array('retrieveDataFromTool'), $analytics, $analyticsData);
+    $webAnalyticsGoogleController->method('retrieveDataFromTool')->will($this->returnValue(array()));
+
+    // Act
+    $result = $webAnalyticsGoogleController->validate();
+
+    // Assert
+    $this->assertEquals($result, array('type'=>'error', 'message'=>'Preencha corretamente os campos'));
+  }
+
+  private function mockWebAnalyticsGoogleOldController($methods=NULL, $analytics=NULL, $analyticsData=NULL)
+  {
+    if ($analytics == NULL)
+    {
+      $this->analyticsDAO->instance = new Analytics(null, null, null, null, '00000000-0000-0000-0000-000000000001');
+      $this->analyticsDAO->sync();
+      $analytics = $this->analyticsDAO->instance;
+    }
+
+    if ($analyticsData == NULL)
+    {
+      $analyticsData = $this->analyticsDataDAO->loadAllAnalyticsData($analytics);
+    }
 
     $mock = $this->getMockBuilder('WebAnalyticsGoogleOldController')
                  ->setMethods($methods)

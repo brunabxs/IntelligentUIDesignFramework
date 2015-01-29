@@ -106,6 +106,39 @@
     }
   }
 
+  function processAnalyticsConfigurationValidationPiwik()
+  {
+    $json = json_decode($_POST['txt_metrics_json'], true);
+
+    $controller = new AnalyticsController();
+    $validation = $controller->validate($_POST['txt_analyticsTool'], $_POST['txt_analyticsToken'], $_POST['txt_analyticsSiteId'], $json);
+
+    echo json_encode($validation);
+    die();
+  }
+
+  function processAnalyticsConfigurationValidationGoogleOld()
+  {
+    $json = json_decode($_POST['txt_metrics_json'], true);
+
+    $controller = new AnalyticsController();
+    $validation = $controller->validate($_POST['txt_analyticsTool'], $_POST['txt_analyticsId'], null, $json);
+
+    echo json_encode($validation);
+    die();
+  }
+
+  function processAnalyticsConfigurationValidationGoogle()
+  {
+    $json = json_decode($_POST['txt_metrics_json'], true);
+
+    $controller = new AnalyticsController();
+    $validation = $controller->validate($_POST['txt_analyticsTool'], $_POST['txt_analyticsId'], null, $json);
+
+    echo json_encode($validation);
+    die();
+  }
+
   function processAnalyticsConfigurationPiwik()
   {
     try
@@ -273,15 +306,27 @@
     {
       processAnalyticsConfigurationType();
     }
-    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'piwik' && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
+    else if (isset($_POST['txt_validate']) && $_POST['txt_validate'] == 'true' && isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'piwik' && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
+    {
+      processAnalyticsConfigurationValidationPiwik();
+    }
+    else if (isset($_POST['txt_validate']) && $_POST['txt_validate'] == 'true' && isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google-old' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
+    {
+      processAnalyticsConfigurationValidationGoogleOld();
+    }
+    else if (isset($_POST['txt_validate']) && $_POST['txt_validate'] == 'true' && isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
+    {
+      processAnalyticsConfigurationValidationGoogle();
+    }
+    else if (isset($_POST['txt_validate']) && $_POST['txt_validate'] == 'false' && isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'piwik' && isset($_POST['txt_analyticsToken']) && isset($_POST['txt_analyticsSiteId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfigurationPiwik();
     }
-    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google-old' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
+    else if (isset($_POST['txt_validate']) && $_POST['txt_validate'] == 'false' && isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google-old' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfigurationGoogleOld();
     }
-    else if (isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
+    else if (isset($_POST['txt_validate']) && $_POST['txt_validate'] == 'false' && isset($_POST['txt_analyticsTool']) && $_POST['txt_analyticsTool'] == 'google' && isset($_POST['txt_analyticsId']) && isset($_POST['txt_metrics_json']))
     {
       processAnalyticsConfigurationGoogle();
     }

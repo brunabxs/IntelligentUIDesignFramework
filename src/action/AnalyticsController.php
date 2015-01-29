@@ -58,5 +58,19 @@ class AnalyticsController
 
     return $this->analyticsDAO->instance->type;
   }
+
+  public function validate($tool, $token, $siteId, $analyticsDataParams)
+  {
+    $analytics = new Analytics(null, $token, $siteId, $tool, null);
+
+    $analyticsData = array();
+    foreach ($analyticsDataParams as $data)
+    {
+      $analyticsData[] = new AnalyticsData(null, (isset($data['method']) ? $data['method'] : null), (isset($data['extraParameters']) ? $data['extraParameters'] : null), (isset($data['weight']) ? $data['weight'] : null), null);
+    }
+
+    $webController = WebAnalyticsFactory::init(null, $analytics, $analyticsData);
+    return $webController->validate();
+  }
 }
 ?>

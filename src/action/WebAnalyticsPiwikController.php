@@ -49,6 +49,21 @@ class WebAnalyticsPiwikController extends WebAnalyticsController
     return $score;
   }
 
+  public function validate()
+  {
+    $data = $this->extractAnalyticsData();
+
+    $url = self::getURL('0', '0', $data['methods'], date('Y-m-d'), date('Y-m-d'), $this->analytics->siteId, $this->analytics->token);
+
+    $result = $this->retrieveDataFromTool($url);
+
+    if (is_array($result) && empty($result))
+    {
+      return array('type'=>'error', 'message'=>'Preencha corretamente os campos');
+    }
+    return array('type'=>'success');
+  }
+
   private static function getURL($generationNumber, $individualGenome, $methods, $startDate, $endDate, $analyticsSiteId, $analyticsToken)
   {
     $url = PIWIK_SERVER;

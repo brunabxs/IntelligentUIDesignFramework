@@ -45,6 +45,11 @@ class WebAnalyticsGoogleController extends WebAnalyticsController
 
   public function retrieveDataFromTool($generationNumber, $individualGenome, $methods, $filter, $startDate, $endDate, $analyticsToken)
   {
+    if (!is_file(GOOGLE_ANALYTICS_KEY))
+    {
+      return array();
+    }
+
     $client = new Google_Client();
     $client->setApplicationName(GOOGLE_ANALYTICS_APP_NAME);
 
@@ -73,6 +78,19 @@ class WebAnalyticsGoogleController extends WebAnalyticsController
     {
       return array();
     }
+  }
+
+  public function validate()
+  {
+    $data = $this->extractAnalyticsData();
+
+    $result = $this->retrieveDataFromTool('0', '0', $data['methods'], $data['filter'], date('Y-m-d'), date('Y-m-d'), $this->analytics->token);
+
+    if (is_array($result) && empty($result))
+    {
+      return array('type'=>'error', 'message'=>'Preencha corretamente os campos');
+    }
+    return array('type'=>'success');
   }
 
   public static function prepareFilters($filter, $generationNumber, $individualGenome)

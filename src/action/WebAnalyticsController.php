@@ -12,6 +12,8 @@ abstract class WebAnalyticsController
 
   public abstract function getValue($generationNumber, $individualGenome, $startDate, $endDate);
 
+  public abstract function validate();
+
   public abstract function extractAnalyticsData();
 }
 ?>

@@ -1,16 +1,21 @@
 ﻿<?php
 class WebAnalyticsFactory
 {
-  public static function init($geneticAlgorithm)
+  public static function init($geneticAlgorithm, $analytics=null, $analyticsData=null)
   {
-    $analyticsDAO = new AnalyticsDAO();
-    $analyticsDataDAO = new AnalyticsDataDAO();
+    if ($analytics == null)
+    {
+      $analyticsDAO = new AnalyticsDAO();
+      $analyticsDAO->instance = new Analytics(null, null, null, null, $geneticAlgorithm->geneticAlgorithm_oid);
+      $analyticsDAO->sync();
+      $analytics = $analyticsDAO->instance;
+    }
 
-    $analyticsDAO->instance = new Analytics(null, null, null, null, $geneticAlgorithm->geneticAlgorithm_oid);
-    $analyticsDAO->sync();
-    $analytics = $analyticsDAO->instance;
-
-    $analyticsData = $analyticsDataDAO->loadAllAnalyticsData($analytics);
+    if ($analyticsData == null)
+    {
+      $analyticsDataDAO = new AnalyticsDataDAO();
+      $analyticsData = $analyticsDataDAO->loadAllAnalyticsData($analytics);
+    }
 
     if ($analytics->type == 'piwik')
     {

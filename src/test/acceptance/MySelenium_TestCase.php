@@ -100,6 +100,11 @@ abstract class MySelenium_TestCase extends PHPUnit_Extensions_Database_TestCase
     $this->getElement($by)->click();
   }
 
+  final protected function executeScript($script, $params=array())
+  {
+    $this->driver->executeScript($script, $params);
+  }
+
   final protected function waitPresenceOfElement($by)
   {
     $this->driver->wait(self::$waitTime)->until(WebDriverExpectedCondition::presenceOfAllElementsLocatedBy($by));

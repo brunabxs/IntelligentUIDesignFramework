@@ -48,5 +48,20 @@ class WebAnalyticsFactoryTest extends MyDatabase_TestCase
     // Assert
     $this->assertNull($webAnalyticsController);
   }
+
+  public function testInit_geneticAlgorithmNull_mustReturnWebAnalyticsControllerInstance()
+  {
+    // Arrange
+    $analytics = new Analytics(null, '123token', '1', 'piwik', null);
+    $analyticsData = array();
+
+    // Act
+    $webAnalyticsController = WebAnalyticsFactory::init(null, $analytics, $analyticsData);
+
+    // Assert
+    $this->assertInstanceOf('WebAnalyticsPiwikController', $webAnalyticsController);
+    $this->assertEquals($analytics, $webAnalyticsController->analytics);
+    $this->assertEquals($analyticsData, $webAnalyticsController->analyticsData);
+  }
 }
 ?>

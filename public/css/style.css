@@ -251,7 +251,11 @@ section#appContent .appContentData .appContentDataItem.required label:after {
   font-weight: bold;
 }
 
-section#appContent .appContentData .appContentDataItem .appContentMessage {
+section#appContent .appContentData .appContentMessage {
   display: block;
   color: #CF0000;
+}
+
+section#appContent .appContentData .appContentMessage.success {
+  color: #009900;
 }
