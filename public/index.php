@@ -69,9 +69,6 @@
       $controller = new GeneticAlgorithmController();
       $controller->create($_SESSION['user'], $_POST['txt_generationSize'], json_encode($json));
 
-      $code = $controller->geneticAlgorithmDAO->instance->code;
-      CronController::addJob($code);
-
       $controller = new ProcessController();
       $controller->load($_SESSION['user']);
       $controller->processDAO->instance->serverConfiguration = '1';
@@ -216,6 +213,12 @@
   {
     try
     {
+      $controller = new GeneticAlgorithmController();
+      $controller->load($_SESSION['user']);
+
+      $code = $controller->geneticAlgorithmDAO->instance->code;
+      CronController::addJob($code);
+
       $controller = new ProcessController();
       $controller->load($_SESSION['user']);
       $controller->processDAO->instance->clientConfiguration = '1';
