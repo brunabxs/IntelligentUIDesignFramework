@@ -4,8 +4,8 @@
     type="text" name="generationSize"
     pattern="[0-9]*[2468]" required="true" focus="true"}
 
-  {include file="component-view.tpl" label="Tempo de duração da geração (em minutos)" name="generationTime"
-    value="30"}
+  {include file="component-view.tpl" label="Tempo de duração da geração (em dias)" name="generationTime"
+    value="2"}
 
   {include file="component-view.tpl" label="Número máximo de gerações" name="generationLimit"
     value="∞"}
