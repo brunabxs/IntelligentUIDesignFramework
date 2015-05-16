@@ -12,7 +12,7 @@
   echo
   "
     (function($) {
-      var url = (('https:' == document.location.protocol) ? 'https' : 'http') + '://" . SERVER_WO_PROTOCOL . ":" . PORT . "/';
+      var url = (('https:' == document.location.protocol) ? 'https' : 'http') + '://" . SERVER_WO_PROTOCOL . "/';
 
       var setCookie = function(newValue, currentValue)
       {
