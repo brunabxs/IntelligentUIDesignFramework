@@ -111,7 +111,7 @@ class PagesController
   public static function loadClientConfigurationPage($geneticAlgorithm)
   {
     $jquery = 'http://code.jquery.com/jquery-1.11.1.min.js';
-    $app = SERVER . ':' . PORT . '/load-ga.php?code='.$geneticAlgorithm->code;
+    $app = SERVER . '/load-ga.php?code='.$geneticAlgorithm->code;
     PagesController::build(4, array('jquery'=>$jquery, 'app'=>$app));
   }
 
