@@ -103,7 +103,7 @@ class WebAnalyticsGoogleOldController extends WebAnalyticsController
       $filters = '';
     }
 
-    return $filters . 'ga:customVarName1==GA,ga:customVarValue1==' . $generationNumber . '.' . $individualGenome;
+    return $filters . 'ga:customVarName1==GA;ga:customVarValue1==' . $generationNumber . '.' . $individualGenome;
   }
 
   public static function prepareMetrics($metrics)

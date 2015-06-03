@@ -61,7 +61,7 @@ class WebAnalyticsGoogleOldControllerUnitTest extends MyAnotherUnit_Framework_Te
     $result = self::callMethod('WebAnalyticsGoogleOldController', 'prepareFilters', array($filter, $generationNumber, $individualGenome));
 
     // Assert
-    $this->assertEquals('ga:customVarName1==GA,ga:customVarValue1==0.10', $result);
+    $this->assertEquals('ga:customVarName1==GA;ga:customVarValue1==0.10', $result);
   }
 
   public function testPrepareFilters_ACountryFilterIsSet_mustReturnStringWithCountryAndCustomDimension1()
@@ -75,7 +75,7 @@ class WebAnalyticsGoogleOldControllerUnitTest extends MyAnotherUnit_Framework_Te
     $result = self::callMethod('WebAnalyticsGoogleOldController', 'prepareFilters', array($filter, $generationNumber, $individualGenome));
 
     // Assert
-    $this->assertEquals('ga:country==United States;ga:customVarName1==GA,ga:customVarValue1==0.10', $result);
+    $this->assertEquals('ga:country==United States;ga:customVarName1==GA;ga:customVarValue1==0.10', $result);
   }
 
   public function testPrepareMetrics_oneMetric_mustReturnStringWithOneMetric()
